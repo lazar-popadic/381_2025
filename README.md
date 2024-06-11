@@ -1,4 +1,4 @@
-# Git za eurobot 2024
+# Korišćenje gita
 
 ### Preduslovi:
 
