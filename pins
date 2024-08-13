@@ -1,23 +1,23 @@
 port A:
 0 - timer 5 channel 1		left encoder - channel A
 1 - timer 5 channel 2		left encoder - channel B
-6 - gpio in					činč
-8 - gpio out				vakuum 7
-9 - gpio out				vakuum 8
-11 - usart 6 tx				ax12a
-12 - usart 6 rx				NC
+6 - gpio in					    činč
+8 - gpio out				    vakuum 7
+9 - gpio out				    vakuum 8
+11 - usart 6 tx				  ax12a
+12 - usart 6 rx				  NC
 
 port B:
-3 - i2c2 sda				rpi
+3 - i2c2 sda				    rpi
 4 - timer 3 channel 1		right encoder - channel A
 5 - timer 3 channel 2		right encoder - channel B
 6 - timer 4 channel 1		pwm - right motor
-7 - gpio out				direction 1 - left motor
+7 - gpio out				    direction 1 - left motor
 8 - timer 4 channel 3		pwm - left motor
-9 - gpio out				direction 1 - right motor
-10 - i2c2 scl				rpi
-14 - gpio out				direction 2 - left motor
-15 - gpio out				direction 2 - right motor
+9 - gpio out				    direction 1 - right motor
+10 - i2c2 scl				    rpi
+14 - gpio out				    direction 2 - left motor
+15 - gpio out				    direction 2 - right motor
 
 port C:
 0 - gpio out				vakuum 1
