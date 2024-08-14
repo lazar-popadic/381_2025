@@ -21,6 +21,9 @@
 ![git2](https://github.com/lazuskica/G3/blob/main/slike%20za%20readme/git2.PNG)
 ![git3](https://github.com/lazuskica/G3/blob/main/slike%20za%20readme/git3.PNG)
 
+## Napomena: 
+### Ukoliko ne uspeva da vam ovako otvori projekat, probajte opciju "Import..."
+
 ### Dalji radi na kodu:
 
 ##### Preuzimanje najnovijeg koda:
