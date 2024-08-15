@@ -44,7 +44,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+ uint16_t sys_time_s = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -91,6 +91,8 @@ int main(void)
   MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
   pwm_start();
+  time_start ();
+  start_match();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -100,6 +102,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+      sys_time_s = get_time_ms() / 1000;
+      if (delay_nonblocking(1000))
+	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
   }
   /* USER CODE END 3 */
 }

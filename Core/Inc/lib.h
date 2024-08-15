@@ -29,5 +29,9 @@ void
 start_match();
 void
 stop_match();
+void
+set_time_ms (uint32_t time);
+uint32_t
+get_time_ms ();
 
 #endif /* LIB_LIB_H_ */
