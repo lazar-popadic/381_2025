@@ -46,6 +46,7 @@
 /* USER CODE BEGIN PV */
 uint16_t sys_time_s = 0;
 uint16_t dc_test = 0;
+uint8_t pwm_on = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,8 +107,12 @@ main (void)
 
       /* USER CODE BEGIN 3 */
 
-      pwm_left_dc(dc_test);
-      pwm_right_dc(dc_test);
+      if (pwm_on)
+	pwm_start ();
+      else
+	pwm_stop ();
+      pwm_left_dc (dc_test);
+      pwm_right_dc (dc_test);
 
       sys_time_s = get_time_ms () / 1000;
       if (delay_nonblocking (1000))
