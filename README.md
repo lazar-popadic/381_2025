@@ -16,7 +16,7 @@
    
 ![git1](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git1.PNG)
 
-3. U stm32cubeide otvorite taj projekat, tako što izaberete direktorijum (folder) gde ste klonirali taj repo
+3. U stm32cubeide otvorite taj projekat, tako što importujete direktorijum (folder) gde ste klonirali taj repo:
    
 ![git2_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git2_v2.png)
 ![git3_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3_v2.png)
