@@ -18,11 +18,11 @@
 
 3. U stm32cubeide otvorite taj projekat, tako što izaberete direktorijum (folder) gde ste klonirali taj repo
    
-![git2_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git2_v2.PNG)
-![git3_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3_v2.PNG)
-![git3.1_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3.1_v2.PNG)
-![git3.2_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3.2_v2.PNG)
-![git3.3_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3.3_v2.PNG)
+![git2_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git2_v2.png)
+![git3_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3_v2.png)
+![git3.1_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3.1_v2.png)
+![git3.2_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3.2_v2.png)
+![git3.3_v2](https://github.com/lazar-popadic/381_2025/blob/main/slike%20za%20readme/git3.3_v2.png)
 
 ### Dalji radi na kodu:
 
