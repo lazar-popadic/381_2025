@@ -8,6 +8,8 @@
 #ifndef LIB_LIB_H_
 #define LIB_LIB_H_
 
+#include "structs.h"
+
 void
 pwm_right_dc (int16_t duty_cycle);
 void
@@ -36,5 +38,15 @@ get_time_ms ();
 
 void
 ax_move (uint8_t id, uint16_t angle, uint16_t speed);
+
+void
+odometry_init ();
+void
+update_odom (struct_robot_base *base);
+
+void
+wrapTo180(float*);
+void
+wrapToPi(float*);
 
 #endif /* LIB_LIB_H_ */
