@@ -1,24 +1,25 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2024 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -44,7 +45,12 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+uint16_t sys_time_s = 0;
+uint16_t dc_test = 0;
+uint8_t pwm_on = 0;
+uint8_t ax_id_test = 1;
+uint16_t ax_angle_test = 0;
+uint16_t ax_speed_test = 250;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,18 +95,34 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM4_Init();
   MX_TIM10_Init();
+  MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-  pwm_start();
+  pwm_start ();
+  time_start ();
+  start_match ();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
-  {
+    {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+
+      if (pwm_on)
+	pwm_start ();
+      else
+	pwm_stop ();
+      pwm_left_dc (dc_test);
+      pwm_right_dc (dc_test);
+
+      ax_move(ax_id_test, ax_angle_test, ax_speed_test);
+
+      sys_time_s = get_time_ms () / 1000;
+      if (delay_nonblocking (1000))
+	HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_5);
+    }
   /* USER CODE END 3 */
 }
 
@@ -161,10 +183,10 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
+  __disable_irq ();
   while (1)
-  {
-  }
+    {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 

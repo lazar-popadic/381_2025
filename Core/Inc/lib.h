@@ -29,5 +29,12 @@ void
 start_match();
 void
 stop_match();
+void
+set_time_ms (uint32_t time);
+uint32_t
+get_time_ms ();
+
+void
+ax_move (uint8_t id, uint16_t angle, uint16_t speed);
 
 #endif /* LIB_LIB_H_ */
