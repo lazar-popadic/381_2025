@@ -16,7 +16,7 @@ void
 time_ISR ()	// poziva se u stm32f4xx_it.c
 {
   sys_time_ms += match_started && 1;
-
+  update_odom (get_robot_base ());
 }
 
 uint8_t

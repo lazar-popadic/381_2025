@@ -8,7 +8,7 @@
 #include "../Inc/main.h"
 
 void
-wrapTo180(float* signal)
+wrapTo180_ptr(float* signal)
 {
   if (*signal > 180)
     *signal -= 360;
@@ -17,10 +17,20 @@ wrapTo180(float* signal)
 }
 
 void
-wrapToPi(float* signal)
+wrapToPi_ptr(float* signal)
 {
   if (*signal > M_PI)
     *signal -= M_PI;
   if (*signal < M_PI)
     *signal += M_PI;
+}
+
+float
+wrapTo180(float signal)
+{
+  if (signal > 180)
+    return signal - 360;
+  if (signal < 180)
+    return signal + 360;
+  return signal;
 }
