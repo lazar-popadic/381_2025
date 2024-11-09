@@ -21,10 +21,10 @@ float mid_angle;
 void
 odometry_init ()
 {
-  L_wheel = 340;					// [mm], rastojanje izmedju odometrijskih tockova
+  L_wheel = 341;					// [mm], rastojanje izmedju odometrijskih tockova
   L_wheel_recip = 1000 / L_wheel;			// [1/m]
-  d_odom_left = 60;					// [mm]
-  d_odom_right = 60;					// [mm]
+  d_odom_left = 72;					// [mm] TODO: L_wheel i d_odom namesti
+  d_odom_right = 72;					// [mm]
   inc2mm_left = d_odom_left * M_PI / (4 * 2048);	// [mm/inc]
   inc2mm_right = d_odom_right * M_PI / (4 * 2048);	// [mm/inc]
   rad2deg = 180 / M_PI;					// [deg/rad]
