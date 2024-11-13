@@ -29,7 +29,9 @@ odometry_init ()
   inc2mm_right = d_odom_right * M_PI / (4 * 2048);	// [mm/inc]
   rad2deg = 180 / M_PI;					// [deg/rad]
   deg2rad = M_PI / 180;					// [rad/deg]
+  __HAL_TIM_CLEAR_FLAG(&htim5, TIM_FLAG_UPDATE);
   HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL);
+  __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
   HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL);
 }
 
