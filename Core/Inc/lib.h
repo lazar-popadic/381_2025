@@ -42,7 +42,7 @@ ax_move (uint8_t id, uint16_t angle, uint16_t speed);
 void
 odometry_init ();
 void
-update_odom (volatile struct_robot_base *base);
+update_odom ();
 
 void
 wrapTo180_ptr(float*);

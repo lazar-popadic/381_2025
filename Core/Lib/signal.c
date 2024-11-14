@@ -30,7 +30,7 @@ wrapTo180(float signal)
 {
   if (signal > 180)
     return signal - 360;
-  if (signal < 180)
+  if (signal < -180)
     return signal + 360;
   return signal;
 }
