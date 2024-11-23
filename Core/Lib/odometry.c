@@ -5,8 +5,8 @@
  *      Author: lazar
  */
 
-#include "../Inc/main.h"
-#include "../Inc/tim.h"
+#include "main.h"
+#include "tim.h"
 
 float L_wheel;
 float L_wheel_recip;
@@ -19,6 +19,7 @@ float deg2rad;
 float mid_angle;
 int16_t v_l_diff = 0;
 int16_t v_r_diff = 0;
+static volatile struct_robot_base *base_ptr;
 
 void
 odometry_init ()
@@ -35,12 +36,12 @@ odometry_init ()
   HAL_TIM_Encoder_Start (&htim5, TIM_CHANNEL_ALL);
   __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
   HAL_TIM_Encoder_Start (&htim3, TIM_CHANNEL_ALL);
+  base_ptr = get_robot_base ();
 }
 
 void
 update_odom ()
 {
-  volatile struct_robot_base *base_ptr = get_robot_base ();
   v_r_diff = (int16_t) TIM3->CNT - base_ptr->encoder_sum_right;				// [inc/ms]
   base_ptr->v_right = (v_r_diff) * inc2mm_right;							// [mm/ms = m/s]
   v_l_diff = (int16_t) TIM5->CNT - base_ptr->encoder_sum_left;				// [inc/ms]
@@ -55,5 +56,5 @@ update_odom ()
   base_ptr->x += base_ptr->v * cos (mid_angle);		// [mm/ms * 1ms = mm]
   base_ptr->y += base_ptr->v * sin (mid_angle);		// [mm/ms * 1ms = mm]
   base_ptr->phi += 0.001 * base_ptr->w;				// [1ms * deg/s = 0.001s * deg/s = deg]
-  base_ptr->phi = wrapTo180 (base_ptr->phi);
+  base_ptr->phi = wrap180 (base_ptr->phi);
 }

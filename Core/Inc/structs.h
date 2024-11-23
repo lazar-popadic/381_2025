@@ -12,11 +12,11 @@ typedef struct st_robot_base
 {
   float x;			// [mm]
   float y;			// [mm]
-  float phi;			// [deg]
+  float phi;		// [deg]
   float v;			// [mm/ms = m/s]
   float w;			// [deg/s]
   float a;			// [mm/ms * 1/ms]
-  float alpha;			// [deg/s * 1/ms]
+  float alpha;		// [deg/s * 1/ms]
 
   float v_ref;			// [mm/ms = m/s]
   float w_ref;			// [deg/s]
@@ -30,10 +30,9 @@ typedef struct st_robot_base
   int16_t encoder_sum_left;	// [inc]
   int16_t encoder_sum_right;	// [inc]
 
-  uint8_t status_moving: 1;
-  uint8_t status_on_target:1;
+  uint8_t status_moving :1;
+  uint8_t status_on_target :1;
 
-
-}struct_robot_base;
+} struct_robot_base;
 
 #endif /* INC_STRUCTS_H_ */

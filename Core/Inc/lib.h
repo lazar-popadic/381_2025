@@ -10,6 +10,7 @@
 
 #include "structs.h"
 
+// pwm.h
 void
 pwm_right_dc (int16_t duty_cycle);
 void
@@ -19,6 +20,7 @@ pwm_start ();
 void
 pwm_stop ();
 
+// time.h
 void
 time_ISR ();
 uint8_t
@@ -28,27 +30,42 @@ time_start ();
 void
 time_stop ();
 void
-start_match();
+start_match ();
 void
-stop_match();
+stop_match ();
 void
 set_time_ms (uint32_t time);
 uint32_t
 get_time_ms ();
 
+// ax12a.h
 void
 ax_move (uint8_t id, uint16_t angle, uint16_t speed);
 
+// odometry.h
 void
 odometry_init ();
 void
 update_odom ();
 
+//signal.h
 void
-wrapTo180_ptr(float*);
+wrap180_ptr (float*);
 void
-wrapToPi_ptr(float*);
+wrapPi_ptr (float*);
 float
-wrapTo180(float signal);
+wrap180 (float signal);
+float
+wrap360 (float signal);
+int8_t
+get_sign (float num);
+char
+get_sign_char (int16_t num);
+
+// rpi.h
+void
+rpi_init ();
+void
+update_transmit_buffer ();
 
 #endif /* LIB_LIB_H_ */

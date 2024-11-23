@@ -5,32 +5,60 @@
  *      Author: lazar
  */
 
-#include "../Inc/main.h"
+#include "main.h"
 
 void
-wrapTo180_ptr(float* signal)
+wrap180_ptr (float *signal)
 {
   if (*signal > 180)
-    *signal -= 360;
+	*signal -= 360;
   if (*signal < 180)
-    *signal += 360;
+	*signal += 360;
 }
 
 void
-wrapToPi_ptr(float* signal)
+wrapPi_ptr (float *signal)
 {
   if (*signal > M_PI)
-    *signal -= M_PI;
+	*signal -= M_PI;
   if (*signal < M_PI)
-    *signal += M_PI;
+	*signal += M_PI;
 }
 
 float
-wrapTo180(float signal)
+wrap180 (float signal)
 {
   if (signal > 180)
-    return signal - 360;
+	return signal - 360;
   if (signal < -180)
-    return signal + 360;
+	return signal + 360;
   return signal;
+}
+
+float
+wrap360 (float signal)
+{
+  if (signal > 360)
+	return signal - 360;
+  if (signal < 0)
+	return signal + 360;
+  return signal;
+}
+
+int8_t
+get_sign (float num)
+{
+  if (num > 0)
+	return 1;
+  if (num < 0)
+	return -1;
+  return 0;
+}
+
+char
+get_sign_char (int16_t num)
+{
+  if (num < 0)
+	return '-';
+  return '+';
 }
