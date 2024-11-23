@@ -61,11 +61,31 @@ int8_t
 get_sign (float num);
 char
 get_sign_char (int16_t num);
+int8_t
+interpret_sign (char character);
 
 // rpi.h
 void
 rpi_init ();
 void
 update_transmit_buffer ();
+void
+edit_recieved_odom ();
+
+// input.h
+uint16_t
+read_cinc();
+uint16_t
+read_switch_S();
+uint16_t
+read_switch_2();
+uint16_t
+read_switch_1();
+void
+choose_tactic (struct_tactic_num *tactic);
+uint16_t
+read_sensors_front();
+uint16_t
+read_sensors_back();
 
 #endif /* LIB_LIB_H_ */

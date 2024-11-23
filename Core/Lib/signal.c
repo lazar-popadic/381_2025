@@ -62,3 +62,9 @@ get_sign_char (int16_t num)
 	return '-';
   return '+';
 }
+
+int8_t
+interpret_sign (char character)
+{
+  return 44 - character; // '+' je 43, '-' je 45
+}

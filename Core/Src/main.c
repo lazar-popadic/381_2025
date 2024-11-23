@@ -48,12 +48,17 @@
 
 /* promene i van glavnog programa: ISR, debugging...*/
 volatile struct_robot_base *base_ptr;
+struct_tactic_num tactic;
+
 /* test promenljive */
 volatile uint16_t dc_test = 0;
 volatile uint8_t pwm_on = 0;
 volatile uint8_t ax_id_test = 1;
 volatile uint16_t ax_angle_test = 0;
 volatile uint16_t ax_speed_test = 250;
+uint16_t input_test_0 = 0;
+uint16_t input_test_1 = 0;
+uint16_t input_test_2 = 0;
 
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
@@ -116,7 +121,7 @@ main (void)
   time_start ();
   start_match ();
   odometry_init ();
-  rpi_init();
+  rpi_init ();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -127,6 +132,11 @@ main (void)
 
 	  /* USER CODE BEGIN 3 */
 	  sys_time_s = get_time_ms () / 1000;
+
+	  choose_tactic (&tactic);
+	  input_test_0 = read_switch_S ();
+	  input_test_1 = read_sensors_back();
+	  input_test_2 = read_sensors_front();
 
 	  if (pwm_on)
 		pwm_start ();

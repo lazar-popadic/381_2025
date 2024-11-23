@@ -18,6 +18,7 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
   sys_time_ms += match_started && 1;
   update_odom ();
   update_transmit_buffer ();
+  edit_recieved_odom ();
 }
 
 uint8_t

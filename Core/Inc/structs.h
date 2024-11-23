@@ -35,4 +35,11 @@ typedef struct st_robot_base
 
 } struct_robot_base;
 
+typedef struct st_tactic_num
+{
+  uint8_t side :1;
+  uint8_t num :2;
+
+} struct_tactic_num;
+
 #endif /* INC_STRUCTS_H_ */
