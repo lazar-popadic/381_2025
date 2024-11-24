@@ -56,9 +56,12 @@ volatile uint8_t pwm_on = 0;
 volatile uint8_t ax_id_test = 1;
 volatile uint16_t ax_angle_test = 0;
 volatile uint16_t ax_speed_test = 250;
-uint16_t input_test_0 = 0;
-uint16_t input_test_1 = 0;
-uint16_t input_test_2 = 0;
+uint8_t in_0 = 0;
+uint8_t in_1 = 0;
+uint8_t in_2 = 0;
+uint8_t in_3 = 0;
+uint8_t out_0 = 0;
+uint8_t out_1 = 0;
 
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
@@ -134,9 +137,18 @@ main (void)
 	  sys_time_s = get_time_ms () / 1000;
 
 	  choose_tactic (&tactic);
-	  input_test_0 = read_switch_S ();
-	  input_test_1 = read_sensors_back();
-	  input_test_2 = read_sensors_front();
+	  if (out_0)
+		motor_l_forw ();
+	  else
+		motor_l_back ();
+	  if (out_1)
+		motor_r_forw ();
+	  else
+		motor_r_back ();
+	  in_0 = read_cinc ();
+	  in_1 = read_switch_S ();
+	  in_2 = read_switch_2 ();
+	  in_3 = read_switch_1 ();
 
 	  if (pwm_on)
 		pwm_start ();

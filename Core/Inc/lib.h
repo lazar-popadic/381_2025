@@ -73,19 +73,37 @@ void
 edit_recieved_odom ();
 
 // input.h
-uint16_t
+uint8_t
 read_cinc();
-uint16_t
+uint8_t
 read_switch_S();
-uint16_t
+uint8_t
 read_switch_2();
-uint16_t
+uint8_t
 read_switch_1();
 void
 choose_tactic (struct_tactic_num *tactic);
-uint16_t
+uint8_t
 read_sensors_front();
-uint16_t
+uint8_t
 read_sensors_back();
+
+// output.h
+void
+motor_l_forw ();
+void
+motor_l_back ();
+void
+motor_r_forw ();
+void
+motor_r_back ();
+void
+vacuum_0 (uint8_t on);
+void
+vacuum_1 (uint8_t on);
+void
+vacuum_2 (uint8_t on);
+void
+vacuum_3 (uint8_t on);
 
 #endif /* LIB_LIB_H_ */
