@@ -5,8 +5,8 @@
  *      Author: lazar
  */
 
-#include "../Inc/main.h"
-#include "../Inc/tim.h"
+#include "main.h"
+#include "tim.h"
 
 uint32_t sys_time_ms = 0;
 uint8_t match_started = 0;
@@ -16,7 +16,9 @@ void
 time_ISR ()	// poziva se u stm32f4xx_it.c
 {
   sys_time_ms += match_started && 1;
-
+  update_odom ();
+  update_transmit_buffer ();
+  edit_recieved_odom ();
 }
 
 uint8_t
@@ -24,13 +26,13 @@ delay_nonblocking (uint32_t delay_ms)
 {
   static uint32_t start_sys_time_ms;
   if (delay_free == 1)
-    {
-      start_sys_time_ms = sys_time_ms;
-      delay_free = 0;
-    }
+	{
+	  start_sys_time_ms = sys_time_ms;
+	  delay_free = 0;
+	}
 
   if (sys_time_ms <= start_sys_time_ms + delay_ms)
-    return 0;
+	return 0;
   delay_free = 1;
   return 1;
 }

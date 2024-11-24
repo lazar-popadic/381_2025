@@ -1,36 +1,30 @@
 port A:
 0 - timer 5 channel 1		left encoder - channel A
 1 - timer 5 channel 2		left encoder - channel B
-6 - gpio in			činč
-7 - gpio out			vakuum 7
-8 - gpio out			vakuum 8
-9 - usart 1 tx			rpi
-10 - usart 1 rx			rpi
-11 - usart 6 tx			ax12a
-12 - usart 6 rx			NC
+6 - gpio in					činč
+9 - usart 1 tx				rpi
+10 - usart 1 rx				rpi
+11 - usart 6 tx				ax12a
+12 - usart 6 rx				NC
 
 port B:
 4 - timer 3 channel 1		right encoder - channel A
 5 - timer 3 channel 2		right encoder - channel B
 6 - timer 4 channel 1		pwm - right motor
-7 - gpio out			direction 1 - left motor
+7 - gpio out				direction 1 - left motor
 8 - timer 4 channel 3		pwm - left motor
-9 - gpio out			direction 1 - right motor
-14 - gpio out			direction 2 - left motor
-15 - gpio out			direction 2 - right motor
+9 - gpio out				direction 1 - right motor
+14 - gpio out				direction 2 - left motor
+15 - gpio out				direction 2 - right motor
 
 port C:
-0 - gpio out			vakuum 1
-1 - gpio out			vakuum 2
-2 - gpio out			vakuum 3
-3 - gpio out			vakuum 4
-4 - gpio in			senzor 1
-5 - gpio in			senzor 2
-6 - gpio in			senzor 3
-7 - gpio in			senzor 4
-8 - gpio out			vakuum 5
-9 - gpio out			vakuum 6
-10 - gpio in			prekidac S
-11 - gpio in			prekidac 2
-12 - gpio in			prekidac 1
-13 - gpio in			blue push button (ne ide na pcb)
+0 - gpio out				vakuum 1
+1 - gpio out				vakuum 2
+2 - gpio out				vakuum 3
+3 - gpio out				vakuum 4
+4 - gpio in					senzor prednji
+5 - gpio in					senzor zadnji
+10 - gpio in				prekidac S
+11 - gpio in				prekidac 2
+12 - gpio in				prekidac 1
+13 - gpio in				blue push button (ne ide na pcb)
