@@ -55,8 +55,8 @@ uint32_t led_start = 0xFFFFFFFF;
 /* test promenljive */
 volatile uint16_t dc_test = 0;
 volatile uint8_t pwm_on = 0;
-volatile uint8_t ax_id_test = 1;
-volatile uint16_t ax_angle_test = 0;
+volatile uint8_t ax_id_test = 10;
+volatile uint16_t ax_angle_test = 500;
 volatile uint16_t ax_speed_test = 250;
 uint8_t in_0 = 0;
 uint8_t in_1 = 0;
@@ -126,6 +126,10 @@ int main(void)
   time_start ();
   odometry_init ();
   rpi_init ();
+
+
+  start_match ();
+  main_fsm_case = 1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -143,6 +147,9 @@ int main(void)
 		  led_start = 0xFFFFFFFF;
 		}
 
+	  ax_move (ax_id_test, ax_angle_test, ax_speed_test);
+
+
 	  switch (main_fsm_case)
 		{
 		case 0:
@@ -155,20 +162,20 @@ int main(void)
 		  break;
 
 		case 1:
-
-		  out_0 = delay_nb_2 (&start_0, 1000);
-		  out_1 = delay_nb_2 (&start_1, 6000);
-
-
-		  if (pwm_on)
-			pwm_start ();
-		  else
-			pwm_stop ();
-
-		  pwm_left_dc (dc_test);
-		  pwm_right_dc (dc_test);
-
-		  ax_move (ax_id_test, ax_angle_test, ax_speed_test);
+//
+//		  out_0 = delay_nb_2 (&start_0, 1000);
+//		  out_1 = delay_nb_2 (&start_1, 6000);
+//
+//
+//		  if (pwm_on)
+//			pwm_start ();
+//		  else
+//			pwm_stop ();
+//
+//		  pwm_left_dc (dc_test);
+//		  pwm_right_dc (dc_test);
+//
+//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test);
 
 		  break;
 		}
