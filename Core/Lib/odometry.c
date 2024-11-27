@@ -49,7 +49,7 @@ update_odom ()
   base_ptr->encoder_sum_right = (int16_t) TIM3->CNT;						// [inc]
   base_ptr->encoder_sum_left = (int16_t) TIM5->CNT;							// [inc]
 
-  base_ptr->v = (base_ptr->v_right - base_ptr->v_left) * 0.5;								// [mms/ms = m/s]
+  base_ptr->v = (base_ptr->v_right + base_ptr->v_left) * 0.5;								// [mms/ms = m/s]
   base_ptr->w = (base_ptr->v_right - base_ptr->v_left) * L_wheel_recip * rad2deg;			// [m/s * 1/m * deg/rad = deg/s]
   mid_angle = (base_ptr->phi + base_ptr->w * 0.0005) * deg2rad;								// [(deg + 0.5*deg/s*1ms) * rad/deg = rad]
 

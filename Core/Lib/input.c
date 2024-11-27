@@ -5,13 +5,29 @@
  *      Author: lazar
  */
 
+#define CINC_THRESHOLD 0xFFFF-1
+
 #include "main.h"
 #include "gpio.h"
+
+static uint16_t cinc_cnt = 0;
 
 uint8_t
 read_cinc ()
 {
   return GPIOA->IDR >> 6 & 1;
+}
+
+uint8_t
+cinc_db ()
+{
+  if (!read_cinc ())
+	cinc_cnt++;
+  else
+	cinc_cnt = 0;
+  if (cinc_cnt > CINC_THRESHOLD)
+	return 1;
+  return 0;
 }
 
 uint8_t

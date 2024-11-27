@@ -11,7 +11,7 @@ port B:
 4 - timer 3 channel 1		right encoder - channel A
 5 - timer 3 channel 2		right encoder - channel B
 6 - timer 4 channel 1		pwm - right motor
-7 - gpio out				direction 1 - left motor
+7 - gpio out		1		direction 1 - left motor
 8 - timer 4 channel 3		pwm - left motor
 9 - gpio out				direction 1 - right motor
 14 - gpio out				direction 2 - left motor
