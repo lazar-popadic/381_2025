@@ -5,7 +5,8 @@
  *      Author: lazar
  */
 
-#define CINC_THRESHOLD 0xFFFF-1
+//#define CINC_THRESHOLD 0xFFFF-1
+#define CINC_THRESHOLD 255
 
 #include "main.h"
 #include "gpio.h"

@@ -128,9 +128,6 @@ main (void)
   time_start ();
   odometry_init ();
   rpi_init ();
-
-  start_match ();
-  main_fsm_case = 1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -148,12 +145,6 @@ main (void)
 		  led_start = 0xFFFFFFFF;
 		}
 
-//	  for (ax_id_test; ax_id_test < 255; ax_id_test++)
-//		{
-//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test);
-//		  HAL_Delay (500);
-//		}
-
 	  switch (main_fsm_case)
 		{
 		case 0:
@@ -166,11 +157,6 @@ main (void)
 		  break;
 
 		case 1:
-//
-//		  out_0 = delay_nb_2 (&start_0, 1000);
-//		  out_1 = delay_nb_2 (&start_1, 6000);
-//
-//
 //		  if (pwm_on)
 //			pwm_start ();
 //		  else
@@ -179,17 +165,17 @@ main (void)
 //		  pwm_left_dc (dc_test);
 //		  pwm_right_dc (dc_test);
 //
-//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test);
-//
 		  ax_move (7, ax_angle_test, ax_speed_test);
-		  if (delay_nb (100))
-			main_fsm_case = 2;
-		  break;
+		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);
 
-		case 2:
-		  ax_move (1, (uint16_t) (1024 - ax_angle_test), ax_speed_test);
-		  if (delay_nb (100))
-			main_fsm_case = 1;
+//		  if (delay_nb (100))
+//			main_fsm_case = 2;
+//		  break;
+//
+//		case 2:
+//		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);
+//		  if (delay_nb (100))
+//			main_fsm_case = 1;
 		  break;
 		}
 	}

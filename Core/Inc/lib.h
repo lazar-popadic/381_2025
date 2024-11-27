@@ -116,4 +116,12 @@ vacuum_2 (uint8_t on);
 void
 vacuum_3 (uint8_t on);
 
+// prediction.h
+uint16_t
+get_pts ();
+void
+set_pts (uint16_t pts);
+void
+add_pts (uint16_t pts);
+
 #endif /* LIB_LIB_H_ */
