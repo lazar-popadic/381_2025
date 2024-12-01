@@ -36,5 +36,8 @@ ax_move (uint8_t id, uint16_t angle, uint16_t speed)
     { 0xff, 0xff, id, 0x07, 0x03, 0x1E, angle_low, angle_high, speed_low, speed_high, checksum };
 
   HAL_UART_Transmit (&huart6, ax_move, 11, 100);
+  HAL_UART_Transmit (&huart6, ax_move, 11, 100);
+  HAL_UART_Transmit (&huart6, ax_move, 11, 100);
+  HAL_UART_Transmit (&huart6, ax_move, 11, 100);
   //HAL_UART_Transmit_IT(&huart6, ax_move, 11, 100);	// ima i ova opcija, ali mozda je bolje da mi zablokira dok ne posalje celu poruku
 }
