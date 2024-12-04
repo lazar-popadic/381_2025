@@ -47,7 +47,6 @@
 /* USER CODE BEGIN PV */
 
 /* promene i van glavnog programa: ISR, debugging...*/
-volatile struct_robot_base *base_ptr;
 struct_tactic_num tactic;
 uint8_t main_fsm_case = 0;
 uint32_t led_start = 0xFFFFFFFF;
@@ -93,8 +92,6 @@ main (void)
 {
 
   /* USER CODE BEGIN 1 */
-  static volatile struct_robot_base base;
-  base_ptr = &base;
 
   /* USER CODE END 1 */
 
@@ -230,11 +227,7 @@ SystemClock_Config (void)
 }
 
 /* USER CODE BEGIN 4 */
-volatile struct_robot_base*
-get_robot_base ()
-{
-  return base_ptr;
-}
+
 /* USER CODE END 4 */
 
 /**

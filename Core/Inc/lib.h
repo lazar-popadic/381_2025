@@ -124,4 +124,16 @@ set_pts (uint16_t pts);
 void
 add_pts (uint16_t pts);
 
+// pid.h
+float
+calc_pid (struct_pid *pid_ptr, float err);
+float
+calc_pid_2 (struct_pid *pid_ptr, float ref, float val);
+void
+init_pid (struct_pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
+
+// regulation.h
+void
+position_loop();
+
 #endif /* LIB_LIB_H_ */
