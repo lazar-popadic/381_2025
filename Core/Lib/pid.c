@@ -8,7 +8,7 @@
 #include "main.h"
 
 float
-calc_pid (struct_pid *pid_ptr, float err)
+calc_pid (volatile struct_pid *pid_ptr, float err)
 {
   pid_ptr->err_sum += err;
   saturation (&(pid_ptr->err_sum), pid_ptr->sum_lmt, -pid_ptr->sum_lmt);
@@ -20,13 +20,13 @@ calc_pid (struct_pid *pid_ptr, float err)
 }
 
 float
-calc_pid_2 (struct_pid *pid_ptr, float ref, float val)
+calc_pid_2 (volatile struct_pid *pid_ptr, float ref, float val)
 {
   return calc_pid (pid_ptr, ref - val);
 }
 
 void
-init_pid (struct_pid *pid_ptr, float p, float i, float d, float limit, float sum_limit)
+init_pid (volatile struct_pid *pid_ptr, float p, float i, float d, float limit, float sum_limit)
 {
   pid_ptr->p = p;
   pid_ptr->i = i;

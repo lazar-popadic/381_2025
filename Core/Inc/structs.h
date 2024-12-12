@@ -10,6 +10,7 @@
 
 typedef struct st_robot_base
 {
+  // position, velocity, acceleration of base
   float x;						// [mm]
   float y;						// [mm]
   float phi;					// [deg]
@@ -17,30 +18,27 @@ typedef struct st_robot_base
   float w;						// [deg/s]
   float a;						// [mm/ms * 1/ms]
   float alpha;					// [deg/s * 1/ms]
-
-  float v_ref;					// [mm/ms = m/s]
-  float w_ref;					// [deg/s]
+  float v_left;					// [mm/ms = m/s]
+  float v_right;				// [mm/ms = m/s]
   float v_prev;					// [mm/ms = m/s]
   float w_prev;					// [deg/s]
+
+  // references for position, velocity of base
+  float v_ref;					// [mm/ms = m/s]
+  float w_ref;					// [deg/s]
+  float x_ref;					// [mm]
+  float y_ref;					// [mm]
+  float phi_ref;				// [deg]
+
+  // limits for velocity of base
   float v_max;					// [mm/ms = m/s]
   float w_max;					// [deg/s]
 
-  float v_left;					// [mm/ms = m/s]
-  float v_right;				// [mm/ms = m/s]
-  int16_t encoder_sum_left;		// [inc]
-  int16_t encoder_sum_right;	// [inc]
-
-  uint8_t status_moving :1;
-  uint8_t status_on_target :1;
-
-  float motor_left_pid;      	// pid duty cycle
-  float motor_right_pid;   		// pid duty cycle
-  uint16_t motor_left_ctrl;    	// control duty cycle
-  uint16_t motor_right_ctrl; 	// control duty cycle
-
-  float x_des;				// [mm]
-  float y_des;				// [mm]
-  float phi_des;			// [deg]
+  // status
+  uint8_t moving :1;			// statusi po poziciji i brzini baze
+  uint8_t on_target :1;
+  uint8_t movement_started :1;	// statusi za same taskove kretnje
+  uint8_t movement_finished :1;
 
 } struct_robot_base;
 

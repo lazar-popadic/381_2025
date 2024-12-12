@@ -8,20 +8,20 @@
 #include "main.h"
 
 void
-wrap180_ptr (float *signal)
+wrap180_ptr (volatile float *signal)
 {
   if (*signal > 180)
 	*signal -= 360;
-  if (*signal < 180)
+  if (*signal < -180)
 	*signal += 360;
 }
 
 void
-wrapPi_ptr (float *signal)
+wrapPi_ptr (volatile float *signal)
 {
   if (*signal > M_PI)
 	*signal -= M_PI;
-  if (*signal < M_PI)
+  if (*signal < -M_PI)
 	*signal += M_PI;
 }
 
@@ -46,7 +46,7 @@ get_sign (float num)
 }
 
 void
-saturation (float *signal, float max, float min)
+saturation (volatile float *signal, float max, float min)
 {
   if (*signal > max)
 	*signal = max;
@@ -55,7 +55,7 @@ saturation (float *signal, float max, float min)
 }
 
 void
-scale_vel_ref (float *ref_1, float *ref_2, float limit)
+scale_vel_ref (volatile float *ref_1, volatile float *ref_2, float limit)
 {
   float abs_max_var = abs_max (*ref_1, *ref_2);
   if (abs_max_var > limit)

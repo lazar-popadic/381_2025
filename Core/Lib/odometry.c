@@ -19,6 +19,9 @@ float deg2rad;
 float mid_angle;
 int16_t v_l_diff = 0;
 int16_t v_r_diff = 0;
+
+volatile int16_t encoder_sum_left;		// [inc]
+volatile int16_t encoder_sum_right;		// [inc]
 static volatile struct_robot_base *base_ptr;
 
 void
@@ -37,17 +40,19 @@ odometry_init ()
   __HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
   HAL_TIM_Encoder_Start (&htim3, TIM_CHANNEL_ALL);
   base_ptr = get_robot_base ();
+  encoder_sum_left = 0;
+  encoder_sum_right = 0;
 }
 
 void
 update_odom ()
 {
-  v_r_diff = (int16_t) TIM3->CNT - base_ptr->encoder_sum_right;				// [inc/ms]
+  v_r_diff = (int16_t) TIM3->CNT - encoder_sum_right;				// [inc/ms]
   base_ptr->v_right = (v_r_diff) * inc2mm_right;							// [mm/ms = m/s]
-  v_l_diff = (int16_t) TIM5->CNT - base_ptr->encoder_sum_left;				// [inc/ms]
+  v_l_diff = (int16_t) TIM5->CNT - encoder_sum_left;				// [inc/ms]
   base_ptr->v_left = (v_l_diff) * inc2mm_left;								// [mm/ms = m/s]
-  base_ptr->encoder_sum_right = (int16_t) TIM3->CNT;						// [inc]
-  base_ptr->encoder_sum_left = (int16_t) TIM5->CNT;							// [inc]
+  encoder_sum_right = (int16_t) TIM3->CNT;						// [inc]
+  encoder_sum_left = (int16_t) TIM5->CNT;							// [inc]
 
   base_ptr->v = (base_ptr->v_right + base_ptr->v_left) * 0.5;								// [mms/ms = m/s]
   base_ptr->w = (base_ptr->v_right - base_ptr->v_left) * L_wheel_recip * rad2deg;			// [m/s * 1/m * deg/rad = deg/s]

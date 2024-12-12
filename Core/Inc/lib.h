@@ -8,6 +8,13 @@
 #ifndef LIB_LIB_H_
 #define LIB_LIB_H_
 
+#define TASK_RUNNING	0
+#define TASK_SUCCESS	-1
+#define TASK_FAIL		1
+
+#define FORWARD		0
+#define BACKWARD	1
+
 #include "structs.h"
 
 // pwm.h
@@ -52,17 +59,17 @@ update_odom ();
 
 //signal.h
 void
-wrap180_ptr (float*);
+wrap180_ptr (volatile float*);
 void
-wrapPi_ptr (float*);
+wrapPi_ptr (volatile float*);
 float
 wrap180 (float signal);
 int8_t
 get_sign (float num);
 void
-saturation (float *signal, float max, float min);
+saturation (volatile float *signal, float max, float min);
 void
-scale_vel_ref (float *ref_1, float *ref_2, float limit);
+scale_vel_ref (volatile float *ref_1, volatile float *ref_2, float limit);
 float
 abs_max (float a, float b);
 float
@@ -126,14 +133,41 @@ add_pts (uint16_t pts);
 
 // pid.h
 float
-calc_pid (struct_pid *pid_ptr, float err);
+calc_pid (volatile struct_pid *pid_ptr, float err);
 float
-calc_pid_2 (struct_pid *pid_ptr, float ref, float val);
+calc_pid_2 (volatile struct_pid *pid_ptr, float ref, float val);
 void
-init_pid (struct_pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
+init_pid (volatile struct_pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
+
+// base.h
+void
+base_init();
+volatile struct_robot_base*
+get_robot_base ();
+void
+set_v_max(float multiplier);
+void
+reset_v_max();
+void
+set_w_max(float multiplier);
+void
+reset_w_max();
 
 // regulation.h
 void
-position_loop();
+position_loop ();
+void
+move ();
+void
+set_reg_type (int8_t type);
+int8_t
+move_to_xy (float x, float y, int8_t dir, float v_max, float w_max);
+int8_t
+rot_to_phi (float phi, float w_max);
+int8_t
+move_on_dir (float distance, int8_t dir, float v_max);
+int8_t
+rot_to_xy(float x, float y, int dir, float w_max);
+
 
 #endif /* LIB_LIB_H_ */

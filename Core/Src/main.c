@@ -123,6 +123,7 @@ main (void)
   /* USER CODE BEGIN 2 */
   pwm_start ();
   time_start ();
+  base_init ();
   odometry_init ();
   rpi_init ();
   /* USER CODE END 2 */
