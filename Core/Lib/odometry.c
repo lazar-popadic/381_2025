@@ -48,12 +48,14 @@ void
 update_odom ()
 {
   v_r_diff = (int16_t) TIM3->CNT - encoder_sum_right;				// [inc/ms]
-  base_ptr->v_right = (v_r_diff) * inc2mm_right;							// [mm/ms = m/s]
+  base_ptr->v_right = (v_r_diff) * inc2mm_right;					// [mm/ms = m/s]
   v_l_diff = (int16_t) TIM5->CNT - encoder_sum_left;				// [inc/ms]
-  base_ptr->v_left = (v_l_diff) * inc2mm_left;								// [mm/ms = m/s]
-  encoder_sum_right = (int16_t) TIM3->CNT;						// [inc]
+  base_ptr->v_left = (v_l_diff) * inc2mm_left;						// [mm/ms = m/s]
+  encoder_sum_right = (int16_t) TIM3->CNT;							// [inc]
   encoder_sum_left = (int16_t) TIM5->CNT;							// [inc]
 
+  base_ptr->v_prev = base_ptr->v;															// take the previous values of v and w
+  base_ptr->w_prev = base_ptr->w;
   base_ptr->v = (base_ptr->v_right + base_ptr->v_left) * 0.5;								// [mms/ms = m/s]
   base_ptr->w = (base_ptr->v_right - base_ptr->v_left) * L_wheel_recip * rad2deg;			// [m/s * 1/m * deg/rad = deg/s]
   mid_angle = (base_ptr->phi + base_ptr->w * 0.0005) * deg2rad;								// [(deg + 0.5*deg/s*1ms) * rad/deg = rad]
@@ -62,4 +64,7 @@ update_odom ()
   base_ptr->y += base_ptr->v * sin (mid_angle);		// [mm/ms * 1ms = mm]
   base_ptr->phi += 0.001 * base_ptr->w;				// [1ms * deg/s = 0.001s * deg/s = deg]
   base_ptr->phi = wrap180 (base_ptr->phi);
+
+  base_ptr->a = (base_ptr->v - base_ptr->v_prev)*1000;
+  base_ptr->alpha = (base_ptr->w - base_ptr->w_prev)*1000;
 }

@@ -30,9 +30,21 @@ typedef struct st_robot_base
   float y_ref;					// [mm]
   float phi_ref;				// [deg]
 
-  // limits for velocity of base
+  // limits for velocity, acceleration, jerk of base
   float v_max;					// [mm/ms = m/s]
   float w_max;					// [deg/s]
+  float a_max;					// [mm/ms * 1/ms]
+  float alpha_max;				// [deg/s * 1/ms]
+  float j_max;					// [mm/ms * 1/ms^2]	// TODO: proveri jedinice
+  float j_rot_max;				// [deg/s * 1/ms^2]
+
+  // control signals
+  float v_ctrl;
+  float w_ctrl;
+  float motor_l_ctrl;
+  float motor_r_ctrl;
+  uint16_t motor_l_ctrl_uint;
+  uint16_t motor_r_ctrl_uint;
 
   // status
   uint8_t moving :1;			// statusi po poziciji i brzini baze

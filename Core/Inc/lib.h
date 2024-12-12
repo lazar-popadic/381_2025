@@ -8,12 +8,23 @@
 #ifndef LIB_LIB_H_
 #define LIB_LIB_H_
 
+#define V_MAX_DEF		2		// [m/s]
+#define W_MAX_DEF		360		// [deg/s]
+#define A_MAX_DEF		1		// [mm/ms * 1/ms]
+#define ALPHA_MAX_DEF	1		// [deg/s * 1/ms]
+#define J_MAX_DEF		1		// [mm/ms * 1/ms^2]
+#define J_ROT_MAX_DEF	1		// [deg/s * 1/ms^2]
+#define CTRL_MAX		4200	// [inc]
+
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
 #define TASK_FAIL		1
 
 #define FORWARD		0
 #define BACKWARD	1
+
+#define TRAP_VEL_PROFILE	0
+#define S_CURVE_VEL_PROFILE	1
 
 #include "structs.h"
 
@@ -75,9 +86,15 @@ abs_max (float a, float b);
 float
 uint_min (uint32_t a, uint32_t b);
 void
-vel_ramp_up (float *signal, float reference, float acc);
+vel_ramp_up_ptr (float *signal, float reference, float acc);
+float
+vel_ramp_up (float signal, float reference, float acc_max);
 float
 vel_s_curve_up_webots (float *vel, float prev_vel, float vel_ref, float jerk_slope);
+float
+vel_s_curve_up (float vel, float accel, float vel_ref, float jerk);
+float
+min3 (float a, float b, float c);
 
 // rpi.h
 void
@@ -141,23 +158,23 @@ init_pid (volatile struct_pid *pid_ptr, float p, float i, float d, float limit, 
 
 // base.h
 void
-base_init();
+base_init ();
 volatile struct_robot_base*
 get_robot_base ();
 void
-set_v_max(float multiplier);
+set_v_max (float multiplier);
 void
-reset_v_max();
+reset_v_max ();
 void
-set_w_max(float multiplier);
+set_w_max (float multiplier);
 void
-reset_w_max();
+reset_w_max ();
 
 // regulation.h
 void
 position_loop ();
 void
-move ();
+velocity_loop ();
 void
 set_reg_type (int8_t type);
 int8_t
@@ -167,7 +184,6 @@ rot_to_phi (float phi, float w_max);
 int8_t
 move_on_dir (float distance, int8_t dir, float v_max);
 int8_t
-rot_to_xy(float x, float y, int dir, float w_max);
-
+rot_to_xy (float x, float y, int dir, float w_max);
 
 #endif /* LIB_LIB_H_ */

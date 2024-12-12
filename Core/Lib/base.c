@@ -5,9 +5,6 @@
  *      Author: lazar
  */
 
-#define V_MAX_DEF	1		// [m/s]
-#define W_MAX_DEF	360		// [deg/s]
-
 #include "main.h"
 
 volatile struct_robot_base *base_ptr;
@@ -40,6 +37,10 @@ base_init ()
   // limits for velocity of base
   base_ptr->v_max = V_MAX_DEF;			// [mm/ms = m/s]
   base_ptr->w_max = W_MAX_DEF;			// [deg/s]
+  base_ptr->a_max = A_MAX_DEF;			// [mm/ms * 1/ms]
+  base_ptr->alpha_max = ALPHA_MAX_DEF;	// [deg/s * 1/ms]
+  base_ptr->j_max = J_MAX_DEF;			// [mm/ms * 1/ms^2]
+  base_ptr->j_rot_max = J_ROT_MAX_DEF;	// [deg/s * 1/ms^2]
 
   // status
   base_ptr->moving = 0;			// statusi po poziciji i brzini baze

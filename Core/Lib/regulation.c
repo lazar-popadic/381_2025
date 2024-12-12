@@ -20,48 +20,66 @@ go_to_xy ();
 static void
 follow_curve ();
 
+static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
+
 static int8_t reg_type = 0;
 static int8_t phase = 0;
 static int8_t direction;
 
+static float v_err = 0;				// [ms/ms]
+static float w_err = 0;				// [deg/ms]
+
 static float x_err = 0;				// [mm]
 static float y_err = 0;				// [mm]
 static float phi_err = 0;			// [deg]
-static float phi_prim_err = 0;		// [deg]
 static float d = 0;					// [mm]
 static float d_proj = 0;			// [mm]
 static float phi_prim_1_err = 0;	// [deg]
 static float phi_prim_2_err = 0;	// [deg]
 static float phi_final_err = 0;		// [deg]
 
-static volatile float motor_left_pid;      	// pid duty cycle
-static volatile float motor_right_pid;   		// pid duty cycle
-static volatile uint16_t motor_left_ctrl;    	// control duty cycle
-static volatile uint16_t motor_right_ctrl; 	// control duty cycle
-
 static volatile struct_robot_base *base_ptr;
+
 static volatile struct_pid d_loop;
 static volatile struct_pid phi_loop;
 static volatile struct_pid phi_curve_loop;
+static volatile struct_pid v_loop;
+static volatile struct_pid w_loop;
 
 void
 regulation_init ()
 {
   base_ptr = get_robot_base ();
-  init_pid (&d_loop, 1, 0, 0, 4200, 1);
-  init_pid (&phi_loop, 1, 0, 0, 4200, 1);
-  init_pid (&phi_curve_loop, 1, 0, 0, 4200, 1);
+  // TODO: sve ove vrednosti postavi
+  init_pid (&d_loop, 1, 0, 0, V_MAX_DEF, V_MAX_DEF);
+  init_pid (&phi_loop, 1, 0, 0, W_MAX_DEF, W_MAX_DEF);
+  init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF, W_MAX_DEF);
+  init_pid (&v_loop, 1, 0, 0, CTRL_MAX, CTRL_MAX);
+  init_pid (&w_loop, 1, 0, 0, CTRL_MAX, CTRL_MAX);
+}
+
+void
+velocity_loop ()
+{
+// ulazi su reference za brzinu
+// izlazi su upravljacki signali za brzinu: motor_left_ctrl, motor_right_ctrl
+  v_err = base_ptr->v_ref - base_ptr->v;
+  w_err = base_ptr->w_ref - base_ptr->w;
+  base_ptr->v_ctrl = calc_pid (&v_loop, v_err);
+  base_ptr->w_ctrl = calc_pid (&w_loop, w_err);
+
+  base_ptr->motor_r_ctrl = base_ptr->v_ctrl + base_ptr->w_ctrl;
+  base_ptr->motor_l_ctrl = base_ptr->v_ctrl - base_ptr->w_ctrl;
+  scale_vel_ref(&base_ptr->motor_r_ctrl, &base_ptr->motor_l_ctrl, CTRL_MAX);
+  // TODO: ovde treba jos min(vrednost, s_kriva), da se iz znaka odradi smer, da se apsolutna vrednost prebaci u uint16_t i da se posalje u pwm
+
 }
 
 void
 position_loop ()
 {
-
-}
-
-void
-move ()
-{
+// ulazi su reference za poziciju
+// izlazi su reference za brzinu: base_ptr->v_ref, base_ptr->w_ref
   switch (reg_type)
 	{
 	case -1:
@@ -71,7 +89,20 @@ move ()
 	  go_to_xy ();
 	  break;
 	case 2:
-	  follow_curve ();
+//	  follow_curve ();
+	  break;
+	}
+
+  // obrada referenci
+  switch (vel_profile)
+	{
+	case S_CURVE_VEL_PROFILE:
+	  base_ptr->v_ref = get_sign (base_ptr->v_ref) * min3 (fabs (base_ptr->v_ref), base_ptr->v_max, fabs (vel_s_curve_up (base_ptr->v, base_ptr->a, base_ptr->v_ref, base_ptr->j_max)));
+	  base_ptr->w_ref = get_sign (base_ptr->w_ref) * min3 (fabs (base_ptr->w_ref), base_ptr->w_max, fabs (vel_s_curve_up (base_ptr->w, base_ptr->alpha, base_ptr->w_ref, base_ptr->j_rot_max)));
+	  break;
+	case TRAP_VEL_PROFILE:
+	  base_ptr->v_ref = get_sign (base_ptr->v_ref) * min3 (fabs (base_ptr->v_ref), base_ptr->v_max, fabs (vel_ramp_up (base_ptr->v, base_ptr->v_ref, base_ptr->a_max)));
+	  base_ptr->w_ref = get_sign (base_ptr->w_ref) * min3 (fabs (base_ptr->w_ref), base_ptr->w_max, fabs (vel_ramp_up (base_ptr->w, base_ptr->w_ref, base_ptr->alpha_max)));
 	  break;
 	}
 }
@@ -97,29 +128,29 @@ go_to_xy ()
 {
   x_err = base_ptr->x_ref - base_ptr->x;
   y_err = base_ptr->y_ref - base_ptr->y;
-  phi_prim_err = atan2 (y_err, x_err) * 180 / M_PI + direction * 180 - base_ptr->phi;
-  wrap180_ptr (&phi_prim_err);
+  phi_err = atan2 (y_err, x_err) * 180 / M_PI + direction * 180 - base_ptr->phi;
+  wrap180_ptr (&phi_err);
 
   switch (phase)
 	{
 	case 0: // rot2pos
 	  base_ptr->v_ref = 0;
-	  base_ptr->w_ref = calc_pid (&phi_loop, phi_prim_err);
-	  if (fabs (phi_prim_err) < PHI_PRIM_TOL)
+	  base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
+	  if (fabs (phi_err) < PHI_PRIM_TOL)
 		phase = 1;
 	  break;
 
 	case 1: // tran
 	  d = (direction * (-2) + 1) * sqrt (x_err * x_err + y_err * y_err);
-	  d_proj = d * cos (phi_prim_err * M_PI / 180);
+	  d_proj = d * cos (phi_err * M_PI / 180);
 
-	  if (fabs (phi_prim_err) > 90)
+	  if (fabs (phi_err) > 90)
 		base_ptr->v_ref = -calc_pid (&d_loop, d_proj);				// d_proj ili d
 	  else
 		base_ptr->v_ref = calc_pid (&d_loop, d_proj);				// d_proj ili d
 
 	  if (fabs (d) > D_2_TOL)
-		base_ptr->w_ref = calc_pid (&phi_loop, phi_prim_err);
+		base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 	  else
 		base_ptr->w_ref = 0;
 
@@ -143,7 +174,7 @@ set_reg_type (int8_t type)
 int8_t
 move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 {
-  static int8_t move_status = TASK_RUNNING;
+  int8_t move_status = TASK_RUNNING;
   if (!base_ptr->movement_started)						// ako nije zapoceta kretnja
 	{
 	  base_ptr->movement_started = 1;					// kretnja zapoceta
@@ -169,7 +200,7 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 int8_t
 rot_to_phi (float phi, float w_max)
 {
-  static int8_t move_status = TASK_RUNNING;
+  int8_t move_status = TASK_RUNNING;
   if (!base_ptr->movement_started)						// ako nije zapoceta kretnja
 	{
 	  base_ptr->movement_started = 1;					// kretnja zapoceta
@@ -191,14 +222,14 @@ rot_to_phi (float phi, float w_max)
 int8_t
 move_on_dir (float distance, int8_t dir, float v_max)
 {
-  static int8_t move_status = TASK_RUNNING;
+  int8_t move_status = TASK_RUNNING;
   if (!base_ptr->movement_started)						// ako nije zapoceta kretnja
 	{
 	  base_ptr->movement_started = 1;					// kretnja zapoceta
 	  base_ptr->movement_finished = 0;					// i nije zavrsena
 	  set_reg_type (1);
-	  base_ptr->x_ref = base_ptr->x + (dir * (-2) + 1) * distance * cos(base_ptr->phi * M_PI / 180);
-	  base_ptr->y_ref = base_ptr->y + (dir * (-2) + 1) * distance * sin(base_ptr->phi * M_PI / 180);
+	  base_ptr->x_ref = base_ptr->x + (dir * (-2) + 1) * distance * cos (base_ptr->phi * M_PI / 180);
+	  base_ptr->y_ref = base_ptr->y + (dir * (-2) + 1) * distance * sin (base_ptr->phi * M_PI / 180);
 	  direction = dir;
 	  base_ptr->v_max = v_max;
 	}
@@ -213,9 +244,9 @@ move_on_dir (float distance, int8_t dir, float v_max)
 }
 
 int8_t
-rot_to_xy(float x, float y, int dir, float w_max)
+rot_to_xy (float x, float y, int dir, float w_max)
 {
-  return rot_to_phi (atan2(y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + dir * 180, w_max);
+  return rot_to_phi (atan2 (y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + dir * 180, w_max);
 }
 
 /*

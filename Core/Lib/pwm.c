@@ -8,8 +8,6 @@
 #include "../Inc/main.h"
 #include "../Inc/tim.h"
 
-// duty cycle = (0, 4200)
-
 void
 pwm_left_dc (int16_t duty_cycle)
 {

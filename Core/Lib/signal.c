@@ -83,12 +83,23 @@ uint_min (uint32_t a, uint32_t b)
 }
 
 void
-vel_ramp_up (float *signal, float reference, float acc)
+vel_ramp_up_ptr (float *signal, float reference, float acc)
 {
   if (fabs (reference) - fabs (*signal) > acc)
 	*signal += get_sign (reference) * acc;
   else
 	*signal = reference;
+}
+
+float
+vel_ramp_up (float signal, float reference, float acc)
+{
+  float edited_ref = signal;
+  if (fabs (reference) - fabs (signal) > acc)
+	edited_ref += get_sign (reference) * acc;
+  else
+	edited_ref = reference;
+  return edited_ref;
 }
 
 float
@@ -122,4 +133,15 @@ vel_s_curve_up (float vel, float accel, float vel_ref, float jerk)
 		}
 	}
   return edited_ref;
+}
+
+float
+min3 (float a, float b, float c)
+{
+  float min = a;
+  if (b < min)
+	min = b;
+  if (c < min)
+	min = c;
+  return min;
 }

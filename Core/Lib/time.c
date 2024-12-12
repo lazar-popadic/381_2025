@@ -17,9 +17,10 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 {
   sys_time_ms += match_started && 1;
   update_odom ();
+  position_loop ();
+  velocity_loop ();
 
-
-
+  // rpi communication
   update_transmit_buffer ();
   edit_recieved_odom ();
 }
