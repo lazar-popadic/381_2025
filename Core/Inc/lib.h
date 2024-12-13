@@ -16,6 +16,7 @@
 #define J_ROT_MAX_DEF	1		// [deg/s * 1/ms^2]
 #define CTRL_MAX		4200	// [inc]
 #define MAX_PWM_CHANGE	200		// [inc]
+#define POS_LOOP_PSC	10
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
