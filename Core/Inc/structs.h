@@ -43,6 +43,8 @@ typedef struct st_robot_base
   float w_ctrl;
   float motor_l_ctrl;
   float motor_r_ctrl;
+  int8_t motor_l_dir:2;
+  int8_t motor_r_dir:2;
   uint16_t motor_l_ctrl_uint;
   uint16_t motor_r_ctrl_uint;
 

@@ -15,13 +15,14 @@
 #define J_MAX_DEF		1		// [mm/ms * 1/ms^2]
 #define J_ROT_MAX_DEF	1		// [deg/s * 1/ms^2]
 #define CTRL_MAX		4200	// [inc]
+#define MAX_PWM_CHANGE	200		// [inc]
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
 #define TASK_FAIL		1
 
-#define FORWARD		0
-#define BACKWARD	1
+#define FORWARD		1
+#define BACKWARD	-1
 
 #define TRAP_VEL_PROFILE	0
 #define S_CURVE_VEL_PROFILE	1
@@ -84,6 +85,8 @@ scale_vel_ref (volatile float *ref_1, volatile float *ref_2, float limit);
 float
 abs_max (float a, float b);
 float
+abs_min (float a, float b);
+float
 uint_min (uint32_t a, uint32_t b);
 void
 vel_ramp_up_ptr (float *signal, float reference, float acc);
@@ -124,13 +127,9 @@ read_sensors_back ();
 
 // output.h
 void
-motor_l_forw ();
+set_motor_l_dir(int8_t dir);
 void
-motor_l_back ();
-void
-motor_r_forw ();
-void
-motor_r_back ();
+set_motor_r_dir(int8_t dir);
 void
 vacuum_0 (uint8_t on);
 void

@@ -9,31 +9,41 @@
 #include "gpio.h"
 
 void
-motor_l_forw ()
+set_motor_l_dir (int8_t dir)
 {
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 0);
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 1);
+  switch (dir)
+	{
+	case BACKWARD:
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 0);
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 1);
+	  break;
+	case FORWARD:
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 0);
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 1);
+	  break;
+	default:
+	  // TODO: mozda dodaj da je motor zaustavljen
+	  break;
+	}
 }
 
 void
-motor_l_back ()
+set_motor_r_dir (int8_t dir)
 {
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 0);
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 1);
-}
-
-void
-motor_r_forw ()
-{
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_15, 0);
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_9, 1);
-}
-
-void
-motor_r_back ()
-{
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_9, 0);
-  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_15, 1);
+  switch (dir)
+	{
+	case BACKWARD:
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_9, 0);
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_15, 1);
+	  break;
+	case FORWARD:
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_15, 0);
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_9, 1);
+	  break;
+	default:
+	  // TODO: mozda dodaj da je motor zaustavljen
+	  break;
+	}
 }
 
 void

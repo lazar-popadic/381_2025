@@ -70,8 +70,23 @@ velocity_loop ()
 
   base_ptr->motor_r_ctrl = base_ptr->v_ctrl + base_ptr->w_ctrl;
   base_ptr->motor_l_ctrl = base_ptr->v_ctrl - base_ptr->w_ctrl;
-  scale_vel_ref(&base_ptr->motor_r_ctrl, &base_ptr->motor_l_ctrl, CTRL_MAX);
-  // TODO: ovde treba jos min(vrednost, s_kriva), da se iz znaka odradi smer, da se apsolutna vrednost prebaci u uint16_t i da se posalje u pwm
+  scale_vel_ref (&base_ptr->motor_r_ctrl, &base_ptr->motor_l_ctrl, CTRL_MAX);
+
+  base_ptr->motor_r_dir = get_sign (base_ptr->motor_r_ctrl);
+  base_ptr->motor_l_dir = get_sign (base_ptr->motor_l_ctrl);
+  // u uint su idalje stare vrednosti, u float su nove tj. reference
+  // u motor_*_ctrl upisuje apsolutnu vrednost
+  base_ptr->motor_r_ctrl = abs_min (base_ptr->motor_r_ctrl,
+									vel_ramp_up ((float) base_ptr->motor_r_ctrl_uint, base_ptr->motor_r_ctrl, MAX_PWM_CHANGE));
+  base_ptr->motor_l_ctrl = abs_min (base_ptr->motor_l_ctrl,
+									vel_ramp_up ((float) base_ptr->motor_l_ctrl_uint, base_ptr->motor_l_ctrl, MAX_PWM_CHANGE));
+  base_ptr->motor_r_ctrl_uint = (uint16_t) base_ptr->motor_r_ctrl;
+  base_ptr->motor_l_ctrl_uint = (uint16_t) base_ptr->motor_l_ctrl;
+
+  set_motor_r_dir (base_ptr->motor_r_dir);
+  set_motor_l_dir (base_ptr->motor_l_dir);
+  pwm_right_dc (base_ptr->motor_r_ctrl_uint);
+  pwm_left_dc (base_ptr->motor_l_ctrl_uint);
 
 }
 
@@ -97,12 +112,17 @@ position_loop ()
   switch (vel_profile)
 	{
 	case S_CURVE_VEL_PROFILE:
-	  base_ptr->v_ref = get_sign (base_ptr->v_ref) * min3 (fabs (base_ptr->v_ref), base_ptr->v_max, fabs (vel_s_curve_up (base_ptr->v, base_ptr->a, base_ptr->v_ref, base_ptr->j_max)));
-	  base_ptr->w_ref = get_sign (base_ptr->w_ref) * min3 (fabs (base_ptr->w_ref), base_ptr->w_max, fabs (vel_s_curve_up (base_ptr->w, base_ptr->alpha, base_ptr->w_ref, base_ptr->j_rot_max)));
+	  base_ptr->v_ref = get_sign (base_ptr->v_ref)
+		  * min3 (fabs (base_ptr->v_ref), base_ptr->v_max, fabs (vel_s_curve_up (base_ptr->v, base_ptr->a, base_ptr->v_ref, base_ptr->j_max)));
+	  base_ptr->w_ref = get_sign (base_ptr->w_ref)
+		  * min3 (fabs (base_ptr->w_ref), base_ptr->w_max,
+				  fabs (vel_s_curve_up (base_ptr->w, base_ptr->alpha, base_ptr->w_ref, base_ptr->j_rot_max)));
 	  break;
 	case TRAP_VEL_PROFILE:
-	  base_ptr->v_ref = get_sign (base_ptr->v_ref) * min3 (fabs (base_ptr->v_ref), base_ptr->v_max, fabs (vel_ramp_up (base_ptr->v, base_ptr->v_ref, base_ptr->a_max)));
-	  base_ptr->w_ref = get_sign (base_ptr->w_ref) * min3 (fabs (base_ptr->w_ref), base_ptr->w_max, fabs (vel_ramp_up (base_ptr->w, base_ptr->w_ref, base_ptr->alpha_max)));
+	  base_ptr->v_ref = get_sign (base_ptr->v_ref)
+		  * min3 (fabs (base_ptr->v_ref), base_ptr->v_max, fabs (vel_ramp_up (base_ptr->v, base_ptr->v_ref, base_ptr->a_max)));
+	  base_ptr->w_ref = get_sign (base_ptr->w_ref)
+		  * min3 (fabs (base_ptr->w_ref), base_ptr->w_max, fabs (vel_ramp_up (base_ptr->w, base_ptr->w_ref, base_ptr->alpha_max)));
 	  break;
 	}
 }
@@ -128,20 +148,20 @@ go_to_xy ()
 {
   x_err = base_ptr->x_ref - base_ptr->x;
   y_err = base_ptr->y_ref - base_ptr->y;
-  phi_err = atan2 (y_err, x_err) * 180 / M_PI + direction * 180 - base_ptr->phi;
+  phi_err = atan2 (y_err, x_err) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
   wrap180_ptr (&phi_err);
 
   switch (phase)
 	{
-	case 0: // rot2pos
+	case 0:    // rot2pos
 	  base_ptr->v_ref = 0;
 	  base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 	  if (fabs (phi_err) < PHI_PRIM_TOL)
 		phase = 1;
 	  break;
 
-	case 1: // tran
-	  d = (direction * (-2) + 1) * sqrt (x_err * x_err + y_err * y_err);
+	case 1:    // tran
+	  d = direction * sqrt (x_err * x_err + y_err * y_err);
 	  d_proj = d * cos (phi_err * M_PI / 180);
 
 	  if (fabs (phi_err) > 90)
@@ -175,10 +195,10 @@ int8_t
 move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 {
   int8_t move_status = TASK_RUNNING;
-  if (!base_ptr->movement_started)						// ako nije zapoceta kretnja
+  if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 	{
-	  base_ptr->movement_started = 1;					// kretnja zapoceta
-	  base_ptr->movement_finished = 0;					// i nije zavrsena
+	  base_ptr->movement_started = 1;				// kretnja zapoceta
+	  base_ptr->movement_finished = 0;				// i nije zavrsena
 	  set_reg_type (1);
 	  base_ptr->x_ref = x;
 	  base_ptr->y_ref = y;
@@ -186,10 +206,10 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 	  base_ptr->v_max = v_max;
 	  base_ptr->w_max = w_max;
 	}
-  if (base_ptr->movement_finished)						// ako je zavrsio task kretnje
+  if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 	{
-	  base_ptr->movement_started = 0;					// resetuj da je zapoceta kretnja
-	  move_status = base_ptr->on_target * (-2) + 1;		// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
+	  base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+	  move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 	  reset_v_max ();
 	  reset_w_max ();
 	}
@@ -201,18 +221,18 @@ int8_t
 rot_to_phi (float phi, float w_max)
 {
   int8_t move_status = TASK_RUNNING;
-  if (!base_ptr->movement_started)						// ako nije zapoceta kretnja
+  if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 	{
-	  base_ptr->movement_started = 1;					// kretnja zapoceta
-	  base_ptr->movement_finished = 0;					// i nije zavrsena
+	  base_ptr->movement_started = 1;				// kretnja zapoceta
+	  base_ptr->movement_finished = 0;				// i nije zavrsena
 	  set_reg_type (-1);
 	  base_ptr->phi_ref = phi;
 	  base_ptr->w_max = w_max;
 	}
-  if (base_ptr->movement_finished)						// ako je zavrsio task kretnje
+  if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 	{
-	  base_ptr->movement_started = 0;					// resetuj da je zapoceta kretnja
-	  move_status = base_ptr->on_target * (-2) + 1;		// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
+	  base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+	  move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 	  reset_w_max ();
 	}
 
@@ -223,20 +243,20 @@ int8_t
 move_on_dir (float distance, int8_t dir, float v_max)
 {
   int8_t move_status = TASK_RUNNING;
-  if (!base_ptr->movement_started)						// ako nije zapoceta kretnja
+  if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 	{
-	  base_ptr->movement_started = 1;					// kretnja zapoceta
-	  base_ptr->movement_finished = 0;					// i nije zavrsena
+	  base_ptr->movement_started = 1;				// kretnja zapoceta
+	  base_ptr->movement_finished = 0;				// i nije zavrsena
 	  set_reg_type (1);
-	  base_ptr->x_ref = base_ptr->x + (dir * (-2) + 1) * distance * cos (base_ptr->phi * M_PI / 180);
-	  base_ptr->y_ref = base_ptr->y + (dir * (-2) + 1) * distance * sin (base_ptr->phi * M_PI / 180);
+	  base_ptr->x_ref = base_ptr->x + dir * distance * cos (base_ptr->phi * M_PI / 180);
+	  base_ptr->y_ref = base_ptr->y + dir * distance * sin (base_ptr->phi * M_PI / 180);
 	  direction = dir;
 	  base_ptr->v_max = v_max;
 	}
-  if (base_ptr->movement_finished)						// ako je zavrsio task kretnje
+  if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 	{
-	  base_ptr->movement_started = 0;					// resetuj da je zapoceta kretnja
-	  move_status = base_ptr->on_target * (-2) + 1;		// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
+	  base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+	  move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 	  reset_v_max ();
 	}
 
@@ -246,7 +266,7 @@ move_on_dir (float distance, int8_t dir, float v_max)
 int8_t
 rot_to_xy (float x, float y, int dir, float w_max)
 {
-  return rot_to_phi (atan2 (y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + dir * 180, w_max);
+  return rot_to_phi (atan2 (y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + (dir - 1) * 90, w_max);
 }
 
 /*

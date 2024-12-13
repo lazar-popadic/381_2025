@@ -75,6 +75,14 @@ abs_max (float a, float b)
 }
 
 float
+abs_min (float a, float b)
+{
+  if (fabs (a) < fabs (b))
+	return fabs (a);
+  return fabs (b);
+}
+
+float
 uint_min (uint32_t a, uint32_t b)
 {
   if (a < b)
