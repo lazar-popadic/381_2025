@@ -43,16 +43,19 @@ typedef struct st_robot_base
   float w_ctrl;
   float motor_l_ctrl;
   float motor_r_ctrl;
-  int8_t motor_l_dir:2;
-  int8_t motor_r_dir:2;
+  int8_t motor_l_dir :2;
+  int8_t motor_r_dir :2;
   uint16_t motor_l_ctrl_uint;
   uint16_t motor_r_ctrl_uint;
 
   // status
   uint8_t moving :1;			// statusi po poziciji i brzini baze
-  uint8_t on_target :1;
-  uint8_t movement_started :1;	// statusi za same taskove kretnje
-  uint8_t movement_finished :1;
+  uint8_t on_target :1;			// uspesno odradjen task kretnje
+  uint8_t movement_started :1;	// zapocet task kretnje
+  uint8_t movement_finished :1;	// zavrsen task kretnje
+  uint8_t obstacle_detected :1;	// prepreka u pravcu kretnje sa upaljenim senzorima
+  int8_t obstacle_dir;			// koji senzori su upaljeni
+  uint8_t regulation_status :1;	// status regulacije
 
 } struct_robot_base;
 

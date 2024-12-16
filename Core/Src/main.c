@@ -57,6 +57,7 @@ volatile uint8_t pwm_on = 0;
 volatile uint8_t ax_id_test = 1;
 volatile uint16_t ax_angle_test = 0;
 volatile uint16_t ax_speed_test = 500;
+int8_t dir_test = 0;
 uint8_t in_0 = 0;
 uint8_t in_1 = 0;
 uint8_t in_2 = 0;
@@ -155,16 +156,19 @@ main (void)
 		  break;
 
 		case 1:
-//		  if (pwm_on)
-//			pwm_start ();
-//		  else
-//			pwm_stop ();
+		  if (pwm_on)
+			pwm_start ();
+		  else
+			pwm_stop ();
+
+		  pwm_left_dc (dc_test);
+		  pwm_right_dc (dc_test);
+
+		  set_motor_l_dir (dir_test);
+		  set_motor_r_dir (dir_test);
 //
-//		  pwm_left_dc (dc_test);
-//		  pwm_right_dc (dc_test);
-//
-		  ax_move (7, ax_angle_test, ax_speed_test);
-		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);
+//		  ax_move (7, ax_angle_test, ax_speed_test);
+//		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);
 
 //		  if (delay_nb (100))
 //			main_fsm_case = 2;

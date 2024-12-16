@@ -8,6 +8,9 @@
 #ifndef LIB_LIB_H_
 #define LIB_LIB_H_
 
+#define V_MOVING_MIN	0.01	// [m/s]
+#define W_MOVING_MIN	1.8		// [deg/s]
+
 #define V_MAX_DEF		2		// [m/s]
 #define W_MAX_DEF		360		// [deg/s]
 #define A_MAX_DEF		1		// [mm/ms * 1/ms]
@@ -128,9 +131,9 @@ read_sensors_back ();
 
 // output.h
 void
-set_motor_l_dir(int8_t dir);
+set_motor_l_dir (int8_t dir);
 void
-set_motor_r_dir(int8_t dir);
+set_motor_r_dir (int8_t dir);
 void
 vacuum_0 (uint8_t on);
 void
@@ -169,6 +172,16 @@ void
 set_w_max (float multiplier);
 void
 reset_w_max ();
+void
+update_base_status ();
+void
+check_sensors ();
+uint8_t
+get_regulation_status ();
+uint8_t
+get_obstacle_detected ();
+void
+stop_robot ();
 
 // regulation.h
 void

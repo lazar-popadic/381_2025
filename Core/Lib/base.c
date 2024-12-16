@@ -80,3 +80,64 @@ reset_w_max ()
 {
   base_ptr->w_max = W_MAX_DEF;
 }
+
+void
+update_base_status ()
+{
+  if (base_ptr->v < V_MOVING_MIN && base_ptr->w < W_MOVING_MIN)
+	base_ptr->moving = 0;
+  else
+	base_ptr->moving = 1;
+}
+
+void
+check_sensors ()
+{
+  switch (base_ptr->obstacle_dir)
+	{
+	default:
+	  base_ptr->obstacle_detected = 0;
+	  break;
+	case FORWARD:
+	  base_ptr->obstacle_detected = read_sensors_front ();
+	  break;
+	case BACKWARD:
+	  base_ptr->obstacle_detected = read_sensors_back ();
+	  break;
+	}
+}
+
+uint8_t
+get_regulation_status ()
+{
+  return base_ptr->regulation_status;
+}
+
+uint8_t
+get_obstacle_detected ()
+{
+  return base_ptr->obstacle_detected;
+}
+
+void
+stop_robot ()
+{
+  base_ptr->v_ref = 0;
+  base_ptr->w_ref = 0;
+  base_ptr->x_ref = base_ptr->x;
+  base_ptr->y_ref = base_ptr->y;
+  base_ptr->phi_ref = base_ptr->phi;
+
+  base_ptr->motor_r_dir = 0;
+  base_ptr->motor_l_dir = 0;
+
+  base_ptr->motor_r_ctrl = 0;
+  base_ptr->motor_l_ctrl = 0;
+  base_ptr->motor_r_ctrl_uint = 0;
+  base_ptr->motor_l_ctrl_uint = 0;
+
+  set_motor_r_dir (base_ptr->motor_r_dir);
+  set_motor_l_dir (base_ptr->motor_l_dir);
+  pwm_right_dc (base_ptr->motor_r_ctrl_uint);
+  pwm_left_dc (base_ptr->motor_l_ctrl_uint);
+}

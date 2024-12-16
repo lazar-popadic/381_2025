@@ -21,8 +21,9 @@ set_motor_l_dir (int8_t dir)
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 0);
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 1);
 	  break;
-	default:
-	  // TODO: mozda dodaj da je motor zaustavljen
+	case 0:
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 0);
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 0);
 	  break;
 	}
 }
@@ -40,8 +41,9 @@ set_motor_r_dir (int8_t dir)
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_15, 0);
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_9, 1);
 	  break;
-	default:
-	  // TODO: mozda dodaj da je motor zaustavljen
+	case 0:
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 0);
+	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 0);
 	  break;
 	}
 }
