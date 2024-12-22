@@ -49,7 +49,7 @@
 /* promene i van glavnog programa: ISR, debugging...*/
 struct_tactic_num tactic;
 uint8_t main_fsm_case = 0;
-uint32_t led_start = 0xFFFFFFFF;
+uint32_t delay_1_start = 0xFFFFFFFF;
 
 /* test promenljive */
 volatile uint16_t dc_test = 0;
@@ -138,10 +138,9 @@ main (void)
 	  /* USER CODE BEGIN 3 */
 	  sys_time_s = get_time_ms () / 1000;
 
-	  if (delay_nb_2 (&led_start, 1000))
+	  if (delay_nb_2 (&delay_1_start, 1000))
 		{
 		  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_5);
-		  led_start = 0xFFFFFFFF;
 		}
 
 	  switch (main_fsm_case)
@@ -170,13 +169,13 @@ main (void)
 //		  ax_move (7, ax_angle_test, ax_speed_test);
 //		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);
 
-//		  if (delay_nb (100))
+//		  if (delay_nb_2 (&delay_1_start, 1000))
 //			main_fsm_case = 2;
 //		  break;
 //
 //		case 2:
 //		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);
-//		  if (delay_nb (100))
+//		  if (delay_nb_2 (&delay_1_start, 1000))
 //			main_fsm_case = 1;
 		  break;
 		}

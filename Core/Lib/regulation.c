@@ -107,6 +107,10 @@ position_loop ()
 		case -1:
 		  rotate ();
 		  break;
+		case 0:
+		  base_ptr->v_ref = 0;
+		  base_ptr->w_ref = 0;
+		  break;
 		case 1:
 		  go_to_xy ();
 		  break;
@@ -188,6 +192,7 @@ go_to_xy ()
 		  base_ptr->v_ref = 0;
 		  base_ptr->w_ref = 0;
 		  phase = 0;
+		  set_reg_type (0);
 		  base_ptr->movement_finished = 1;
 		}
 	  break;

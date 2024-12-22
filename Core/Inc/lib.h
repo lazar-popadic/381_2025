@@ -90,7 +90,7 @@ float
 abs_max (float a, float b);
 float
 abs_min (float a, float b);
-float
+uint32_t
 uint_min (uint32_t a, uint32_t b);
 void
 vel_ramp_up_ptr (float *signal, float reference, float acc);

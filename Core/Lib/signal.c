@@ -82,7 +82,7 @@ abs_min (float a, float b)
   return fabs (b);
 }
 
-float
+uint32_t
 uint_min (uint32_t a, uint32_t b)
 {
   if (a < b)
