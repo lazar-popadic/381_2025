@@ -22,27 +22,27 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 //  // kada je regulacija iskljucena ne treba mi brzinska petlja
 //  // kada naidje na prepreku treba mi brzinska petlja da bi drzao poziciju
 //  // u oba slucaja poziciona treba da dobije trenutnu poziciju kao reference
-//  switch (get_obstacle_detected())
-//	{
-//	case 1:
-//	  position_loop ();
-//	  break;
-//	case 0:
-//	  // TODO: ovde bi trebalo da samo postavi brzinske reference na 0, funkciju clear_vel_ref()
-//	  // i razmisli da li treba resetujes promenljivu phase
-//	  // u go_to_xy treba i nista se ne gubi
-//	  // u follow_curve mozda moze biti problem, ali to je ako je u samom kraju krivine, mogu da proverim da li je previse blizu kraja na pocetku zadate kretnje, i da onda imam 3 faze zapravo gde je prva samo ta provera
-//	  break;
-//	}
-//  switch (get_regulation_status ())
-//	{
-//	case 1:
-//	  velocity_loop ();
-//	  break;
-//	case 0:
-//	  stop_robot ();
-//	  break;
-//	}
+  switch (get_obstacle_detected())
+	{
+	case 0:
+	  position_loop ();
+	  break;
+	case 1:
+	  // TODO: ovde bi trebalo da samo postavi brzinske reference na 0, funkciju clear_vel_ref()
+	  // i razmisli da li treba resetujes promenljivu phase
+	  // u go_to_xy treba i nista se ne gubi
+	  // u follow_curve mozda moze biti problem, ali to je ako je u samom kraju krivine, mogu da proverim da li je previse blizu kraja na pocetku zadate kretnje, i da onda imam 3 faze zapravo gde je prva samo ta provera
+	  break;
+	}
+  switch (get_regulation_status ())
+	{
+	case 1:
+	  velocity_loop ();
+	  break;
+	case 0:
+	  stop_robot ();
+	  break;
+	}
 
   check_sensors ();
   update_base_status ();

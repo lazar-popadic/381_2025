@@ -53,11 +53,11 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 
 /* test promenljive */
 volatile uint16_t dc_test = 0;
-volatile uint8_t pwm_on = 0;
+volatile uint8_t pwm_on = 1;
 volatile uint8_t ax_id_test = 1;
 volatile uint16_t ax_angle_test = 0;
 volatile uint16_t ax_speed_test = 500;
-int8_t dir_test = 0;
+int8_t dir_test = 1;
 uint8_t in_0 = 0;
 uint8_t in_1 = 0;
 uint8_t in_2 = 0;
@@ -126,6 +126,7 @@ main (void)
   time_start ();
   base_init ();
   odometry_init ();
+  regulation_init ();
   rpi_init ();
   /* USER CODE END 2 */
 
@@ -151,20 +152,26 @@ main (void)
 			{
 			  start_match ();
 			  main_fsm_case = 1;
+			  set_regulation_status (1);
 			}
 		  break;
 
 		case 1:
-		  if (pwm_on)
-			pwm_start ();
-		  else
-			pwm_stop ();
-
-		  pwm_left_dc (dc_test);
-		  pwm_right_dc (dc_test);
-
-		  set_motor_l_dir (dir_test);
-		  set_motor_r_dir (dir_test);
+		  if (rot_to_phi (180, W_MAX_DEF / 20))
+			{
+			  main_fsm_case = 2;
+			  break;
+			}
+//		  if (pwm_on)
+//			pwm_start ();
+//		  else
+//			pwm_stop ();
+//
+//		  pwm_left_dc (dc_test);
+//		  pwm_right_dc (dc_test);
+//
+//		  set_motor_l_dir (dir_test);
+//		  set_motor_r_dir (dir_test);
 //
 //		  ax_move (7, ax_angle_test, ax_speed_test);
 //		  ax_move (1, (uint16_t) (1023 - ax_angle_test), ax_speed_test);

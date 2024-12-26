@@ -113,6 +113,12 @@ get_regulation_status ()
   return base_ptr->regulation_status;
 }
 
+void
+set_regulation_status (uint8_t status)
+{
+  base_ptr->regulation_status = status;
+}
+
 uint8_t
 get_obstacle_detected ()
 {

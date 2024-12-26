@@ -178,12 +178,16 @@ void
 check_sensors ();
 uint8_t
 get_regulation_status ();
+void
+set_regulation_status (uint8_t status);
 uint8_t
 get_obstacle_detected ();
 void
 stop_robot ();
 
 // regulation.h
+void
+regulation_init ();
 void
 position_loop ();
 void
