@@ -157,11 +157,15 @@ main (void)
 		  break;
 
 		case 1:
-		  if (rot_to_phi (180, W_MAX_DEF / 20))
-			{
-			  main_fsm_case = 2;
-			  break;
-			}
+//		  base_ptr->v_ref = 0;
+		  get_robot_base()->w_ref = 30;	// deg/s
+
+//		  if (rot_to_phi (180, 45 /*deg/s*/))
+//			{
+//			  main_fsm_case = 2;
+//			  break;
+//			}
+
 //		  if (pwm_on)
 //			pwm_start ();
 //		  else

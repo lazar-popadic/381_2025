@@ -55,8 +55,8 @@ regulation_init ()
   init_pid (&d_loop, 1, 0, 0, V_MAX_DEF * POS_LOOP_PSC, V_MAX_DEF * POS_LOOP_PSC);
   init_pid (&phi_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
   init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
-  init_pid (&v_loop, 1, 0, 0, CTRL_MAX, CTRL_MAX);
-  init_pid (&w_loop, 1000, 0, 0, CTRL_MAX, CTRL_MAX);
+  init_pid (&v_loop, 100, 0, 0, CTRL_MAX, CTRL_MAX);
+  init_pid (&w_loop, 10, 0, 0, CTRL_MAX, CTRL_MAX);
 }
 
 void
@@ -77,10 +77,11 @@ velocity_loop ()
   base_ptr->motor_l_dir = get_sign (base_ptr->motor_l_ctrl);
   // u uint su idalje stare vrednosti, u float su nove tj. reference
   // u motor_*_ctrl upisuje apsolutnu vrednost
+  // TODO: ovo sam ispravio, bio je problem sa minusom, dodao *dir na ctrl_uint, u funkciji za rampu
   base_ptr->motor_r_ctrl = abs_min (base_ptr->motor_r_ctrl,
-									vel_ramp_up ((float) base_ptr->motor_r_ctrl_uint, base_ptr->motor_r_ctrl, MAX_PWM_CHANGE));
+									vel_ramp_up ((float) (base_ptr->motor_r_ctrl_uint * base_ptr->motor_r_dir), base_ptr->motor_r_ctrl, MAX_PWM_CHANGE));
   base_ptr->motor_l_ctrl = abs_min (base_ptr->motor_l_ctrl,
-									vel_ramp_up ((float) base_ptr->motor_l_ctrl_uint, base_ptr->motor_l_ctrl, MAX_PWM_CHANGE));
+									vel_ramp_up ((float) (base_ptr->motor_l_ctrl_uint * base_ptr->motor_l_dir), base_ptr->motor_l_ctrl, MAX_PWM_CHANGE));
   base_ptr->motor_r_ctrl_uint = (uint16_t) base_ptr->motor_r_ctrl;
   base_ptr->motor_l_ctrl_uint = (uint16_t) base_ptr->motor_l_ctrl;
 

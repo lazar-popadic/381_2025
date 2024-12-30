@@ -25,7 +25,8 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
   switch (get_obstacle_detected())
 	{
 	case 0:
-	  position_loop ();
+	  // TODO: prvo samo brzinsku petlju bez pozicije
+	  //position_loop ();
 	  break;
 	case 1:
 	  // TODO: ovde bi trebalo da samo postavi brzinske reference na 0, funkciju clear_vel_ref()
