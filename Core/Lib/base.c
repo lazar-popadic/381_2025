@@ -42,6 +42,16 @@ base_init ()
   base_ptr->j_max = J_MAX_DEF;					// [mm/ms * 1/ms^2]
   base_ptr->j_rot_max = J_ROT_MAX_DEF;			// [deg/s * 1/ms^2]
 
+  // control signals
+  base_ptr->v_ctrl = 0;
+  base_ptr-> w_ctrl = 0;
+  base_ptr-> motor_l_ctrl = 0;
+  base_ptr-> motor_r_ctrl = 0;
+  base_ptr-> motor_l_dir = 0;
+  base_ptr-> motor_r_dir = 0;
+  base_ptr-> motor_l_ctrl_uint = 0;
+  base_ptr-> motor_r_ctrl_uint = 0;
+
   // status
   base_ptr->moving = 0;			// statusi po poziciji i brzini baze
   base_ptr->on_target = 0;

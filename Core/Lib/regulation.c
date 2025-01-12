@@ -56,7 +56,7 @@ regulation_init ()
   init_pid (&phi_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
   init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
   init_pid (&v_loop, 100, 0, 0, CTRL_MAX, CTRL_MAX);
-  init_pid (&w_loop, 10, 0, 0, CTRL_MAX, CTRL_MAX);
+  init_pid (&w_loop, 32, 0.2, 0, CTRL_MAX, CTRL_MAX);
 }
 
 void
@@ -85,8 +85,8 @@ velocity_loop ()
   base_ptr->motor_r_ctrl_uint = (uint16_t) base_ptr->motor_r_ctrl;
   base_ptr->motor_l_ctrl_uint = (uint16_t) base_ptr->motor_l_ctrl;
 
-  set_motor_r_dir (base_ptr->motor_r_dir);
-  set_motor_l_dir ((-1) * base_ptr->motor_l_dir);
+  set_motor_r_dir ((-1) * base_ptr->motor_r_dir);
+  set_motor_l_dir ((1) * base_ptr->motor_l_dir);
   pwm_right_dc (base_ptr->motor_r_ctrl_uint);
   pwm_left_dc (base_ptr->motor_l_ctrl_uint);
 

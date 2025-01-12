@@ -158,7 +158,8 @@ main (void)
 
 		case 1:
 //		  base_ptr->v_ref = 0;
-		  get_robot_base()->w_ref = 30;	// deg/s
+		  get_robot_base()->w_ref = 180;	// deg/s
+		  // ne drzi bas 180, 18 trza
 
 //		  if (rot_to_phi (180, 45 /*deg/s*/))
 //			{
@@ -272,8 +273,6 @@ Error_Handler (void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
