@@ -6,15 +6,16 @@
  */
 
 /*
- * x = (-15000, +15000)		->	samo *10
- * y = (-10000, +10000)		->	samo *10
- * phi = (0, +3600)			->	wrap360 umesto wrap180 i *10
- *
+ * x = (-15000, +15000)			->	samo *10
+ * y = (-10000, +10000)			->	samo *10
+ * phi = (0, +3600)				->	wrap360 umesto wrap180 i *10
+ * w, w_ref = (-3600, +3600)	->	samo *10
+ * v, v_ref = (-20000, +20000)	->	samo *10000
  * oblik poruke(8 bajtova): 's' x(int16_t): 1234.5 y(int16_t): 1234.5 phi(int16_t): 123.4 points(uint8_t): 123 camera_signal(uint8_t): 'c' 'e'
  */
 
-#define TX_LEN		10
-#define RX_LEN		10
+#define TX_LEN		18
+#define RX_LEN		8
 #define PTS_OFFSET	0
 
 #include "main.h"
@@ -27,7 +28,10 @@ uint8_t recieved_from_rpi[RX_LEN] =
 uint8_t transmit_to_rpi[TX_LEN] =
   { 0 };
 int16_t rpi_x = 0, rpi_y = 0, rpi_phi = 0;
+int16_t rpi_w = 0, rpi_w_ref = 0, rpi_v = 0, rpi_v_ref = 0;
 uint8_t rpi_x_high, rpi_x_low, rpi_y_high, rpi_y_low, rpi_phi_high, rpi_phi_low;
+uint8_t rpi_w_high, rpi_w_low, rpi_w_ref_high, rpi_w_ref_low;
+uint8_t rpi_v_high, rpi_v_low, rpi_v_ref_high, rpi_v_ref_low;
 float obstacle_x = 0, obstacle_y = 0, obstacle_phi = 0;
 char camera_signal = '0';
 
@@ -48,6 +52,10 @@ update_transmit_buffer ()
   rpi_x = (int16_t) (base_ptr->x * 10);
   rpi_y = (int16_t) (base_ptr->y * 10);
   rpi_phi = (int16_t) (base_ptr->phi * 10);
+  rpi_w = (int16_t) (base_ptr->w * 10);
+  rpi_w_ref = (int16_t) (base_ptr->w_ref * 10);
+  rpi_v = (int16_t) (base_ptr->v * 10000);
+  rpi_v_ref = (int16_t) (base_ptr->v_ref * 10000);
 
   rpi_x_high = (rpi_x >> 8) & 0xFF;
   rpi_x_low = rpi_x & 0xFF;
@@ -55,6 +63,14 @@ update_transmit_buffer ()
   rpi_y_low = rpi_y & 0xFF;
   rpi_phi_high = (rpi_phi >> 8) & 0xFF;
   rpi_phi_low = rpi_phi & 0xFF;
+  rpi_w_high = (rpi_w >> 8) & 0xFF;
+  rpi_w_low = rpi_w & 0xFF;
+  rpi_w_ref_high = (rpi_w_ref >> 8) & 0xFF;
+  rpi_w_ref_low = rpi_w_ref & 0xFF;
+  rpi_v_high = (rpi_v >> 8) & 0xFF;
+  rpi_v_low = rpi_v & 0xFF;
+  rpi_v_ref_high = (rpi_v_ref >> 8) & 0xFF;
+  rpi_v_ref_low = rpi_v_ref & 0xFF;
 
   transmit_to_rpi[1] = rpi_x_high;
   transmit_to_rpi[2] = rpi_x_low;
@@ -62,10 +78,18 @@ update_transmit_buffer ()
   transmit_to_rpi[4] = rpi_y_low;
   transmit_to_rpi[5] = rpi_phi_high;
   transmit_to_rpi[6] = rpi_phi_low;
+  transmit_to_rpi[7] = rpi_w_high;
+  transmit_to_rpi[8] = rpi_w_low;
+  transmit_to_rpi[9] = rpi_w_ref_high;
+  transmit_to_rpi[10] = rpi_w_ref_low;
+  transmit_to_rpi[11] = rpi_v_high;
+  transmit_to_rpi[12] = rpi_v_low;
+  transmit_to_rpi[13] = rpi_v_ref_high;
+  transmit_to_rpi[14] = rpi_v_ref_low;
 
-  transmit_to_rpi[7] = (uint8_t) (get_pts () - PTS_OFFSET);
+  transmit_to_rpi[15] = (uint8_t) (get_pts () - PTS_OFFSET);
 
-  transmit_to_rpi[8] = camera_signal;
+  transmit_to_rpi[16] = camera_signal;
 }
 
 void
