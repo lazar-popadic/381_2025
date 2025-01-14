@@ -66,6 +66,8 @@ uint8_t out_0 = 0;
 uint8_t out_1 = 0;
 uint32_t start_0 = 0xFFFFFFFF;
 uint32_t start_1 = 0xFFFFFFFF;
+volatile int16_t plt;
+volatile int16_t plt_ref;
 
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
@@ -73,7 +75,8 @@ uint16_t sys_time_s = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
+void
+SystemClock_Config (void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -84,10 +87,11 @@ void SystemClock_Config(void);
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
+ * @brief  The application entry point.
+ * @retval int
+ */
+int
+main (void)
 {
 
   /* USER CODE BEGIN 1 */
@@ -97,28 +101,28 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+  HAL_Init ();
 
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+  SystemClock_Config ();
 
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_TIM4_Init();
-  MX_TIM10_Init();
-  MX_USART6_UART_Init();
-  MX_TIM5_Init();
-  MX_TIM3_Init();
-  MX_USART1_UART_Init();
+  MX_GPIO_Init ();
+  MX_DMA_Init ();
+  MX_TIM4_Init ();
+  MX_TIM10_Init ();
+  MX_USART6_UART_Init ();
+  MX_TIM5_Init ();
+  MX_TIM3_Init ();
+  MX_USART1_UART_Init ();
   /* USER CODE BEGIN 2 */
   pwm_start ();
   time_start ();
@@ -126,15 +130,16 @@ int main(void)
   odometry_init ();
   regulation_init ();
   rpi_init ();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
 	{
-    /* USER CODE END WHILE */
+	  /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+	  /* USER CODE BEGIN 3 */
 	  sys_time_s = get_time_ms () / 1000;
 
 	  if (delay_nb_2 (&delay_1_start, 1000))
@@ -156,16 +161,18 @@ int main(void)
 
 		case 1:
 //		  base_ptr->v_ref = 0;
-		  get_robot_base ()->w_ref = 180;	// deg/s
-		  // ne drzi bas 180, 18 trza
+		  get_robot_base ()->w_ref = 1.8;	// deg/s
+		  // 18->18, 36->27-32, 180->140, 360->280
 
+		  plt = (int16_t)get_robot_base ()->w;
+//		  plt_ref = get_robot_base ()->w_ref;
 //		  if (rot_to_phi (180, 45 /*deg/s*/))
 //			{
 //			  main_fsm_case = 2;
 //			  break;
 //			}
-		  if (delay_nb_2 (&delay_1_start, 1000))
-			printf ("Debugging in SWV \n");
+//		  if (delay_nb_2 (&delay_1_start, 1000))
+//			printf ("%d \n", (plt));
 		  break;
 		}
 	}
@@ -173,22 +180,25 @@ int main(void)
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
+ * @brief System Clock Configuration
+ * @retval None
+ */
+void
+SystemClock_Config (void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_OscInitTypeDef RCC_OscInitStruct =
+	{ 0 };
+  RCC_ClkInitTypeDef RCC_ClkInitStruct =
+	{ 0 };
 
   /** Configure the main internal regulator output voltage
-  */
+   */
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
 
   /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+   * in the RCC_OscInitTypeDef structure.
+   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -197,24 +207,23 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLN = 84;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 7;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  if (HAL_RCC_OscConfig (&RCC_OscInitStruct) != HAL_OK)
+	{
+	  Error_Handler ();
+	}
 
   /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+   */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+  if (HAL_RCC_ClockConfig (&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+	{
+	  Error_Handler ();
+	}
 }
 
 /* USER CODE BEGIN 4 */
@@ -233,10 +242,11 @@ _write (int le, char *ptr, int len)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
-void Error_Handler(void)
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
+void
+Error_Handler (void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */

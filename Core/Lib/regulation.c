@@ -56,7 +56,7 @@ regulation_init ()
   init_pid (&phi_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
   init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
   init_pid (&v_loop, 100, 0, 0, CTRL_MAX, CTRL_MAX);
-  init_pid (&w_loop, 32, 0.2, 0, CTRL_MAX, CTRL_MAX);
+  init_pid (&w_loop, 24, 0.4, 4, CTRL_MAX, 800);
 }
 
 void
