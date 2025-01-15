@@ -11,12 +11,12 @@
 #define V_MOVING_MIN	0.01	// [m/s]
 #define W_MOVING_MIN	1.8		// [deg/s]
 
-#define V_MAX_DEF		2		// [m/s]
+#define V_MAX_DEF		1		// [m/s]
 #define W_MAX_DEF		360		// [deg/s], 360
 #define A_MAX_DEF		1		// [mm/ms * 1/ms]
-#define ALPHA_MAX_DEF	1		// [deg/s * 1/ms]
+#define ALPHA_MAX_DEF	1000		// [deg/s * 1/ms]
 #define J_MAX_DEF		1		// [mm/ms * 1/ms^2]
-#define J_ROT_MAX_DEF	1		// [deg/s * 1/ms^2]
+#define J_ROT_MAX_DEF	10		// [deg/s * 1/ms^2]
 #define CTRL_MAX		4200	// [inc], 4200
 #define MAX_PWM_CHANGE	56		// [inc/ms]
 #define POS_LOOP_PSC	10

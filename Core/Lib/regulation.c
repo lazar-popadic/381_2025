@@ -53,9 +53,9 @@ regulation_init ()
   base_ptr = get_robot_base ();
   // TODO: sve ove vrednosti postavi
   init_pid (&d_loop, 1, 0, 0, V_MAX_DEF * POS_LOOP_PSC, V_MAX_DEF * POS_LOOP_PSC);
-  init_pid (&phi_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
+  init_pid (&phi_loop, 10, 0, 1, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC * 0.25);
   init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
-  init_pid (&v_loop, 100, 0, 0, CTRL_MAX, CTRL_MAX);
+  init_pid (&v_loop, 6000, 20, 1000, CTRL_MAX, 800);
   init_pid (&w_loop, 24, 0.4, 4, CTRL_MAX, 800);
 }
 
@@ -78,15 +78,17 @@ velocity_loop ()
   // u uint su idalje stare vrednosti, u float su nove tj. reference
   // u motor_*_ctrl upisuje apsolutnu vrednost
   // TODO: ovo sam ispravio, bio je problem sa minusom, dodao *dir na ctrl_uint, u funkciji za rampu
-  base_ptr->motor_r_ctrl = abs_min (base_ptr->motor_r_ctrl,
-									vel_ramp_up ((float) (base_ptr->motor_r_ctrl_uint * base_ptr->motor_r_dir), base_ptr->motor_r_ctrl, MAX_PWM_CHANGE));
-  base_ptr->motor_l_ctrl = abs_min (base_ptr->motor_l_ctrl,
-									vel_ramp_up ((float) (base_ptr->motor_l_ctrl_uint * base_ptr->motor_l_dir), base_ptr->motor_l_ctrl, MAX_PWM_CHANGE));
+  base_ptr->motor_r_ctrl = abs_min (
+	  base_ptr->motor_r_ctrl,
+	  vel_ramp_up ((float) (base_ptr->motor_r_ctrl_uint * base_ptr->motor_r_dir), base_ptr->motor_r_ctrl, MAX_PWM_CHANGE));
+  base_ptr->motor_l_ctrl = abs_min (
+	  base_ptr->motor_l_ctrl,
+	  vel_ramp_up ((float) (base_ptr->motor_l_ctrl_uint * base_ptr->motor_l_dir), base_ptr->motor_l_ctrl, MAX_PWM_CHANGE));
   base_ptr->motor_r_ctrl_uint = (uint16_t) base_ptr->motor_r_ctrl;
   base_ptr->motor_l_ctrl_uint = (uint16_t) base_ptr->motor_l_ctrl;
 
-  set_motor_r_dir ((-1) * base_ptr->motor_r_dir);
-  set_motor_l_dir ((1) * base_ptr->motor_l_dir);
+  set_motor_r_dir (base_ptr->motor_r_dir);
+  set_motor_l_dir (base_ptr->motor_l_dir);
   pwm_right_dc (base_ptr->motor_r_ctrl_uint);
   pwm_left_dc (base_ptr->motor_l_ctrl_uint);
 

@@ -9,15 +9,15 @@
 #include "gpio.h"
 
 void
-set_motor_l_dir (int8_t dir)
+set_motor_r_dir (int8_t dir)
 {
   switch (dir)
 	{
-	case BACKWARD:
+	case FORWARD:
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 0);
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 1);
 	  break;
-	case FORWARD:
+	case BACKWARD:
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_14, 0);
 	  HAL_GPIO_WritePin (GPIOB, GPIO_PIN_7, 1);
 	  break;
@@ -29,7 +29,7 @@ set_motor_l_dir (int8_t dir)
 }
 
 void
-set_motor_r_dir (int8_t dir)
+set_motor_l_dir (int8_t dir)
 {
   switch (dir)
 	{

@@ -66,8 +66,8 @@ uint8_t out_0 = 0;
 uint8_t out_1 = 0;
 uint32_t start_0 = 0xFFFFFFFF;
 uint32_t start_1 = 0xFFFFFFFF;
-volatile int16_t plt;
-volatile int16_t plt_ref;
+volatile float plt;
+volatile float plt_ref;
 
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
@@ -160,17 +160,14 @@ main (void)
 		  break;
 
 		case 1:
-//		  base_ptr->v_ref = 0;
-		  get_robot_base ()->w_ref = 1.8;	// deg/s
-		  // 18->18, 36->27-32, 180->140, 360->280
+//		  get_robot_base ()->v_ref = 360;
+		  plt =  get_robot_base ()->v;
 
-		  plt = (int16_t)get_robot_base ()->w;
-//		  plt_ref = get_robot_base ()->w_ref;
-//		  if (rot_to_phi (180, 45 /*deg/s*/))
-//			{
-//			  main_fsm_case = 2;
-//			  break;
-//			}
+		  if (rot_to_phi (90, 180 /*deg/s*/))
+			{
+			  main_fsm_case = 1;
+			  break;
+			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			printf ("%d \n", (plt));
 		  break;
