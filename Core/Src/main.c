@@ -68,6 +68,9 @@ uint32_t start_0 = 0xFFFFFFFF;
 uint32_t start_1 = 0xFFFFFFFF;
 volatile float plt;
 volatile float plt_ref;
+uint16_t pwm_test = 0;
+float test = 0;
+float test_vel = 360;
 
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
@@ -142,11 +145,6 @@ main (void)
 	  /* USER CODE BEGIN 3 */
 	  sys_time_s = get_time_ms () / 1000;
 
-	  if (delay_nb_2 (&delay_1_start, 1000))
-		{
-		  HAL_GPIO_TogglePin (GPIOA, GPIO_PIN_5);
-		}
-
 	  switch (main_fsm_case)
 		{
 		case 0:
@@ -160,10 +158,10 @@ main (void)
 		  break;
 
 		case 1:
-//		  get_robot_base ()->v_ref = 360;
-		  plt =  get_robot_base ()->v;
+//		  get_robot_base ()->w_ref = 360;
+		  plt =  get_robot_base ()->w;
 
-		  if (rot_to_phi (90, 180 /*deg/s*/))
+		  if (rot_to_phi (180, 360 /*deg/s*/))
 			{
 			  main_fsm_case = 1;
 			  break;
