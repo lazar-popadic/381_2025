@@ -19,6 +19,8 @@ static void
 go_to_xy ();
 //static void
 //follow_curve ();
+static void
+simultaneous_pos ();
 
 static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
 
@@ -113,6 +115,10 @@ position_loop ()
 		case 0:
 		  base_ptr->v_ref = 0;
 		  base_ptr->w_ref = 0;
+//		  simultaneous_pos ();
+		  // TODO:	ovde ako izgubi poziciju usled poremecaja, da se vrati u tip 1,
+		  //		ili jos bolje samo da radi istovremenu regulaciju po phi i d,
+		  //		to moze sve vreme da radi svakako
 		  break;
 		case 1:
 		  go_to_xy ();
@@ -199,6 +205,35 @@ go_to_xy ()
 		  base_ptr->movement_finished = 1;
 		}
 	  break;
+	}
+}
+
+static void
+simultaneous_pos ()
+{
+  x_err = base_ptr->x_ref - base_ptr->x;
+  y_err = base_ptr->y_ref - base_ptr->y;
+  phi_err = atan2 (y_err, x_err) * 180 / M_PI - base_ptr->phi;
+  wrap180_ptr (&phi_err);
+  if (fabs (phi_err) < 90)
+	direction = 1;
+  else
+	direction = -1;
+  d = direction * sqrt (x_err * x_err + y_err * y_err);
+  d_proj = d * cos (phi_err * M_PI / 180);
+
+  if (fabs (d) > D_TOL)
+	{
+	  base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
+	  if (fabs (phi_err) > 90)
+		base_ptr->v_ref = -calc_pid (&d_loop, d_proj);				// d_proj ili d
+	  else
+		base_ptr->v_ref = calc_pid (&d_loop, d_proj);				// d_proj ili d
+	}
+  else
+	{
+	  base_ptr->w_ref = 0;
+	  base_ptr->v_ref = 0;
 	}
 }
 
