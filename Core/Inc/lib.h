@@ -218,5 +218,63 @@ void
 lift_back_down ();
 void
 lift_back_drop ();
+void
+grtl_front_open();
+void
+grtl_back_open();
+void
+grtl_front_close();
+void
+grtl_back_close();
+void
+grtl_front_grip_all();
+void
+grtl_back_grip_all();
+void
+grtl_front_grip_inside();
+void
+grtl_back_grip_inside();
+void
+grtl_front_grip_outside();
+void
+grtl_back_grip_outside();
+void
+grtl_front_open_inside();
+void
+grtl_back_open_inside();
+void
+grtl_front_open_outside();
+void
+grtl_back_open_outside();
+void
+ruc_front_down ();
+void
+ruc_back_down ();
+void
+ruc_front_mid ();
+void
+ruc_back_mid ();
+void
+ruc_front_up ();
+void
+ruc_back_up ();
+void
+gurl_front();
+void
+gurl_back();
+void
+gurl_mid();
+void
+bnr_start();
+void
+bnr_drop_1();
+void
+bnr_drop_2();
+void
+bnr_drop_3();
+void
+vacuum_front(uint8_t on);
+void
+vacuum_back(uint8_t on);
 
 #endif /* LIB_LIB_H_ */

@@ -158,14 +158,14 @@ main (void)
 		  break;
 
 		case 1:
-//		  get_robot_base ()->w_ref = 360;
-		  plt =  get_robot_base ()->w;
+		  get_robot_base ()->v_ref = 0.5;
+		  plt =  get_robot_base ()->v;
 
-		  if (rot_to_phi (180, 360 /*deg/s*/))
-			{
-			  main_fsm_case = 1;
-			  break;
-			}
+//		  if (rot_to_phi (180, 360 /*deg/s*/))
+//			{
+//			  main_fsm_case = 1;
+//			  break;
+//			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			printf ("%d \n", (plt));
 		  break;
