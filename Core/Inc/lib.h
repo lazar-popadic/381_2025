@@ -11,7 +11,7 @@
 #define V_MOVING_MIN	0.01	// [m/s]
 #define W_MOVING_MIN	1.8		// [deg/s]
 
-#define V_MAX_DEF		1		// [m/s]
+#define V_MAX_DEF		2		// [m/s]
 #define W_MAX_DEF		360		// [deg/s], 360
 #define A_MAX_DEF		1		// [mm/ms * 1/ms]
 #define ALPHA_MAX_DEF	100		// [deg/s * 1/ms]
@@ -202,5 +202,21 @@ int8_t
 move_on_dir (float distance, int8_t dir, float v_max);
 int8_t
 rot_to_xy (float x, float y, int dir, float w_max);
+
+// mechanism.h
+void
+mechanism_init ();
+void
+lift_front_up ();
+void
+lift_front_down ();
+void
+lift_front_drop ();
+void
+lift_back_up ();
+void
+lift_back_down ();
+void
+lift_back_drop ();
 
 #endif /* LIB_LIB_H_ */

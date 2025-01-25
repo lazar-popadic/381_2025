@@ -59,6 +59,28 @@ typedef struct st_robot_base
 
 } struct_robot_base;
 
+typedef struct st_mechanism_states
+{
+  uint8_t lift_front :2;	// 3 pozicije: down = 0, drop = 1, up = 2
+  uint8_t lift_back :2;
+
+  uint8_t grtl_fol :2;		// 3 pozicije: close = 0, grip = 1, open = 2
+  uint8_t grtl_fil :2;
+  uint8_t grtl_for :2;
+  uint8_t grtl_fir :2;
+  uint8_t grtl_bol :2;
+  uint8_t grtl_bil :2;
+  uint8_t grtl_bor :2;
+  uint8_t grtl_bir :2;
+
+  uint8_t ruc_front :2;		// 3 pozicije: up = 0, mid = 1, down = 2
+  uint8_t ruc_back :2;
+
+  int8_t gurl :2;			// 3 pozicije: front = -1, mid = 0, back = 1
+
+  uint8_t bnr :2;			// 4 pozicije: start = 0, drop_1 = 1, drop_2 = 2, drop_3 = 3
+} struct_mechanism_states;
+
 typedef struct st_pid
 {
   float p;
