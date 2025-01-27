@@ -20,7 +20,7 @@ go_to_xy ();
 //static void
 //follow_curve ();
 static void
-simultaneous_pos ();
+pos_hold ();
 
 static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
 
@@ -115,7 +115,7 @@ position_loop ()
 		case 0:
 		  base_ptr->v_ref = 0;
 		  base_ptr->w_ref = 0;
-//		  simultaneous_pos ();
+//		  pos_hold ();
 		  // TODO:	ovde ako izgubi poziciju usled poremecaja, da se vrati u tip 1,
 		  //		ili jos bolje samo da radi istovremenu regulaciju po phi i d,
 		  //		to moze sve vreme da radi svakako
@@ -209,7 +209,7 @@ go_to_xy ()
 }
 
 static void
-simultaneous_pos ()
+pos_hold ()
 {
   x_err = base_ptr->x_ref - base_ptr->x;
   y_err = base_ptr->y_ref - base_ptr->y;
@@ -257,6 +257,12 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 	  direction = dir;
 	  base_ptr->v_max = v_max;
 	  base_ptr->w_max = w_max;
+
+	  // ovo je zbog pos_hold
+	  x_err = base_ptr->x_ref - base_ptr->x;
+	  y_err = base_ptr->y_ref - base_ptr->y;
+	  base_ptr->phi_ref = atan2 (y_err, x_err) * 180 / M_PI + (direction - 1) * 90;
+	  wrap180_ptr (&base_ptr->phi_ref);
 	}
   if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 	{
@@ -280,6 +286,8 @@ rot_to_phi (float phi, float w_max)
 	  set_reg_type (-1);
 	  base_ptr->phi_ref = phi;
 	  base_ptr->w_max = w_max;
+	  base_ptr->x_ref = base_ptr->x;
+	  base_ptr->y_ref = base_ptr->y;
 	}
   if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 	{
@@ -304,6 +312,7 @@ move_on_dir (float distance, int8_t dir, float v_max)
 	  base_ptr->y_ref = base_ptr->y + dir * distance * sin (base_ptr->phi * M_PI / 180);
 	  direction = dir;
 	  base_ptr->v_max = v_max;
+	  base_ptr->phi_ref = base_ptr->phi;
 	}
   if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 	{

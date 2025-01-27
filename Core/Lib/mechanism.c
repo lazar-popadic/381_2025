@@ -25,16 +25,16 @@
 #define GURL_R_ID	12	// guralica right
 #define BNR_ID		11	// banner
 
-#define GRTL_OL_OPEN	0
+#define GRTL_OL_OPEN	511
 #define GRTL_OL_GRIP	0
 #define GRTL_OL_CLOSE	0
-#define GRTL_IL_OPEN	0
+#define GRTL_IL_OPEN	511
 #define GRTL_IL_GRIP	0
 #define GRTL_IL_CLOSE	0
-#define GRTL_OR_OPEN	0
+#define GRTL_OR_OPEN	511
 #define GRTL_OR_GRIP	0
 #define GRTL_OR_CLOSE	0
-#define GRTL_IR_OPEN	0
+#define GRTL_IR_OPEN	511
 #define GRTL_IR_GRIP	0
 #define GRTL_IR_CLOSE	0
 #define GRTL_SPEED_FAST		500
@@ -47,10 +47,10 @@
 #define LIFT_SPEED_FAST	400
 #define LIFT_SPEED_SLOW	100
 
-#define RUC_L_UP		0
+#define RUC_L_UP		511
 #define RUC_L_MID		0
 #define RUC_L_DOWN		0
-#define RUC_R_UP		0
+#define RUC_R_UP		511
 #define RUC_R_MID		0
 #define RUC_R_DOWN		0
 #define RUC_SPEED_FAST		500
@@ -76,20 +76,20 @@ void
 mechanism_init ()
 {
   lift_front_down ();
-  lift_back_down();
-  grtl_front_close();
-  grtl_back_close();
-  ruc_front_up();
-  ruc_back_up();
-  gurl_mid();
-  bnr_start();
+  lift_back_down ();
+  grtl_front_close ();
+  grtl_back_close ();
+  ruc_front_up ();
+  ruc_back_up ();
+  gurl_mid ();
+  bnr_start ();
 }
 
 void
-prepare_front()
+prepare_front ()
 {
-  grtl_front_open();
-  ruc_front_mid();
+  grtl_front_open ();
+  ruc_front_mid ();
 }
 
 void
@@ -287,128 +287,114 @@ grtl_back_open_outside ()
 void
 ruc_front_down ()
 {
-  ax_move(RUC_FL_ID, RUC_L_DOWN, RUC_SPEED_SLOW);
-  ax_move(RUC_FR_ID, RUC_R_DOWN, RUC_SPEED_SLOW);
+  ax_move (RUC_FL_ID, RUC_L_DOWN, RUC_SPEED_SLOW);
+  ax_move (RUC_FR_ID, RUC_R_DOWN, RUC_SPEED_SLOW);
   mechanism_states.ruc_front = 2;
 }
 
 void
 ruc_back_down ()
 {
-  ax_move(RUC_BL_ID, RUC_L_DOWN, RUC_SPEED_SLOW);
-  ax_move(RUC_BR_ID, RUC_R_DOWN, RUC_SPEED_SLOW);
+  ax_move (RUC_BL_ID, RUC_L_DOWN, RUC_SPEED_SLOW);
+  ax_move (RUC_BR_ID, RUC_R_DOWN, RUC_SPEED_SLOW);
   mechanism_states.ruc_back = 2;
 }
 
 void
 ruc_front_mid ()
 {
-  ax_move(RUC_FL_ID, RUC_L_MID, RUC_SPEED_MEDIUM);
-  ax_move(RUC_FR_ID, RUC_R_MID, RUC_SPEED_MEDIUM);
+  ax_move (RUC_FL_ID, RUC_L_MID, RUC_SPEED_MEDIUM);
+  ax_move (RUC_FR_ID, RUC_R_MID, RUC_SPEED_MEDIUM);
   mechanism_states.ruc_front = 1;
 }
 
 void
 ruc_back_mid ()
 {
-  ax_move(RUC_BL_ID, RUC_L_MID, RUC_SPEED_MEDIUM);
-  ax_move(RUC_BR_ID, RUC_R_MID, RUC_SPEED_MEDIUM);
+  ax_move (RUC_BL_ID, RUC_L_MID, RUC_SPEED_MEDIUM);
+  ax_move (RUC_BR_ID, RUC_R_MID, RUC_SPEED_MEDIUM);
   mechanism_states.ruc_back = 1;
 }
 
 void
 ruc_front_up ()
 {
-  ax_move(RUC_FL_ID, RUC_L_UP, RUC_SPEED_FAST);
-  ax_move(RUC_FR_ID, RUC_R_UP, RUC_SPEED_FAST);
+  ax_move (RUC_FL_ID, RUC_L_UP, RUC_SPEED_FAST);
+  ax_move (RUC_FR_ID, RUC_R_UP, RUC_SPEED_FAST);
   mechanism_states.ruc_front = 0;
 }
 
 void
 ruc_back_up ()
 {
-  ax_move(RUC_BL_ID, RUC_L_UP, RUC_SPEED_FAST);
-  ax_move(RUC_BR_ID, RUC_R_UP, RUC_SPEED_FAST);
+  ax_move (RUC_BL_ID, RUC_L_UP, RUC_SPEED_FAST);
+  ax_move (RUC_BR_ID, RUC_R_UP, RUC_SPEED_FAST);
   mechanism_states.ruc_back = 0;
 }
 
 void
-gurl_front()
+gurl_front ()
 {
-  ax_move(GURL_L_ID, GURL_FULL_LEFT, GURL_SLOW);
-  ax_move(GURL_R_ID, GURL_FULL_RIGHT, GURL_SLOW);
+  ax_move (GURL_L_ID, GURL_FULL_LEFT, GURL_SLOW);
+  ax_move (GURL_R_ID, GURL_FULL_RIGHT, GURL_SLOW);
   mechanism_states.gurl = -1;
 }
 
 void
-gurl_back()
+gurl_back ()
 {
-  ax_move(GURL_L_ID, GURL_FULL_RIGHT, GURL_SLOW);
-  ax_move(GURL_R_ID, GURL_FULL_LEFT, GURL_SLOW);
+  ax_move (GURL_L_ID, GURL_FULL_RIGHT, GURL_SLOW);
+  ax_move (GURL_R_ID, GURL_FULL_LEFT, GURL_SLOW);
   mechanism_states.gurl = 1;
 }
 
 void
-gurl_mid()
+gurl_mid ()
 {
-  ax_move(GURL_L_ID, GURL_MID, GURL_FAST);
-  ax_move(GURL_R_ID, GURL_MID, GURL_FAST);
+  ax_move (GURL_L_ID, GURL_MID, GURL_FAST);
+  ax_move (GURL_R_ID, GURL_MID, GURL_FAST);
   mechanism_states.gurl = 0;
 }
 
 void
-bnr_start()
+bnr_start ()
 {
-  ax_move(BNR_ID, BNR_START, BNR_FAST);
+  ax_move (BNR_ID, BNR_START, BNR_FAST);
   mechanism_states.bnr = 0;
 }
 
 void
-bnr_drop_1()
+bnr_drop_1 ()
 {
-  ax_move(BNR_ID, BNR_DROP_1, BNR_SLOW);
+  ax_move (BNR_ID, BNR_DROP_1, BNR_SLOW);
   mechanism_states.bnr = 1;
 }
 
 void
-bnr_drop_2()
+bnr_drop_2 ()
 {
-  ax_move(BNR_ID, BNR_DROP_2, BNR_SLOW);
+  ax_move (BNR_ID, BNR_DROP_2, BNR_SLOW);
   mechanism_states.bnr = 2;
 }
 
 void
-bnr_drop_3()
+bnr_drop_3 ()
 {
-  ax_move(BNR_ID, BNR_DROP_3, BNR_SLOW);
+  ax_move (BNR_ID, BNR_DROP_3, BNR_SLOW);
   mechanism_states.bnr = 3;
 }
 
 void
-vacuum_front(uint8_t on)
+vacuum_front (uint8_t on)
 {
   vacuum_0 (on);
   vacuum_1 (on);
 }
 
 void
-vacuum_back(uint8_t on)
+vacuum_back (uint8_t on)
 {
   vacuum_2 (on);
   vacuum_3 (on);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
