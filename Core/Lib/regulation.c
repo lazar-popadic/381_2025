@@ -22,7 +22,7 @@ go_to_xy ();
 static void
 pos_hold ();
 
-static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
+static uint8_t vel_profile = TRAP_VEL_PROFILE;
 
 static int8_t reg_type = 0;
 static int8_t phase = 0;
@@ -54,10 +54,10 @@ regulation_init ()
 {
   base_ptr = get_robot_base ();
   // TODO: sve ove vrednosti postavi
-  init_pid (&d_loop, 1, 0, 0, V_MAX_DEF * POS_LOOP_PSC, V_MAX_DEF * POS_LOOP_PSC);
+  init_pid (&d_loop, 0.0028, 0, 0.16, V_MAX_DEF * POS_LOOP_PSC, V_MAX_DEF * POS_LOOP_PSC * 0.2);
   init_pid (&phi_loop, 2, 0.02, 0.2, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC * 0.2);
   init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
-//  init_pid (&v_loop, 6000, 20, 1000, CTRL_MAX, 800);
+  init_pid (&v_loop, 6000, 20, 1000, CTRL_MAX, 800);
   init_pid (&w_loop, 28, 0.6, 4, CTRL_MAX, 800);
 }
 
@@ -187,9 +187,9 @@ go_to_xy ()
 	  d_proj = d * cos (phi_err * M_PI / 180);
 
 	  if (fabs (phi_err) > 90)
-		base_ptr->v_ref = -calc_pid (&d_loop, d_proj);				// d_proj ili d
+		base_ptr->v_ref = -calc_pid (&d_loop, d);				// d_proj ili d
 	  else
-		base_ptr->v_ref = calc_pid (&d_loop, d_proj);				// d_proj ili d
+		base_ptr->v_ref = calc_pid (&d_loop, d);				// d_proj ili d
 
 	  if (fabs (d) > D_2_TOL)
 		base_ptr->w_ref = calc_pid (&phi_loop, phi_err);

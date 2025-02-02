@@ -8,22 +8,22 @@
 #include "main.h"
 
 #define GRTL_FOL_ID 1	// grtalica front outside left
-#define GRTL_FIL_ID 1
-#define GRTL_FOR_ID 1
-#define GRTL_FIR_ID 1
-#define GRTL_BOL_ID 1
-#define GRTL_BIL_ID 1
-#define GRTL_BOR_ID 1
-#define GRTL_BIR_ID	1	// grtalica back inside right
-#define LIFT_F_ID	13	// lift front
-#define LIFT_B_ID	13	// lift back
-#define RUC_FL_ID	10	// rucica front left
-#define RUC_FR_ID	10
-#define RUC_BL_ID	10
-#define RUC_BR_ID	10	// rucica back right
-#define GURL_L_ID	12	// guralica left
-#define GURL_R_ID	12	// guralica right
-#define BNR_ID		11	// banner
+#define GRTL_FIL_ID 2
+#define GRTL_FIR_ID 3
+#define GRTL_FOR_ID 4
+#define GRTL_BOL_ID 9
+#define GRTL_BIL_ID 8
+#define GRTL_BIR_ID	7	// grtalica back inside right
+#define GRTL_BOR_ID 6
+#define LIFT_F_ID	5	// lift front
+#define LIFT_B_ID	10	// lift back
+#define RUC_FL_ID	11	// rucica front left
+#define RUC_FR_ID	12
+#define RUC_BL_ID	14
+#define RUC_BR_ID	13	// rucica back right
+#define GURL_L_ID	15	// guralica left
+#define GURL_R_ID	16	// guralica right
+#define BNR_ID		17	// banner
 
 #define GRTL_OL_OPEN	511
 #define GRTL_OL_GRIP	0
@@ -32,8 +32,8 @@
 #define GRTL_IL_GRIP	0
 #define GRTL_IL_CLOSE	0
 #define GRTL_OR_OPEN	511
-#define GRTL_OR_GRIP	0
-#define GRTL_OR_CLOSE	0
+#define GRTL_OR_GRIP	600
+#define GRTL_OR_CLOSE	825
 #define GRTL_IR_OPEN	511
 #define GRTL_IR_GRIP	0
 #define GRTL_IR_CLOSE	0

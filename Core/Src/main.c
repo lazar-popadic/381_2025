@@ -22,7 +22,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include <stdio.h>
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -55,8 +55,8 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 volatile uint16_t dc_test = 0;
 volatile uint8_t pwm_on = 1;
 volatile uint8_t ax_id_test = 1;
-volatile uint16_t ax_angle_test = 0;
-volatile uint16_t ax_speed_test = 500;
+volatile uint16_t ax_angle_test = 1;
+volatile uint16_t ax_speed_test = 200;
 int8_t dir_test = 1;
 uint8_t in_0 = 0;
 uint8_t in_1 = 0;
@@ -158,14 +158,16 @@ main (void)
 		  break;
 
 		case 1:
-		  get_robot_base ()->v_ref = 0.5;
-		  plt =  get_robot_base ()->v;
+//		  get_robot_base ()->v_ref = 2;
+		  plt = get_robot_base ()->x;
 
-//		  if (rot_to_phi (180, 360 /*deg/s*/))
-//			{
-//			  main_fsm_case = 1;
-//			  break;
-//			}
+//		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
+
+		  if (move_to_xy(-2000, 0, -1, 1, 180))
+			{
+			  main_fsm_case = 1;
+			  break;
+			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			printf ("%d \n", (plt));
 		  break;
