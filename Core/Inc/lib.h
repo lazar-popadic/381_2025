@@ -11,14 +11,14 @@
 #define V_MOVING_MIN	0.01	// [m/s]
 #define W_MOVING_MIN	1.8		// [deg/s]
 
-#define V_MAX_DEF		2		// [m/s]
-#define W_MAX_DEF		360		// [deg/s], 360
+#define V_MAX_DEF		2.0		// [m/s]
+#define W_MAX_DEF		360.0	// [deg/s], 360
 #define A_MAX_DEF		1		// [mm/ms * 1/ms]
 #define ALPHA_MAX_DEF	100		// [deg/s * 1/ms]
-#define J_MAX_DEF		1		// [mm/ms * 1/ms^2]
+#define J_MAX_DEF		10		// [mm/ms * 1/ms^2]
 #define J_ROT_MAX_DEF	10		// [deg/s * 1/ms^2]
 #define CTRL_MAX		4200	// [inc], 4200
-#define MAX_PWM_CHANGE	400		// [inc/ms]
+#define MAX_PWM_CHANGE	100		// [inc/ms]
 #define POS_LOOP_PSC	10
 
 #define TASK_RUNNING	0
@@ -219,33 +219,33 @@ lift_back_down ();
 void
 lift_back_drop ();
 void
-grtl_front_open();
+grtl_front_open ();
 void
-grtl_back_open();
+grtl_back_open ();
 void
-grtl_front_close();
+grtl_front_close ();
 void
-grtl_back_close();
+grtl_back_close ();
 void
-grtl_front_grip_all();
+grtl_front_grip_all ();
 void
-grtl_back_grip_all();
+grtl_back_grip_all ();
 void
-grtl_front_grip_inside();
+grtl_front_grip_inside ();
 void
-grtl_back_grip_inside();
+grtl_back_grip_inside ();
 void
-grtl_front_grip_outside();
+grtl_front_grip_outside ();
 void
-grtl_back_grip_outside();
+grtl_back_grip_outside ();
 void
-grtl_front_open_inside();
+grtl_front_open_inside ();
 void
-grtl_back_open_inside();
+grtl_back_open_inside ();
 void
-grtl_front_open_outside();
+grtl_front_open_outside ();
 void
-grtl_back_open_outside();
+grtl_back_open_outside ();
 void
 ruc_front_down ();
 void
@@ -259,22 +259,22 @@ ruc_front_up ();
 void
 ruc_back_up ();
 void
-gurl_front();
+gurl_front ();
 void
-gurl_back();
+gurl_back ();
 void
-gurl_mid();
+gurl_mid ();
 void
-bnr_start();
+bnr_start ();
 void
-bnr_drop_1();
+bnr_drop_1 ();
 void
-bnr_drop_2();
+bnr_drop_2 ();
 void
-bnr_drop_3();
+bnr_drop_3 ();
 void
-vacuum_front(uint8_t on);
+vacuum_front (uint8_t on);
 void
-vacuum_back(uint8_t on);
+vacuum_back (uint8_t on);
 
 #endif /* LIB_LIB_H_ */

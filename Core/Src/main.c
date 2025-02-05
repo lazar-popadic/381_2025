@@ -157,19 +157,27 @@ main (void)
 			}
 		  break;
 
-		case 1:
-//		  get_robot_base ()->v_ref = 2;
-		  plt = get_robot_base ()->x;
+		case 11:
+//		  get_robot_base ()->v_ref = -0.025;
+		  plt = get_robot_base ()->phi;
 
 //		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
 
-		  if (move_to_xy(-2000, 0, -1, 1, 180))
+		  if (move_to_xy (0, -1000, 1, V_MAX_DEF, W_MAX_DEF))
 			{
-			  main_fsm_case = 1;
+			  main_fsm_case = 2;
 			  break;
 			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			printf ("%d \n", (plt));
+		  break;
+
+		case 2:
+		  if (move_to_xy (0, 0, 1, V_MAX_DEF, W_MAX_DEF))
+			{
+			  main_fsm_case = 3;
+			  break;
+			}
 		  break;
 		}
 	}
