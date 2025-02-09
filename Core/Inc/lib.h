@@ -12,13 +12,13 @@
 #define W_MOVING_MIN	1.8		// [deg/s]
 
 #define V_MAX_DEF		2.0		// [m/s]
-#define W_MAX_DEF		360.0	// [deg/s], 360
-#define A_MAX_DEF		1		// [mm/ms * 1/ms]
-#define ALPHA_MAX_DEF	100		// [deg/s * 1/ms]
-#define J_MAX_DEF		10		// [mm/ms * 1/ms^2]
-#define J_ROT_MAX_DEF	10		// [deg/s * 1/ms^2]
-#define CTRL_MAX		4200	// [inc], 4200
-#define MAX_PWM_CHANGE	100		// [inc/ms]
+#define W_MAX_DEF		360.0	// [deg/s]
+#define A_MAX_DEF		0.02	// [m/s * 1/10ms]			// za 1000ms dodje do 2m/s
+#define ALPHA_MAX_DEF	3.6		// [deg/s * 1/ms]			// za 1000ms dodje do 360deg/s
+#define J_MAX_DEF		0.0016	// [mm/ms * 1/10ms^2]		// za 1000ms dodje do 2m/s i sve vreme je jerk-limited
+#define J_ROT_MAX_DEF	0.288	// [deg/s * 1/10ms^2]		// za 1000ms dodje do 360deg/s i sve vreme je jerk-limited
+#define CTRL_MAX		4200	// [inc]
+#define MAX_PWM_CHANGE	42		// [inc/ms]					// za 100ms dodje do 4200
 #define POS_LOOP_PSC	10
 
 #define TASK_RUNNING	0

@@ -56,7 +56,7 @@ regulation_init ()
   // TODO: sve ove vrednosti postavi
   init_pid (&d_loop, 0.03, 0, 0.3, V_MAX_DEF, V_MAX_DEF* 0.2);
   init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF* 0.2);
-  init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF * POS_LOOP_PSC, W_MAX_DEF * POS_LOOP_PSC);
+  init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF, W_MAX_DEF);
   init_pid (&v_loop, 2400, 1, 400, CTRL_MAX, 1600);
   init_pid (&w_loop, 16, 0.32, 6, CTRL_MAX, 1600);
 }
@@ -196,7 +196,7 @@ go_to_xy ()
 	  else
 		base_ptr->w_ref = 0;
 
-	  if (fabs (d_proj) < D_TOL && !(base_ptr->moving))
+	  if (d_proj < D_TOL && !(base_ptr->moving))			// ne treba fabs(d_proj), ili fabs (d) ili d_proj
 		{
 		  base_ptr->v_ref = 0;
 		  base_ptr->w_ref = 0;
@@ -222,13 +222,13 @@ pos_hold ()
   d = direction * sqrt (x_err * x_err + y_err * y_err);
   d_proj = d * cos (phi_err * M_PI / 180);
 
-  if (fabs (d) > D_TOL)
+  if (fabs (d_proj) > D_TOL)
 	{
 	  base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 	  if (fabs (phi_err) > 90)
-		base_ptr->v_ref = -calc_pid (&d_loop, d_proj);				// d_proj ili d
+		base_ptr->v_ref = -calc_pid (&d_loop, d);
 	  else
-		base_ptr->v_ref = calc_pid (&d_loop, d_proj);				// d_proj ili d
+		base_ptr->v_ref = calc_pid (&d_loop, d);
 	}
   else
 	{
