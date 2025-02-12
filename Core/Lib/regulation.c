@@ -22,7 +22,7 @@ go_to_xy ();
 static void
 pos_hold ();
 
-static uint8_t vel_profile = TRAP_VEL_PROFILE;
+static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
 
 static int8_t reg_type = 0;
 static int8_t phase = 0;

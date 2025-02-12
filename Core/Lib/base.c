@@ -35,8 +35,8 @@ base_init ()
   base_ptr->phi_ref = 0;				// [deg]
 
   // limits for velocity of base
-  base_ptr->v_max = V_MAX_DEF * POS_LOOP_PSC;	// [mm/ms = m/s]
-  base_ptr->w_max = W_MAX_DEF * POS_LOOP_PSC;	// [deg/s]
+  base_ptr->v_max = V_MAX_DEF;					// [mm/ms = m/s]
+  base_ptr->w_max = W_MAX_DEF;					// [deg/s]
   base_ptr->a_max = A_MAX_DEF;					// [mm/ms * 1/ms]
   base_ptr->alpha_max = ALPHA_MAX_DEF;			// [deg/s * 1/ms]
   base_ptr->j_max = J_MAX_DEF;					// [mm/ms * 1/ms^2]
