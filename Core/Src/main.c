@@ -64,6 +64,8 @@ uint8_t in_2 = 0;
 uint8_t in_3 = 0;
 uint8_t out_0 = 0;
 uint8_t out_1 = 0;
+uint8_t out_2 = 0;
+uint8_t out_3 = 0;
 uint32_t start_0 = 0xFFFFFFFF;
 uint32_t start_1 = 0xFFFFFFFF;
 volatile float plt;
@@ -160,6 +162,11 @@ main (void)
 		case 1:
 //		  get_robot_base ()->w_ref = 180;
 		  plt = get_robot_base ()->w;
+		  set_regulation_status (0);
+		  vacuum_0(out_0);
+		  vacuum_1(out_1);
+		  vacuum_2(out_2);
+		  vacuum_3(out_3);
 
 //		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
 

@@ -29,6 +29,9 @@ static int8_t phase = 0;
 static int8_t direction;
 static uint8_t position_cnt = 1;
 
+static st_curve *curve_ptr;
+static int16_t curve_cnt = 0;
+
 static float v_err = 0;				// [ms/ms]
 static float w_err = 0;				// [deg/ms]
 
@@ -37,9 +40,13 @@ static float y_err = 0;				// [mm]
 static float phi_err = 0;			// [deg]
 static float d = 0;					// [mm]
 static float d_proj = 0;			// [mm]
-//static float phi_prim_1_err = 0;	// [deg]
-//static float phi_prim_2_err = 0;	// [deg]
-//static float phi_final_err = 0;		// [deg]
+static float y_err_next = 0;		// [mm]
+static float x_err_next = 0;		// [mm]
+static float phi_prim_err = 0;			// [deg]
+static float phi_prim_1_err = 0;			// [deg]
+static float phi_prim_2_err = 0;			// [deg]
+static float phi_final_err = 0;			// [deg]
+static int8_t cont_move = 0;
 
 static volatile struct_robot_base *base_ptr;
 
@@ -54,8 +61,8 @@ regulation_init ()
 {
   base_ptr = get_robot_base ();
   // TODO: sve ove vrednosti postavi
-  init_pid (&d_loop, 0.03, 0, 0.3, V_MAX_DEF, V_MAX_DEF* 0.2);
-  init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF* 0.2);
+  init_pid (&d_loop, 0.03, 0, 0.3, V_MAX_DEF, V_MAX_DEF * 0.2);
+  init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
   init_pid (&phi_curve_loop, 1, 0, 0, W_MAX_DEF, W_MAX_DEF);
   init_pid (&v_loop, 2400, 1, 400, CTRL_MAX, 1600);
   init_pid (&w_loop, 16, 0.32, 6, CTRL_MAX, 1600);
@@ -237,6 +244,87 @@ pos_hold ()
 	}
 }
 
+static void
+pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
+{
+  x_err = curve_ptr->equ_pts_x[curve_cnt] - base_ptr->x;
+  y_err = curve_ptr->equ_pts_y[curve_cnt] - base_ptr->y;
+  phi_prim_1_err = atan2 (y_err, x_err) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
+  wrap180_ptr (&phi_prim_1_err);
+  d = sqrt (x_err * x_err + y_err * y_err);
+  d_proj = d * cos (phi_prim_1_err * M_PI / 180);
+
+  if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num) // ako ima vise od lookahead_pnt_num
+															  // preostalih tacaka, samo se okreci
+															  // ka curve_cnt + lookahead_pnt_num
+	{
+	  x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num] - base_ptr->x;
+	  y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num] - base_ptr->y;
+	  phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
+	  base_ptr->v_ref = direction * base_ptr->v_max;
+	}
+  else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2) // ako ima manje od lookahead_pnt_num,
+																	 // a vise od lookahead_pnt_num_2
+																	 // preostalih tacaka, a nije na
+																	 // poslednjoj, samo se okreci ka
+																	 // curve_cnt + lookahead_pnt_num_2
+	{
+	  x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num_2] - base_ptr->x;
+	  y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num_2] - base_ptr->y;
+	  phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
+	  base_ptr->v_ref = direction * base_ptr->v_max;
+	}
+  else if (curve_cnt < curve_ptr->num_equ_pts) // ako ima manje od lookahead_pnt_num_2
+											   // preostalih tacaka, a nije na poslednjoj,
+											   // samo se okreci ka ciljnoj orijentaciji
+	{
+	  phi_prim_err = atan2 (
+		  curve_ptr->equ_pts_y[curve_ptr->num_equ_pts] - curve_ptr->equ_pts_y[curve_ptr->num_equ_pts - 1],
+		  curve_ptr->equ_pts_x[curve_ptr->num_equ_pts] - curve_ptr->equ_pts_x[curve_ptr->num_equ_pts - 1]) * 180
+		  / M_PI + (direction - 1) * 90 - base_ptr->phi;
+	  base_ptr->v_ref = direction * base_ptr->v_max;
+	}
+  else // ako je poslednja tacka, okreci se ka ciljnoj orijentaciji
+	{
+	  phi_prim_err = atan2 (
+		  curve_ptr->equ_pts_y[curve_ptr->num_equ_pts] - curve_ptr->equ_pts_y[curve_ptr->num_equ_pts - 1],
+		  curve_ptr->equ_pts_x[curve_ptr->num_equ_pts] - curve_ptr->equ_pts_x[curve_ptr->num_equ_pts - 1]) * 180
+		  / M_PI + (direction - 1) * 90 - base_ptr->phi;
+	  if (cont_move)
+		base_ptr->v_ref = direction * base_ptr->v_max;
+	  else
+		base_ptr->v_ref = direction * calc_pid (&d_loop, d_proj);
+	}
+  wrap180_ptr (&phi_prim_err);
+
+  base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
+
+  if (d_proj < 0)
+	{
+	  curve_cnt++;
+	  if (curve_cnt > curve_ptr->num_equ_pts)
+		{
+		  curve_cnt = 0;
+		  set_reg_type (0);
+		  movement_finished ();
+		  free (curve_ptr->equ_pts_x);
+		  free (curve_ptr->equ_pts_y);
+		  free (curve_ptr);
+		  if (get_avoid_obst_glb ())
+			reset_push_pts_loop ();
+		}
+	}
+  // if (cur_dis_error > POINT_DISTANCE * 1.2)
+  // {
+  //     vel_ref = 0;
+  //     ang_vel_ref = 0;
+  //     phase = 1;
+  //     curve_cnt = 0;
+  //     status.finished = true;
+  //     status.success = false;
+  // }
+}
+
 void
 set_reg_type (int8_t type)
 {
@@ -332,7 +420,7 @@ rot_to_xy (float x, float y, int dir, float w_max)
 
 /*
 
- void move_on_path(double x, double y, double phi, int dir, bool cont, double cruising_vel)
+ void move_on_path(float x, float y, float phi, int dir, bool cont, float cruising_vel)
  {
  movement_started();
  set_reg_type(2);

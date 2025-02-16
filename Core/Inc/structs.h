@@ -104,4 +104,15 @@ typedef struct st_tactic_num
 
 } struct_tactic_num;
 
+typedef struct curve
+{
+  float pts_x[BEZIER_RESOLUTION];
+  float pts_y[BEZIER_RESOLUTION];
+  float *equ_pts_x;
+  float *equ_pts_y;
+  int num_equ_pts;
+  float dis;
+  float max_ang_change;
+} st_curve;
+
 #endif /* INC_STRUCTS_H_ */

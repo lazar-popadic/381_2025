@@ -13,9 +13,9 @@
 
 #define V_MAX_DEF		2.0		// [m/s]
 #define W_MAX_DEF		360.0	// [deg/s]
-#define A_MAX_DEF		0.02	// [m/s * 1/10ms]			// za 1000ms dodje do 2m/s
+#define A_MAX_DEF		0.2		// [m/s * 1/10ms]			// za 100ms dodje do 2m/s
 #define ALPHA_MAX_DEF	36		// [deg/s * 1/ms]			// za 100ms dodje do 360deg/s
-#define J_MAX_DEF		0.0016	// [mm/ms * 1/10ms^2]		// za 1000ms dodje do 2m/s i sve vreme je jerk-limited
+#define J_MAX_DEF		0.016	// [mm/ms * 1/10ms^2]		// za 100ms dodje do 2m/s i sve vreme je jerk-limited
 #define J_ROT_MAX_DEF	2.88	// [deg/s * 1/10ms^2]		// za 100ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX		4200	// [inc]
 #define MAX_PWM_CHANGE	420		// [inc/ms]					// za 10ms dodje do 4200
@@ -30,6 +30,12 @@
 
 #define TRAP_VEL_PROFILE	0
 #define S_CURVE_VEL_PROFILE	1
+
+#define BEZIER_RESOLUTION 1000
+#define POINT_DISTANCE 20
+
+#define OFFS_ROBOT 400
+#define OFFS_DESIRED 520
 
 #include "structs.h"
 
@@ -276,5 +282,13 @@ void
 vacuum_front (uint8_t on);
 void
 vacuum_back (uint8_t on);
+
+// curve.h
+int
+create_curve (st_curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst);
+int
+cubic_bezier_pts (st_curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y);
+void
+equ_coords (st_curve *curve_ptr);
 
 #endif /* LIB_LIB_H_ */
