@@ -155,14 +155,17 @@ main (void)
 			{
 			  start_match ();
 			  main_fsm_case = 1;
+
+			  // TODO: ovde se gasi poziciona:			0 : upaljema,	1 : ugasena
+			  get_robot_base()->obstacle_detected = 1;
+			  // TODO: ovde se gasi brzinska petlja:	1 : upaljema,	0 : ugasena
 			  set_regulation_status (1);
 			}
 		  break;
 
 		case 1:
 //		  get_robot_base ()->w_ref = 180;
-		  plt = get_robot_base ()->w;
-		  set_regulation_status (0);
+//		  plt = get_robot_base ()->w;
 		  vacuum_0(out_0);
 		  vacuum_1(out_1);
 		  vacuum_2(out_2);

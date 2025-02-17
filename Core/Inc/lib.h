@@ -208,6 +208,8 @@ int8_t
 move_on_dir (float distance, int8_t dir, float v_max);
 int8_t
 rot_to_xy (float x, float y, int dir, float w_max);
+int8_t
+move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid);
 
 // mechanism.h
 void
