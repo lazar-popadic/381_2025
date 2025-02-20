@@ -54,8 +54,8 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 /* test promenljive */
 volatile uint16_t dc_test = 0;
 volatile uint8_t pwm_on = 1;
-volatile uint8_t ax_id_test = 1;
-volatile uint16_t ax_angle_test = 1;
+volatile uint8_t ax_id_test = 12;
+volatile uint16_t ax_angle_test = 512;
 volatile uint16_t ax_speed_test = 200;
 int8_t dir_test = 1;
 uint8_t in_0 = 0;
@@ -156,26 +156,26 @@ main (void)
 			  start_match ();
 			  main_fsm_case = 1;
 
-			  // TODO: ovde se gasi poziciona:			0 : upaljema,	1 : ugasena
-			  get_robot_base()->obstacle_detected = 1;
-			  // TODO: ovde se gasi brzinska petlja:	1 : upaljema,	0 : ugasena
-			  set_regulation_status (1);
+			  // TODO: ovde se gasi poziciona:			0 : upaljena,	1 : ugasena
+			  get_robot_base()->obstacle_detected = 0;
+			  // TODO: ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
+			  set_regulation_status (0);
 			}
 		  break;
 
 		case 1:
 //		  get_robot_base ()->w_ref = 180;
 //		  plt = get_robot_base ()->w;
-		  vacuum_0(out_0);
-		  vacuum_1(out_1);
-		  vacuum_2(out_2);
-		  vacuum_3(out_3);
+//		  vacuum_0(out_0);
+//		  vacuum_1(out_1);
+//		  vacuum_2(out_2);
+//		  vacuum_3(out_3);
 
-//		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
+		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
 
-		  if (rot_to_phi (180, 180))
+		  if (move_on_dir(500, 1, 0.5))
 			{
-			  main_fsm_case = 1;
+			  main_fsm_case = 2;
 			  break;
 			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
