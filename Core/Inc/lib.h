@@ -18,7 +18,7 @@
 #define J_MAX_DEF		0.016	// [mm/ms * 1/10ms^2]		// za 100ms dodje do 2m/s i sve vreme je jerk-limited
 #define J_ROT_MAX_DEF	2.88	// [deg/s * 1/10ms^2]		// za 100ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX		4200	// [inc]
-#define MAX_PWM_CHANGE	210		// [inc/ms]					// za 20ms dodje do 4200
+#define MAX_PWM_CHANGE	420		// [inc/ms]					// za 10ms dodje do 4200
 #define POS_LOOP_PSC	10
 
 #define TASK_RUNNING	0
@@ -72,6 +72,10 @@ get_time_ms ();
 // ax12a.h
 void
 ax_move (uint8_t id, uint16_t angle, uint16_t speed);
+void
+ax_move_2 (uint8_t id, uint16_t angle, uint16_t speed);
+void
+ax_move_381 (uint8_t id, uint16_t angle, uint16_t speed);
 
 // odometry.h
 void

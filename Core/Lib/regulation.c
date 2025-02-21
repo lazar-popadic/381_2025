@@ -59,7 +59,7 @@ regulation_init ()
 {
   base_ptr = get_robot_base ();
   // TODO: sve ove vrednosti postavi
-  init_pid (&d_loop, 0.03, 0, 0.3, V_MAX_DEF, V_MAX_DEF * 0.2);
+  init_pid (&d_loop, 1, 0, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
   init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
   init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
   init_pid (&v_loop, 2400, 1, 400, CTRL_MAX, 1600);

@@ -151,33 +151,32 @@ main (void)
 		{
 		case 0:
 		  choose_tactic (&tactic);
-		  if (cinc_db ())
+		  if (cinc_db () || 1)	// TODO: ISKLJUCEN JE CINC
 			{
 			  start_match ();
 			  main_fsm_case = 1;
-
-			  // TODO: ovde se gasi poziciona:			0 : upaljena,	1 : ugasena
-			  get_robot_base()->obstacle_detected = 0;
 			  // TODO: ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
 			  set_regulation_status (0);
 			}
 		  break;
 
 		case 1:
-//		  get_robot_base ()->w_ref = 180;
-//		  plt = get_robot_base ()->w;
+		  get_robot_base ()->v_ref = 0.5;
+		  plt = get_robot_base ()->v;
 //		  vacuum_0(out_0);
 //		  vacuum_1(out_1);
 //		  vacuum_2(out_2);
 //		  vacuum_3(out_3);
 
-		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
+//		  ax_move(ax_id_test, ax_angle_test, ax_speed_test);
+		  ax_move_2 (ax_id_test, ax_angle_test, ax_speed_test);
+//		  ax_move_381 (ax_id_test, ax_angle_test, ax_speed_test);
 
-		  if (move_on_dir(500, 1, 0.5))
-			{
-			  main_fsm_case = 2;
-			  break;
-			}
+//		  if (move_on_dir(500, 1, 0.5))
+//			{
+//			  main_fsm_case = 12;
+//			  break;
+//			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			printf ("%d \n", (plt));
 		  break;
