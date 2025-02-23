@@ -102,7 +102,7 @@ ax_move_381 (uint8_t id, uint16_t angle, uint16_t speed)
 	  servo_command[15] = speed_upper;
 	  servo_command[16] = checksum_local;
 
-	  HAL_UART_Transmit (&huart1, servo_command, 17, 100);
+	  HAL_UART_Transmit (&huart6, servo_command, 17, 100);
 	  HAL_Delay (2);
 	}
 }
