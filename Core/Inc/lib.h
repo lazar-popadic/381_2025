@@ -71,11 +71,8 @@ get_time_ms ();
 
 // ax12a.h
 void
-ax_move (uint8_t id, uint16_t angle, uint16_t speed);
-void
-ax_move_2 (uint8_t id, uint16_t angle, uint16_t speed);
-void
-ax_move_381 (uint8_t id, uint16_t angle, uint16_t speed);
+ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart);
+
 
 // odometry.h
 void
