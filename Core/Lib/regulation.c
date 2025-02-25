@@ -59,11 +59,11 @@ regulation_init ()
 {
   base_ptr = get_robot_base ();
   // TODO: sve ove vrednosti postavi
-  init_pid (&d_loop, 1, 0, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
+  init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
   init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
   init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
-  init_pid (&v_loop, 2400, 1, 400, CTRL_MAX, 1600);
-  init_pid (&w_loop, 16, 0.32, 6, CTRL_MAX, 1600);
+  init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
+  init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
 }
 
 void
@@ -118,9 +118,9 @@ position_loop ()
 		  rotate ();
 		  break;
 		case 0:
-//		  base_ptr->v_ref = 0;
-//		  base_ptr->w_ref = 0;
-		  pos_hold ();
+		  base_ptr->v_ref = 0;
+		  base_ptr->w_ref = 0;
+//		  pos_hold ();
 		  // TODO:	ovde ako izgubi poziciju usled poremecaja, da se vrati u tip 1,
 		  //		ili jos bolje samo da radi istovremenu regulaciju po phi i d,
 		  //		to moze sve vreme da radi svakako
@@ -188,11 +188,12 @@ go_to_xy ()
 	  break;
 
 	case 1:    // tran
-	  d = direction * sqrt (x_err * x_err + y_err * y_err);
+	  d = sqrt (x_err * x_err + y_err * y_err);
 	  d_proj = d * cos (phi_err * M_PI / 180);
+	  d *= direction;
 
 	  if (fabs (phi_err) > 90)
-		base_ptr->v_ref = -calc_pid (&d_loop, d);				// d_proj ili d
+		base_ptr->v_ref = calc_pid (&d_loop, -d);				// d_proj ili d
 	  else
 		base_ptr->v_ref = calc_pid (&d_loop, d);				// d_proj ili d
 
@@ -409,7 +410,6 @@ move_on_dir (float distance, int8_t dir, float v_max)
 
   return move_status;
 }
-
 
 int8_t
 rot_to_xy (float x, float y, int dir, float w_max)

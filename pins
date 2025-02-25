@@ -1,11 +1,11 @@
 port A:
 0 - timer 5 channel 1		left encoder - channel A
 1 - timer 5 channel 2		left encoder - channel B
+2 - usart 2 tx				ax12a
+3 - usart 2 rx				NC
 6 - gpio in					činč
 9 - usart 1 tx				rpi
 10 - usart 1 rx				rpi
-11 - usart 6 tx				ax12a
-12 - usart 6 rx				NC
 
 port B:
 4 - timer 3 channel 1		right encoder - channel A
@@ -24,6 +24,8 @@ port C:
 3 - gpio out				vakuum 4
 4 - gpio in					senzor prednji
 5 - gpio in					senzor zadnji
+6 - usart 6 tx				ax12a
+7 - usart 6 rx				NC
 10 - gpio in				prekidac S
 11 - gpio in				prekidac 2
 12 - gpio in				prekidac 1

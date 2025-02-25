@@ -74,6 +74,11 @@ uint16_t pwm_test = 0;
 float test = 0;
 float test_vel = 360;
 
+uint8_t msg[3] =
+  { 0x1, 0x2, 0x3 };
+uint8_t rx[3] =
+  { 'a', 'b', 'c' };
+
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
 
@@ -124,11 +129,11 @@ main (void)
   MX_DMA_Init ();
   MX_TIM4_Init ();
   MX_TIM10_Init ();
-  MX_USART6_UART_Init ();
   MX_TIM5_Init ();
   MX_TIM3_Init ();
   MX_USART1_UART_Init ();
   MX_USART2_UART_Init ();
+  MX_USART6_UART_Init ();
   /* USER CODE BEGIN 2 */
   pwm_start ();
   time_start ();
@@ -146,6 +151,8 @@ main (void)
 	  /* USER CODE END WHILE */
 
 	  /* USER CODE BEGIN 3 */
+	  HAL_UART_Transmit (&huart6, msg, 3, 10);
+//	  HAL_UART_Receive (&huart6, rx, 3, 10);
 	  sys_time_s = get_time_ms () / 1000;
 
 	  switch (main_fsm_case)
@@ -157,24 +164,34 @@ main (void)
 			  start_match ();
 			  main_fsm_case = 1;
 			  // TODO: ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
-			  set_regulation_status (0);
+			  set_regulation_status (1);
 			}
 		  break;
 
 		case 1:
-		  get_robot_base ()->v_ref = 0.5;
+//		  get_robot_base ()->v_ref = -0.5;
 		  plt = get_robot_base ()->v;
 //		  vacuum_0(out_0);
 //		  vacuum_1(out_1);
 //		  vacuum_2(out_2);
 //		  vacuum_3(out_3);
 
-		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);	// PC6
-		  HAL_Delay (200);
-		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart1);	// PA2
-		  HAL_Delay (200);
+//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);	// PC6
+//		  HAL_Delay (200);
+//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart1);	// PA2
+//		  HAL_Delay (200);
 
-//		  if (move_on_dir(500, 1, 0.5))
+//		  if (rot_to_phi(180, 360))
+//			{
+////			  main_fsm_case = 12;
+//			  break;
+//			}
+		  		  if (move_to_xy(-1000, 0, -1, 0.5, 90))
+		  			{
+		  			  main_fsm_case = 12;
+		  			  break;
+		  			}
+//		  if (move_on_path(1000, -500, -90, 1, 0, V_MAX_DEF/2, 0))
 //			{
 //			  main_fsm_case = 12;
 //			  break;
