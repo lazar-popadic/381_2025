@@ -160,16 +160,16 @@ add_pts (uint16_t pts);
 
 // pid.h
 float
-calc_pid (volatile struct_pid *pid_ptr, float err);
+calc_pid (volatile pid *pid_ptr, float err);
 float
-calc_pid_2 (volatile struct_pid *pid_ptr, float ref, float val);
+calc_pid_2 (volatile pid *pid_ptr, float ref, float val);
 void
-init_pid (volatile struct_pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
+init_pid (volatile pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
 
 // base.h
 void
 base_init ();
-volatile struct_robot_base*
+volatile robot_base*
 get_robot_base ();
 void
 set_v_max (float multiplier);
@@ -213,6 +213,8 @@ int8_t
 move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid);
 
 // mechanism.h
+mech_states
+get_mech_states ();
 void
 mechanism_init ();
 void
@@ -274,24 +276,16 @@ gurl_back ();
 void
 gurl_mid ();
 void
-bnr_start ();
-void
-bnr_drop_1 ();
-void
-bnr_drop_2 ();
-void
-bnr_drop_3 ();
-void
 vacuum_front (uint8_t on);
 void
 vacuum_back (uint8_t on);
 
 // curve.h
-int
-create_curve (st_curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst);
-int
-cubic_bezier_pts (st_curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y);
 void
-equ_coords (st_curve *curve_ptr);
+create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst);
+void
+cubic_bezier_pts (curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y);
+void
+equ_coords (curve *curve_ptr);
 
 #endif /* LIB_LIB_H_ */

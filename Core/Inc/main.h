@@ -56,7 +56,7 @@ extern "C" {
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-volatile struct_robot_base* get_robot_base();
+volatile robot_base* get_robot_base();
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/

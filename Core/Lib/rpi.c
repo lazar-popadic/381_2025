@@ -5,33 +5,33 @@
  *      Author: lazar
  */
 
-/*
- * x = (-15000, +15000)			->	samo *10
- * y = (-10000, +10000)			->	samo *10
- * phi = (0, +3600)				->	wrap360 umesto wrap180 i *10
- * w, w_ref = (-3600, +3600)	->	samo *10
- * v, v_ref = (-20000, +20000)	->	samo *10000
- * oblik poruke(8 bajtova): 's' x(int16_t): 1234.5 y(int16_t): 1234.5 phi(int16_t): 123.4 points(uint8_t): 123 camera_signal(uint8_t): 'c' 'e'
+/* message: 10 bytes
+ * uint8_t 's'
+ * int16_t x = (-15000, +15000)			->	samo *10
+ * int16_t y = (-10000, +10000)			->	samo *10
+ * int16_t phi = (0, +3600)					->	wrap360 umesto wrap180 i *10
+ * uint32_t mech_pos						->	lift_front, lift_back, grtl_fo, grtl_fi, grtl_bo, grtl_bi, ruc_front, ruc_back, gurl
+ * uint8_t points = (0, 255)
+ * uint8_t camera_signal
+ * uint8_t 'e'
  */
 
-#define TX_LEN		18
-#define RX_LEN		8
-#define PTS_OFFSET	0
+#define TX_LEN				14
+#define RX_LEN			8
+#define PTS_OFFSET		0
 
 #include "main.h"
 #include <stdio.h>
 #include "usart.h"
 
-static volatile struct_robot_base *base_ptr;
+static volatile robot_base *base_ptr;
 uint8_t recieved_from_rpi[RX_LEN] =
   { 0 };
 uint8_t transmit_to_rpi[TX_LEN] =
   { 0 };
 int16_t rpi_x = 0, rpi_y = 0, rpi_phi = 0;
-int16_t rpi_w = 0, rpi_w_ref = 0, rpi_v = 0, rpi_v_ref = 0;
 uint8_t rpi_x_high, rpi_x_low, rpi_y_high, rpi_y_low, rpi_phi_high, rpi_phi_low;
-uint8_t rpi_w_high, rpi_w_low, rpi_w_ref_high, rpi_w_ref_low;
-uint8_t rpi_v_high, rpi_v_low, rpi_v_ref_high, rpi_v_ref_low;
+uint32_t mech_states_u = 0;
 float obstacle_x = 0, obstacle_y = 0, obstacle_phi = 0;
 char camera_signal = '0';
 
@@ -52,10 +52,6 @@ update_transmit_buffer ()
   rpi_x = (int16_t) (base_ptr->x * 10);
   rpi_y = (int16_t) (base_ptr->y * 10);
   rpi_phi = (int16_t) (base_ptr->phi * 10);
-  rpi_w = (int16_t) (base_ptr->w * 10);
-  rpi_w_ref = (int16_t) (base_ptr->w_ref * 10);
-  rpi_v = (int16_t) (base_ptr->v * 10000);
-  rpi_v_ref = (int16_t) (base_ptr->v_ref * 10000);
 
   rpi_x_high = (rpi_x >> 8) & 0xFF;
   rpi_x_low = rpi_x & 0xFF;
@@ -63,14 +59,6 @@ update_transmit_buffer ()
   rpi_y_low = rpi_y & 0xFF;
   rpi_phi_high = (rpi_phi >> 8) & 0xFF;
   rpi_phi_low = rpi_phi & 0xFF;
-  rpi_w_high = (rpi_w >> 8) & 0xFF;
-  rpi_w_low = rpi_w & 0xFF;
-  rpi_w_ref_high = (rpi_w_ref >> 8) & 0xFF;
-  rpi_w_ref_low = rpi_w_ref & 0xFF;
-  rpi_v_high = (rpi_v >> 8) & 0xFF;
-  rpi_v_low = rpi_v & 0xFF;
-  rpi_v_ref_high = (rpi_v_ref >> 8) & 0xFF;
-  rpi_v_ref_low = rpi_v_ref & 0xFF;
 
   transmit_to_rpi[1] = rpi_x_high;
   transmit_to_rpi[2] = rpi_x_low;
@@ -78,18 +66,35 @@ update_transmit_buffer ()
   transmit_to_rpi[4] = rpi_y_low;
   transmit_to_rpi[5] = rpi_phi_high;
   transmit_to_rpi[6] = rpi_phi_low;
-  transmit_to_rpi[7] = rpi_w_high;
-  transmit_to_rpi[8] = rpi_w_low;
-  transmit_to_rpi[9] = rpi_w_ref_high;
-  transmit_to_rpi[10] = rpi_w_ref_low;
-  transmit_to_rpi[11] = rpi_v_high;
-  transmit_to_rpi[12] = rpi_v_low;
-  transmit_to_rpi[13] = rpi_v_ref_high;
-  transmit_to_rpi[14] = rpi_v_ref_low;
 
-  transmit_to_rpi[15] = (uint8_t) (get_pts () - PTS_OFFSET);
+  // TODO: iz mech_states u bitove
+  mech_states_u = 0;
+  mech_states_u |= (get_mech_states ().lift_front & 0x3) << 0;
+  mech_states_u |= (get_mech_states ().lift_front_speed & 0x1) << 2;
+  mech_states_u |= (get_mech_states ().lift_back & 0x3) << 3;
+  mech_states_u |= (get_mech_states ().lift_back_speed & 0x1) << 5;
+  mech_states_u |= (get_mech_states ().grtl_fo & 0x3) << 6;
+  mech_states_u |= (get_mech_states ().grtl_fo_speed & 0x1) << 8;
+  mech_states_u |= (get_mech_states ().grtl_fi & 0x3) << 9;
+  mech_states_u |= (get_mech_states ().grtl_fi_speed & 0x1) << 11;
+  mech_states_u |= (get_mech_states ().grtl_bo & 0x3) << 12;
+  mech_states_u |= (get_mech_states ().grtl_bo_speed & 0x1) << 14;
+  mech_states_u |= (get_mech_states ().grtl_bi & 0x3) << 15;
+  mech_states_u |= (get_mech_states ().grtl_bi_speed & 0x1) << 17;
+  mech_states_u |= (get_mech_states ().ruc_front & 0x3) << 18;
+  mech_states_u |= (get_mech_states ().ruc_front_speed & 0x1) << 20;
+  mech_states_u |= (get_mech_states ().ruc_back & 0x3) << 21;
+  mech_states_u |= (get_mech_states ().ruc_back_speed & 0x1) << 23;
+  mech_states_u |= (get_mech_states ().gurl & 0x3) << 24;
+  mech_states_u |= (get_mech_states ().gurl_speed & 0x1) << 26;
+  transmit_to_rpi[7] = (uint8_t) (mech_states_u & 0xFF);
+  transmit_to_rpi[8] = (uint8_t) ((mech_states_u >> 8) & 0xFF);
+  transmit_to_rpi[9] = (uint8_t) ((mech_states_u >> 16) & 0xFF);
+  transmit_to_rpi[10] = (uint8_t) ((mech_states_u >> 24) & 0xFF);
 
-  transmit_to_rpi[16] = camera_signal;
+  transmit_to_rpi[11] = (uint8_t) (get_pts () - PTS_OFFSET);
+
+  transmit_to_rpi[12] = camera_signal;
 }
 
 void

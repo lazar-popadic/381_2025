@@ -35,7 +35,7 @@ typedef struct st_robot_base
   float w_max;					// [deg/s]
   float a_max;					// [mm/ms * 1/ms]
   float alpha_max;				// [deg/s * 1/ms]
-  float j_max;					// [mm/ms * 1/ms^2]	// TODO: proveri jedinice
+  float j_max;					// [mm/ms * 1/ms^2]
   float j_rot_max;				// [deg/s * 1/ms^2]
 
   // control signals
@@ -57,29 +57,33 @@ typedef struct st_robot_base
   int8_t obstacle_dir;			// koji senzori su upaljeni
   uint8_t regulation_status :1;	// status regulacije
 
-} struct_robot_base;
+} robot_base;
 
 typedef struct st_mechanism_states
 {
-  uint8_t lift_front :2;	// 3 pozicije: down = 0, drop = 1, up = 2
-  uint8_t lift_back :2;
+  uint32_t lift_front :2;	// 4 pozicije: down = 0, carry = 1, drop = 2, up = 3
+  uint32_t lift_front_speed :1;
+  uint32_t lift_back :2;
+  uint32_t lift_back_speed :1;
 
-  uint8_t grtl_fol :2;		// 3 pozicije: close = 0, grip = 1, open = 2
-  uint8_t grtl_fil :2;
-  uint8_t grtl_for :2;
-  uint8_t grtl_fir :2;
-  uint8_t grtl_bol :2;
-  uint8_t grtl_bil :2;
-  uint8_t grtl_bor :2;
-  uint8_t grtl_bir :2;
+  uint32_t grtl_fo :2;		// 3 pozicije: close = 0, grip = 1, open = 2
+  uint32_t grtl_fo_speed :1;
+  uint32_t grtl_fi :2;
+  uint32_t grtl_fi_speed :1;
+  uint32_t grtl_bo :2;
+  uint32_t grtl_bo_speed :1;
+  uint32_t grtl_bi :2;
+  uint32_t grtl_bi_speed :1;
 
-  uint8_t ruc_front :2;		// 3 pozicije: up = 0, mid = 1, down = 2
-  uint8_t ruc_back :2;
+  uint32_t ruc_front :2;		// 3 pozicije: up = 0, mid = 1, down = 2
+  uint32_t ruc_front_speed :1;
+  uint32_t ruc_back :2;
+  uint32_t ruc_back_speed :1;
 
-  int8_t gurl :2;			// 3 pozicije: front = -1, mid = 0, back = 1
+  uint32_t gurl :2;			// 3 pozicije: front = 1, mid = 0, back = 2
+  uint32_t gurl_speed :1;
 
-  uint8_t bnr :2;			// 4 pozicije: start = 0, drop_1 = 1, drop_2 = 2, drop_3 = 3
-} struct_mechanism_states;
+} mech_states;
 
 typedef struct st_pid
 {
@@ -95,7 +99,7 @@ typedef struct st_pid
   float err_dif;
   float sum_lmt;
 
-} struct_pid;
+} pid;
 
 typedef struct st_tactic_num
 {
@@ -113,6 +117,6 @@ typedef struct curve
   int num_equ_pts;
   float dis;
   float max_ang_change;
-} st_curve;
+} curve;
 
 #endif /* INC_STRUCTS_H_ */

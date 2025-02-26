@@ -22,7 +22,7 @@ int16_t v_r_diff = 0;
 
 volatile int16_t encoder_sum_left;		// [inc]
 volatile int16_t encoder_sum_right;		// [inc]
-static volatile struct_robot_base *base_ptr;
+static volatile robot_base *base_ptr;
 
 void
 odometry_init ()

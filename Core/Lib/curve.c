@@ -9,8 +9,8 @@
 
 int avoid_obst_glb = 0;
 
-int
-create_curve (st_curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst)
+void
+create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst)
 {
   curve_ptr->max_ang_change = 0;
   static float p0_x;
@@ -22,7 +22,7 @@ create_curve (st_curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int 
   static float p3_x;
   static float p3_y;
 
-  wrap180_ptr(&phi_ref);
+  wrap180_ptr (&phi_ref);
   p0_x = get_robot_base ()->x;
   p0_y = get_robot_base ()->y;
 
@@ -36,25 +36,17 @@ create_curve (st_curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int 
   p3_y = y_ref;
 
   curve_ptr->dis = 0;
-// TODO: dovde
-  if (cubic_bezier_pts (curve_ptr, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y))
-	return 1;
+  cubic_bezier_pts (curve_ptr, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 
   curve_ptr->equ_pts_x = (float*) malloc ((curve_ptr->dis / POINT_DISTANCE + 2) * sizeof(float));
   curve_ptr->equ_pts_y = (float*) malloc ((curve_ptr->dis / POINT_DISTANCE + 2) * sizeof(float));
 
   equ_coords (curve_ptr);
-  if (avoid_obst == 1)
-	{
-	  avoid_obst_glb = 1;
-	}
-  else
-	avoid_obst_glb = 0;
-  return 0;
+  avoid_obst_glb = avoid_obst;
 }
 
-int
-cubic_bezier_pts (st_curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y)
+void
+cubic_bezier_pts (curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y)
 {
   for (int i = 0; i < BEZIER_RESOLUTION; i++)
 	{
@@ -68,11 +60,10 @@ cubic_bezier_pts (st_curve *curve_ptr, float p0_x, float p0_y, float p1_x, float
 				  + (curve_ptr->pts_y[i] - curve_ptr->pts_y[i - 1]) * (curve_ptr->pts_y[i] - curve_ptr->pts_y[i - 1]));
 		}
 	}
-  return 0;
 }
 
 void
-equ_coords (st_curve *curve_ptr)
+equ_coords (curve *curve_ptr)
 {
   float temp_length = 0;
   float cur_dis = 0;

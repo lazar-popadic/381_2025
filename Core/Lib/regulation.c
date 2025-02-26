@@ -29,7 +29,7 @@ static int8_t phase = 0;
 static int8_t direction;
 static uint8_t position_cnt = 1;
 
-static st_curve *curve_ptr;
+static curve *curve_ptr;
 static int16_t curve_cnt = 0;
 
 static float v_err = 0;				// [ms/ms]
@@ -46,24 +46,25 @@ static float phi_prim_err = 0;		// [deg]
 static float phi_prim_1_err = 0;	// [deg]
 static int8_t cont_move = 0;
 
-static volatile struct_robot_base *base_ptr;
+static volatile robot_base *base_ptr;
 
-static volatile struct_pid d_loop;
-static volatile struct_pid phi_loop;
-static volatile struct_pid phi_curve_loop;
-static volatile struct_pid v_loop;
-static volatile struct_pid w_loop;
+static volatile pid d_loop;
+static volatile pid phi_loop;
+static volatile pid phi_curve_loop;
+static volatile pid v_loop;
+static volatile pid w_loop;
 
 void
 regulation_init ()
 {
   base_ptr = get_robot_base ();
-  // TODO: sve ove vrednosti postavi
   init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
   init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
+  // TODO: jos ovo
   init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
   init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
   init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
+  curve_ptr = (curve*) malloc (sizeof(curve));
 }
 
 void
@@ -84,7 +85,6 @@ velocity_loop ()
   base_ptr->motor_l_dir = get_sign (base_ptr->motor_l_ctrl);
   // u uint su idalje stare vrednosti, u float su nove tj. reference
   // u motor_*_ctrl upisuje apsolutnu vrednost
-  // TODO: ovo sam ispravio, bio je problem sa minusom, dodao *dir na ctrl_uint, u funkciji za rampu
   base_ptr->motor_r_ctrl = abs_min (
 	  base_ptr->motor_r_ctrl,
 	  vel_ramp_up ((float) (base_ptr->motor_r_ctrl_uint * base_ptr->motor_r_dir), base_ptr->motor_r_ctrl, MAX_PWM_CHANGE));
@@ -118,12 +118,9 @@ position_loop ()
 		  rotate ();
 		  break;
 		case 0:
-		  base_ptr->v_ref = 0;
-		  base_ptr->w_ref = 0;
-//		  pos_hold ();
-		  // TODO:	ovde ako izgubi poziciju usled poremecaja, da se vrati u tip 1,
-		  //		ili jos bolje samo da radi istovremenu regulaciju po phi i d,
-		  //		to moze sve vreme da radi svakako
+//		  base_ptr->v_ref = 0;
+//		  base_ptr->w_ref = 0;
+		  pos_hold ();
 		  break;
 		case 1:
 		  go_to_xy ();
@@ -225,14 +222,16 @@ pos_hold ()
 	direction = 1;
   else
 	direction = -1;
-  d = direction * sqrt (x_err * x_err + y_err * y_err);
+
+  d = sqrt (x_err * x_err + y_err * y_err);
   d_proj = d * cos (phi_err * M_PI / 180);
+  d *= direction;
 
   if (fabs (d_proj) > D_TOL)
 	{
 	  base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 	  if (fabs (phi_err) > 90)
-		base_ptr->v_ref = -calc_pid (&d_loop, d);
+		base_ptr->v_ref = calc_pid (&d_loop, -d);
 	  else
 		base_ptr->v_ref = calc_pid (&d_loop, d);
 	}
@@ -445,20 +444,15 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 
   return move_status;
 }
-/*
 
- void move_on_path(float x, float y, float phi, int dir, bool cont, float cruising_vel)
- {
- movement_started();
- set_reg_type(2);
- set_curve_ptr((curve *)malloc(sizeof(curve)));
- create_curve(get_curve_ptr(), create_target(x, y, phi), dir);
- // if (create_curve(get_curve_ptr(), create_target(x, y, phi), dir))
- // return 1;    // TODO: ovde uradi testiranje drugih krivih
- set_dir(dir);
- cont_move = cont;
- set_cruising_vel(cruising_vel);
- }
-
- */
+// void move_on_path(float x, float y, float phi, int dir, bool cont, float cruising_vel)
+// {
+// movement_started();
+// set_reg_type(2);
+// set_curve_ptr((curve *)malloc(sizeof(curve)));
+// create_curve(get_curve_ptr(), create_target(x, y, phi), dir);
+// set_dir(dir);
+// cont_move = cont;
+// set_cruising_vel(cruising_vel);
+// }
 

@@ -7,8 +7,8 @@
 
 #include "main.h"
 
-volatile struct_robot_base *base_ptr;
-static volatile struct_robot_base base;
+volatile robot_base *base_ptr;
+static volatile robot_base base;
 
 void
 base_init ()
@@ -59,7 +59,7 @@ base_init ()
   base_ptr->movement_finished = 0;
 }
 
-volatile struct_robot_base*
+volatile robot_base*
 get_robot_base ()
 {
   return base_ptr;

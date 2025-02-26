@@ -163,7 +163,7 @@ main (void)
 			{
 			  start_match ();
 			  main_fsm_case = 1;
-			  // TODO: ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
+			  // ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
 			  set_regulation_status (1);
 			}
 		  break;
