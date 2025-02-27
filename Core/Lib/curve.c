@@ -38,8 +38,8 @@ create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir
   curve_ptr->dis = 0;
   cubic_bezier_pts (curve_ptr, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 
-  curve_ptr->equ_pts_x = (float*) malloc ((curve_ptr->dis / POINT_DISTANCE + 2) * sizeof(float));
-  curve_ptr->equ_pts_y = (float*) malloc ((curve_ptr->dis / POINT_DISTANCE + 2) * sizeof(float));
+//  curve_ptr->equ_pts_x = (float*) malloc ((curve_ptr->dis / POINT_DISTANCE + 2) * sizeof(float));
+//  curve_ptr->equ_pts_y = (float*) malloc ((curve_ptr->dis / POINT_DISTANCE + 2) * sizeof(float));
 
   equ_coords (curve_ptr);
   avoid_obst_glb = avoid_obst;

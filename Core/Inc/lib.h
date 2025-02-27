@@ -11,7 +11,7 @@
 #define V_MOVING_MIN	0.01	// [m/s]
 #define W_MOVING_MIN	1.8		// [deg/s]
 
-#define V_MAX_DEF		2.0		// [m/s]
+#define V_MAX_DEF		1.0		// [m/s]
 #define W_MAX_DEF		360.0	// [deg/s]
 #define A_MAX_DEF		0.2		// [m/s * 1/10ms]			// za 100ms dodje do 2m/s
 #define ALPHA_MAX_DEF	36		// [deg/s * 1/ms]			// za 100ms dodje do 360deg/s
@@ -34,8 +34,8 @@
 #define BEZIER_RESOLUTION 1000
 #define POINT_DISTANCE 20
 
-#define OFFS_ROBOT 400
-#define OFFS_DESIRED 520
+#define OFFS_ROBOT 500
+#define OFFS_DESIRED 500
 
 #include "structs.h"
 

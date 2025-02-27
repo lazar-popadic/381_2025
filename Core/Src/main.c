@@ -151,7 +151,7 @@ main (void)
 	  /* USER CODE END WHILE */
 
 	  /* USER CODE BEGIN 3 */
-	  HAL_UART_Transmit (&huart6, msg, 3, 10);
+//	  HAL_UART_Transmit (&huart6, msg, 3, 10);
 //	  HAL_UART_Receive (&huart6, rx, 3, 10);
 	  sys_time_s = get_time_ms () / 1000;
 
@@ -191,18 +191,26 @@ main (void)
 //			  main_fsm_case = 12;
 //			  break;
 //			}
-		  if (move_on_path(1000, -500, -90, 1, 0, V_MAX_DEF/2, 0))
+		  if (move_on_path (1000, -1000, 90, FORWARD, 0, 0.3, 0))
 			{
-			  main_fsm_case = 12;
-			  break;
+			  main_fsm_case = 2;
+			}
+//		  if (delay_nb_2 (&delay_1_start, 1000))
+//			{
+//			}
+		  break;
+		case 12:
+		  if (move_on_path (200, -1000, 180, 1, 0, 0.3, 0))
+			{
+			  main_fsm_case = 2;
 			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			{
 //			}
 		  break;
 
-		case 2:
-		  if (move_to_xy (0, 0, 1, V_MAX_DEF, W_MAX_DEF))
+		case 3:
+		  if (move_to_xy (1000, -1000, 1, V_MAX_DEF, W_MAX_DEF))
 			{
 			  main_fsm_case = 3;
 			  break;

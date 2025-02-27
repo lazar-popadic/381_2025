@@ -29,6 +29,7 @@ static int8_t phase = 0;
 static int8_t direction;
 static uint8_t position_cnt = 1;
 
+//static curve curve_var;
 static curve *curve_ptr;
 static int16_t curve_cnt = 0;
 
@@ -61,7 +62,7 @@ regulation_init ()
   init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
   init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
   // TODO: jos ovo
-  init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
+  init_pid (&phi_curve_loop, 1.2, 0.1, 0, W_MAX_DEF, W_MAX_DEF * 0.2);
   init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
   init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
   curve_ptr = (curve*) malloc (sizeof(curve));
@@ -118,9 +119,9 @@ position_loop ()
 		  rotate ();
 		  break;
 		case 0:
-//		  base_ptr->v_ref = 0;
-//		  base_ptr->w_ref = 0;
-		  pos_hold ();
+		  base_ptr->v_ref = 0;
+		  base_ptr->w_ref = 0;
+//		  pos_hold ();
 		  break;
 		case 1:
 		  go_to_xy ();
@@ -251,6 +252,7 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
   wrap180_ptr (&phi_prim_1_err);
   d = sqrt (x_err * x_err + y_err * y_err);
   d_proj = d * cos (phi_prim_1_err * M_PI / 180);
+  // TODO: treba mi predjeni put
 
   if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num) // ako ima vise od lookahead_pnt_num
 															  // preostalih tacaka, samo se okreci
@@ -286,11 +288,16 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 	  phi_prim_err = atan2 (curve_ptr->equ_pts_y[curve_ptr->num_equ_pts] - curve_ptr->equ_pts_y[curve_ptr->num_equ_pts - 1],
 							curve_ptr->equ_pts_x[curve_ptr->num_equ_pts] - curve_ptr->equ_pts_x[curve_ptr->num_equ_pts - 1]) * 180 / M_PI
 		  + (direction - 1) * 90 - base_ptr->phi;
+//	  phi_prim_err = 0;	// TODO: budz
 	  if (cont_move)
 		base_ptr->v_ref = direction * base_ptr->v_max;
 	  else
 		base_ptr->v_ref = direction * calc_pid (&d_loop, d_proj);
 	}
+//  if (cont_move)
+//	base_ptr->v_ref = direction * base_ptr->v_max;
+//  else
+//	base_ptr->v_ref = direction * calc_pid (&d_loop, d_proj);	// ovde treba duzina krive - predjeni put
   wrap180_ptr (&phi_prim_err);
 
   base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
@@ -305,9 +312,7 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 		  base_ptr->w_ref = 0;
 		  set_reg_type (0);
 		  base_ptr->movement_finished = 1;
-		  free (curve_ptr->equ_pts_x);
-		  free (curve_ptr->equ_pts_y);
-		  free (curve_ptr);
+//		  free (curve_ptr);
 //		  if (get_avoid_obst_glb ())	// TODO: zaobilazenje
 //			reset_push_pts_loop ();
 		}
@@ -425,12 +430,12 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 	  base_ptr->movement_started = 1;				// kretnja zapoceta
 	  base_ptr->movement_finished = 0;				// i nije zavrsena
 	  set_reg_type (2);
+	  direction = dir;
+	  base_ptr->v_max = v_max;
 	  create_curve (curve_ptr, x, y, phi, dir, avoid);
 	  base_ptr->x_ref = x;
 	  base_ptr->y_ref = y;
 	  base_ptr->phi_ref = phi;
-	  direction = dir;
-	  base_ptr->v_max = v_max;
 	  base_ptr->w_max = W_MAX_DEF;
 
 	}
