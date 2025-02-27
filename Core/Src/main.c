@@ -186,16 +186,16 @@ main (void)
 ////			  main_fsm_case = 12;
 //			  break;
 //			}
-		  		  if (move_to_xy(-1000, 0, -1, 0.5, 90))
-		  			{
-		  			  main_fsm_case = 12;
-		  			  break;
-		  			}
-//		  if (move_on_path(1000, -500, -90, 1, 0, V_MAX_DEF/2, 0))
+//		  if (move_to_xy (-1000, 0, -1, 0.5, 90))
 //			{
 //			  main_fsm_case = 12;
 //			  break;
 //			}
+		  if (move_on_path(1000, -500, -90, 1, 0, V_MAX_DEF/2, 0))
+			{
+			  main_fsm_case = 12;
+			  break;
+			}
 //		  if (delay_nb_2 (&delay_1_start, 1000))
 //			{
 //			}
