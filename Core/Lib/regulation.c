@@ -253,6 +253,8 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
   d = sqrt (x_err * x_err + y_err * y_err);
   d_proj = d * cos (phi_prim_1_err * M_PI / 180);
   // TODO: treba mi predjeni put
+	// Neki jeftini budz, d_total = ili curve_ptr->distance - (curve_ptr->num_equ_pts - curve_cnt)*PNT_DIS, ili sqrt(y_total_err^2 - x_total_err^2)
+	// ovo prvo vrv
 
   if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num) // ako ima vise od lookahead_pnt_num
 															  // preostalih tacaka, samo se okreci
