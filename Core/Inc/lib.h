@@ -31,7 +31,8 @@
 #define TRAP_VEL_PROFILE	0
 #define S_CURVE_VEL_PROFILE	1
 
-#define BEZIER_RESOLUTION 1000
+#define BEZIER_RESOLUTION 500
+#define MAX_EQU_PTS	200
 #define POINT_DISTANCE 20
 
 #define OFFS_ROBOT 500
@@ -72,7 +73,6 @@ get_time_ms ();
 // ax12a.h
 void
 ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart);
-
 
 // odometry.h
 void

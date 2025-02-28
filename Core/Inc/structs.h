@@ -112,11 +112,11 @@ typedef struct curve
 {
   float pts_x[BEZIER_RESOLUTION];
   float pts_y[BEZIER_RESOLUTION];
-  float equ_pts_x[400];
-  float equ_pts_y[400];
+  float equ_pts_x[MAX_EQU_PTS];
+  float equ_pts_y[MAX_EQU_PTS];
   uint16_t num_equ_pts;
   float dis;
-  float max_ang_change;
+  float goal_phi;
 } curve;
 
 #endif /* INC_STRUCTS_H_ */

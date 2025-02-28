@@ -67,7 +67,6 @@ update_transmit_buffer ()
   transmit_to_rpi[5] = rpi_phi_high;
   transmit_to_rpi[6] = rpi_phi_low;
 
-  // TODO: iz mech_states u bitove
   mech_states_u = 0;
   mech_states_u |= (get_mech_states ().lift_front & 0x3) << 0;
   mech_states_u |= (get_mech_states ().lift_front_speed & 0x1) << 2;

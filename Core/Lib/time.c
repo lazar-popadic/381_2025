@@ -18,20 +18,14 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
   sys_time_ms += match_started && 1;
 
   update_odom ();
-//  // TODO: ovo sredi, vidi da li isto robot treba da uradi kada je regulacija iskljucena i kada robot naidje na prepreku: ne treba
-//  // kada je regulacija iskljucena ne treba mi brzinska petlja
-//  // kada naidje na prepreku treba mi brzinska petlja da bi drzao poziciju
-//  // u oba slucaja poziciona treba da dobije trenutnu poziciju kao reference
+  // TODO:
   switch (get_obstacle_detected())
 	{
 	case 0:
 	  position_loop ();
 	  break;
 	case 1:
-	  // TODO: ovde bi trebalo da samo postavi brzinske reference na 0, funkciju clear_vel_ref()
-	  // i razmisli da li treba resetujes promenljivu phase
-	  // u go_to_xy treba i nista se ne gubi
-	  // u follow_curve mozda moze biti problem, ali to je ako je u samom kraju krivine, mogu da proverim da li je previse blizu kraja na pocetku zadate kretnje, i da onda imam 3 faze zapravo gde je prva samo ta provera
+	  // TODO: stop_robot() iz webots
 	  break;
 	}
   switch (get_regulation_status ())
