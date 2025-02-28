@@ -136,7 +136,7 @@ get_obstacle_detected ()
 }
 
 void
-stop_robot ()
+motors_off ()
 {
   base_ptr->v_ref = 0;
   base_ptr->w_ref = 0;

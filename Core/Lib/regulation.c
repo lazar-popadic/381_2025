@@ -25,6 +25,7 @@ pos_hold ();
 static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
 
 static int8_t reg_type = 0;
+static int8_t prev_reg_type = 0;
 static int8_t phase = 0;
 static int8_t direction;
 static uint8_t position_cnt = 1;
@@ -419,14 +420,23 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 	return move_status;
 }
 
-// void move_on_path(float x, float y, float phi, int dir, bool cont, float cruising_vel)
-// {
-// movement_started();
-// set_reg_type(2);
-// set_curve_ptr((curve *)malloc(sizeof(curve)));
-// create_curve(get_curve_ptr(), create_target(x, y, phi), dir);
-// set_dir(dir);
-// cont_move = cont;
-// set_cruising_vel(cruising_vel);
-// }
+void
+continue_moving ()
+{
+	if (prev_reg_type)	// ovde teba da udje samo nakon sto je prethodno bio pozvan stop, odnosno ako je prev_reg_type != 0
+		{
+			reg_type = prev_reg_type;
+			prev_reg_type = 0;
+		}
+}
 
+void
+stop_moving ()
+{
+	if (!prev_reg_type)			// ovde treba da udje u ovo samo jednom, kada je prev_reg_type jednak 0, ili ako je reg_type razlicit od 0
+		{
+			prev_reg_type = reg_type;
+			reg_type = 0;
+			phase = 0;
+		}
+}

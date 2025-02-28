@@ -181,17 +181,17 @@ main (void)
 //		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart1);	// PA2
 //		  HAL_Delay (200);
 
-//		  if (rot_to_phi(180, 360))
+//		  if (rot_to_phi(180, 360) == TASK_SUCCESS)
 //			{
 ////			  main_fsm_case = 12;
 //			  break;
 //			}
-//		  if (move_to_xy (-1000, 0, -1, 0.5, 90))
+//		  if (move_to_xy (-1000, 0, -1, 0.5, 90) == TASK_SUCCESS)
 //			{
 //			  main_fsm_case = 12;
 //			  break;
 //			}
-					if (move_on_path (1000, -1000, 90, FORWARD, 0, 0.3, 0))
+					if (move_on_path (1000, -1000, 90, FORWARD, 0, 0.3, 0) == TASK_SUCCESS)
 						{
 							main_fsm_case = 2;
 						}
@@ -200,7 +200,7 @@ main (void)
 //			}
 					break;
 				case 12:
-					if (move_on_path (200, -1000, 180, 1, 0, 0.3, 0))
+					if (move_on_path (200, -1000, 180, 1, 0, 0.3, 0) == TASK_SUCCESS)
 						{
 							main_fsm_case = 99;
 						}
@@ -210,7 +210,7 @@ main (void)
 					break;
 
 				case 3:
-					if (move_to_xy (1000, -1000, 1, V_MAX_DEF, W_MAX_DEF))
+					if (move_to_xy (1000, -1000, 1, V_MAX_DEF, W_MAX_DEF) == TASK_SUCCESS)
 						{
 							main_fsm_case = 3;
 							break;
