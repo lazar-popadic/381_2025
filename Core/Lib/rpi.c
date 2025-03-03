@@ -16,7 +16,7 @@
  * uint8_t 'e'
  */
 
-#define TX_LEN				14
+#define TX_LEN				10
 #define RX_LEN			8
 #define PTS_OFFSET		0
 
@@ -67,33 +67,10 @@ update_transmit_buffer ()
   transmit_to_rpi[5] = rpi_phi_high;
   transmit_to_rpi[6] = rpi_phi_low;
 
-  mech_states_u = 0;
-  mech_states_u |= (get_mech_states ().lift_front & 0x3) << 0;
-  mech_states_u |= (get_mech_states ().lift_front_speed & 0x1) << 2;
-  mech_states_u |= (get_mech_states ().lift_back & 0x3) << 3;
-  mech_states_u |= (get_mech_states ().lift_back_speed & 0x1) << 5;
-  mech_states_u |= (get_mech_states ().grtl_fo & 0x3) << 6;
-  mech_states_u |= (get_mech_states ().grtl_fo_speed & 0x1) << 8;
-  mech_states_u |= (get_mech_states ().grtl_fi & 0x3) << 9;
-  mech_states_u |= (get_mech_states ().grtl_fi_speed & 0x1) << 11;
-  mech_states_u |= (get_mech_states ().grtl_bo & 0x3) << 12;
-  mech_states_u |= (get_mech_states ().grtl_bo_speed & 0x1) << 14;
-  mech_states_u |= (get_mech_states ().grtl_bi & 0x3) << 15;
-  mech_states_u |= (get_mech_states ().grtl_bi_speed & 0x1) << 17;
-  mech_states_u |= (get_mech_states ().ruc_front & 0x3) << 18;
-  mech_states_u |= (get_mech_states ().ruc_front_speed & 0x1) << 20;
-  mech_states_u |= (get_mech_states ().ruc_back & 0x3) << 21;
-  mech_states_u |= (get_mech_states ().ruc_back_speed & 0x1) << 23;
-  mech_states_u |= (get_mech_states ().gurl & 0x3) << 24;
-  mech_states_u |= (get_mech_states ().gurl_speed & 0x1) << 26;
-  transmit_to_rpi[7] = (uint8_t) (mech_states_u & 0xFF);
-  transmit_to_rpi[8] = (uint8_t) ((mech_states_u >> 8) & 0xFF);
-  transmit_to_rpi[9] = (uint8_t) ((mech_states_u >> 16) & 0xFF);
-  transmit_to_rpi[10] = (uint8_t) ((mech_states_u >> 24) & 0xFF);
 
-  transmit_to_rpi[11] = (uint8_t) (get_pts () - PTS_OFFSET);
+  transmit_to_rpi[7] = (uint8_t) (get_pts () - PTS_OFFSET);
 
-  transmit_to_rpi[12] = camera_signal;
+  transmit_to_rpi[8] = camera_signal;
 }
 
 void

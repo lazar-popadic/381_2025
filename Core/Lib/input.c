@@ -50,7 +50,7 @@ read_switch_1 ()
 }
 
 void
-choose_tactic (struct_tactic_num *tactic)
+choose_tactic (tactic_num *tactic)
 {
   tactic->side = read_switch_S ();
   tactic->num = (read_switch_2 () << 1) + read_switch_1 ();

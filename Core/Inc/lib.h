@@ -11,32 +11,32 @@
 #define V_MOVING_MIN	0.01	// [m/s]
 #define W_MOVING_MIN	1.8		// [deg/s]
 
-#define V_MAX_DEF		1.0		// [m/s]
-#define W_MAX_DEF		360.0	// [deg/s]
-#define A_MAX_DEF		0.2		// [m/s * 1/10ms]			// za 100ms dodje do 2m/s
-#define ALPHA_MAX_DEF	36		// [deg/s * 1/ms]			// za 100ms dodje do 360deg/s
-#define J_MAX_DEF		0.016	// [mm/ms * 1/10ms^2]		// za 100ms dodje do 2m/s i sve vreme je jerk-limited
-#define J_ROT_MAX_DEF	2.88	// [deg/s * 1/10ms^2]		// za 100ms dodje do 360deg/s i sve vreme je jerk-limited
-#define CTRL_MAX		4200	// [inc]
+#define V_MAX_DEF				1.0		// [m/s]
+#define W_MAX_DEF				360.0	// [deg/s]
+#define A_MAX_DEF				0.2		// [m/s * 1/10ms]			// za 100ms dodje do 2m/s
+#define ALPHA_MAX_DEF		36		// [deg/s * 1/ms]			// za 100ms dodje do 360deg/s
+#define J_MAX_DEF				0.016	// [mm/ms * 1/10ms^2]		// za 100ms dodje do 2m/s i sve vreme je jerk-limited
+#define J_ROT_MAX_DEF		2.88	// [deg/s * 1/10ms^2]		// za 100ms dodje do 360deg/s i sve vreme je jerk-limited
+#define CTRL_MAX				4200	// [inc]
 #define MAX_PWM_CHANGE	420		// [inc/ms]					// za 10ms dodje do 4200
-#define POS_LOOP_PSC	10
+#define POS_LOOP_PSC		10
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
-#define TASK_FAIL		1
+#define TASK_FAIL			1
 
 #define FORWARD		1
 #define BACKWARD	-1
 
-#define TRAP_VEL_PROFILE	0
+#define TRAP_VEL_PROFILE		0
 #define S_CURVE_VEL_PROFILE	1
 
 #define BEZIER_RESOLUTION 500
-#define MAX_EQU_PTS	200
-#define POINT_DISTANCE 20
+#define MAX_EQU_PTS				200
+#define POINT_DISTANCE 		20
 
-#define OFFS_ROBOT 500
-#define OFFS_DESIRED 500
+#define OFFS_ROBOT 		500
+#define OFFS_DESIRED	500
 
 #include "structs.h"
 
@@ -49,6 +49,16 @@ void
 pwm_start ();
 void
 pwm_stop ();
+uint16_t
+angleToSG90 (float angle);
+void
+sg90_1_move(float angle);
+void
+sg90_2_move(float angle);
+void
+sg90_3_move(float angle);
+void
+sg90_4_move(float angle);
 
 // time.h
 void
@@ -130,7 +140,7 @@ read_switch_2 ();
 uint8_t
 read_switch_1 ();
 void
-choose_tactic (struct_tactic_num *tactic);
+choose_tactic (tactic_num *tactic);
 uint8_t
 read_sensors_front ();
 uint8_t
@@ -212,9 +222,9 @@ rot_to_xy (float x, float y, int dir, float w_max);
 int8_t
 move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid);
 void
-stop_moving();
+stop_moving ();
 void
-continue_moving();
+continue_moving ();
 
 // mechanism.h
 mech_states
@@ -283,6 +293,16 @@ void
 vacuum_front (uint8_t on);
 void
 vacuum_back (uint8_t on);
+void
+bnr_close();
+void
+bnr_1();
+void
+bnr_2();
+void
+bnr_3();
+void
+bnr_4();
 
 // curve.h
 void
