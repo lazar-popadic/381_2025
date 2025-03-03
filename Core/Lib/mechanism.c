@@ -25,20 +25,19 @@
 #define GURL_L_ID	15	// guralica left
 #define GURL_R_ID	16	// guralica right
 
-#define GRTL_OL_OPEN	511
-#define GRTL_OL_GRIP	0
-#define GRTL_OL_CLOSE	0
-#define GRTL_IL_OPEN	511
-#define GRTL_IL_GRIP	0
-#define GRTL_IL_CLOSE	0
-#define GRTL_OR_OPEN	511
-#define GRTL_OR_GRIP	600
-#define GRTL_OR_CLOSE	825
-#define GRTL_IR_OPEN	511
-#define GRTL_IR_GRIP	0
-#define GRTL_IR_CLOSE	0
+#define GRTL_OL_OPEN	530
+#define GRTL_OL_GRIP	490
+#define GRTL_OL_CLOSE	180
+#define GRTL_IL_OPEN	490
+#define GRTL_IL_GRIP	450
+#define GRTL_IL_CLOSE	280
+#define GRTL_OR_OPEN	510
+#define GRTL_OR_GRIP	570
+#define GRTL_OR_CLOSE	750
+#define GRTL_IR_OPEN	480
+#define GRTL_IR_GRIP	540
+#define GRTL_IR_CLOSE	830
 #define GRTL_SPEED_FAST		500
-#define GRTL_SPEED_MEDIUM	300
 #define GRTL_SPEED_SLOW		100
 
 #define LIFT_DOWN		950
@@ -54,7 +53,6 @@
 #define RUC_R_MID		0
 #define RUC_R_DOWN		0
 #define RUC_SPEED_FAST		500
-#define RUC_SPEED_MEDIUM	300
 #define RUC_SPEED_SLOW		100
 
 #define GURL_FULL_LEFT		1023
@@ -249,8 +247,8 @@ grtl_back_grip_outside ()
 void
 grtl_front_open_inside ()
 {
-	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_MEDIUM, huart6);
-	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_MEDIUM, huart6);
+	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fil = 2;
 	mechanism_states.grtl_fir = 2;
 }
@@ -258,8 +256,8 @@ grtl_front_open_inside ()
 void
 grtl_back_open_inside ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_MEDIUM, huart6);
-	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_MEDIUM, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_bil = 2;
 	mechanism_states.grtl_bir = 2;
 }
@@ -267,8 +265,8 @@ grtl_back_open_inside ()
 void
 grtl_front_open_outside ()
 {
-	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_MEDIUM, huart6);
-	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_MEDIUM, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_for = 2;
 }
@@ -276,8 +274,8 @@ grtl_front_open_outside ()
 void
 grtl_back_open_outside ()
 {
-	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_MEDIUM, huart6);
-	ax_move (GRTL_BOR_ID, GRTL_OR_OPEN, GRTL_SPEED_MEDIUM, huart6);
+	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BOR_ID, GRTL_OR_OPEN, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_bol = 2;
 	mechanism_states.grtl_bor = 2;
 }
@@ -301,16 +299,16 @@ ruc_back_down ()
 void
 ruc_front_mid ()
 {
-	ax_move (RUC_FL_ID, RUC_L_MID, RUC_SPEED_MEDIUM, huart6);
-	ax_move (RUC_FR_ID, RUC_R_MID, RUC_SPEED_MEDIUM, huart6);
+	ax_move (RUC_FL_ID, RUC_L_MID, RUC_SPEED_SLOW, huart6);
+	ax_move (RUC_FR_ID, RUC_R_MID, RUC_SPEED_SLOW, huart6);
 	mechanism_states.ruc_front = 1;
 }
 
 void
 ruc_back_mid ()
 {
-	ax_move (RUC_BL_ID, RUC_L_MID, RUC_SPEED_MEDIUM, huart6);
-	ax_move (RUC_BR_ID, RUC_R_MID, RUC_SPEED_MEDIUM, huart6);
+	ax_move (RUC_BL_ID, RUC_L_MID, RUC_SPEED_SLOW, huart6);
+	ax_move (RUC_BR_ID, RUC_R_MID, RUC_SPEED_SLOW, huart6);
 	mechanism_states.ruc_back = 1;
 }
 
