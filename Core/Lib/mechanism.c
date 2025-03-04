@@ -48,10 +48,10 @@
 
 #define RUC_L_UP		511
 #define RUC_L_MID		0
-#define RUC_L_DOWN		0
+#define RUC_L_DOWN		180
 #define RUC_R_UP		511
 #define RUC_R_MID		0
-#define RUC_R_DOWN		0
+#define RUC_R_DOWN		845
 #define RUC_SPEED_FAST		500
 #define RUC_SPEED_SLOW		100
 
