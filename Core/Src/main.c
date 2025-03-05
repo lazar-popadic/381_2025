@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
+#include "i2c.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -50,6 +51,7 @@
 tactic_num tactic;
 uint8_t main_fsm_case = 0;
 uint32_t delay_1_start = 0xFFFFFFFF;
+char *tactic_name = "tactic";
 
 /* test promenljive */
 volatile uint8_t ax_id_test = 14;
@@ -58,7 +60,6 @@ volatile uint16_t ax_speed_test = 200;
 int8_t dir_test = 1;
 uint8_t in_0 = 0, in_1 = 0, in_2 = 0, in_3 = 0;
 uint8_t out_0 = 0, out_1 = 0, out_2 = 0, out_3 = 0;
-float sg90_1 = 90, sg90_2 = 90, sg90_3 = 90, sg90_4 = 90;
 
 /* samo promena u glavnom programu */
 uint16_t sys_time_s = 0;
@@ -113,6 +114,7 @@ int main(void)
   MX_USART6_UART_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
 	pwm_start ();
 	time_start ();
@@ -121,6 +123,14 @@ int main(void)
 	regulation_init ();
 	rpi_init ();
 	sg90_init();
+
+	/* Display */
+  HD44780_Init (2);
+  HD44780_NoBacklight ();
+  HD44780_Clear ();
+  HD44780_SetCursor (0, 0);
+  HD44780_PrintStr (" +381  Robotics ");
+  HD44780_Backlight ();
 
   /* USER CODE END 2 */
 
@@ -131,9 +141,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-//	  HAL_UART_Transmit (&huart6, msg, 3, 10);
-//	  HAL_UART_Receive (&huart6, rx, 3, 10);
 			sys_time_s = get_time_ms () / 1000;
+			// TODO: points, tactic_str
+			display_write (100, sys_time_s, tactic_name);
 
 			switch (main_fsm_case)
 				{

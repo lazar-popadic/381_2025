@@ -35,6 +35,7 @@ extern "C" {
 #include <stdint.h>
 #include <math.h>
 #include <stdlib.h>
+#include "liquidcrystal_i2c.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
