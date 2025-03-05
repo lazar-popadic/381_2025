@@ -120,11 +120,7 @@ int main(void)
 	odometry_init ();
 	regulation_init ();
 	rpi_init ();
-	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_1);
-	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_4);
-	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_2);
-
+	sg90_init();
 
   /* USER CODE END 2 */
 
@@ -160,11 +156,6 @@ int main(void)
 //		  vacuum_3(out_3);
 
 		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);	// PA11
-//		  HAL_Delay (200);
-					sg90_1_move (sg90_1);
-					sg90_2_move (sg90_2);
-					sg90_3_move (sg90_3);
-					sg90_4_move (sg90_4);
 
 //		  if (rot_to_phi(180, 360) == TASK_SUCCESS)
 //			{

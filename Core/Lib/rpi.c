@@ -5,20 +5,17 @@
  *      Author: lazar
  */
 
-/* message: 10 bytes
+/* message: 9 bytes
  * uint8_t 's'
  * int16_t x = (-15000, +15000)			->	samo *10
  * int16_t y = (-10000, +10000)			->	samo *10
  * int16_t phi = (0, +3600)					->	wrap360 umesto wrap180 i *10
- * uint32_t mech_pos						->	lift_front, lift_back, grtl_fo, grtl_fi, grtl_bo, grtl_bi, ruc_front, ruc_back, gurl
- * uint8_t points = (0, 255)
  * uint8_t camera_signal
  * uint8_t 'e'
  */
 
-#define TX_LEN				10
-#define RX_LEN			8
-#define PTS_OFFSET		0
+#define TX_LEN				9
+#define RX_LEN				8
 
 #include "main.h"
 #include <stdio.h>
@@ -38,8 +35,8 @@ char camera_signal = '0';
 void
 rpi_init ()
 {
-  HAL_UART_Receive_DMA (&huart1, recieved_from_rpi, 8);
-  HAL_UART_Transmit_DMA (&huart1, transmit_to_rpi, 8);
+  HAL_UART_Receive_DMA (&huart1, recieved_from_rpi, RX_LEN);
+  HAL_UART_Transmit_DMA (&huart1, transmit_to_rpi, TX_LEN);
   base_ptr = get_robot_base ();
   transmit_to_rpi[0] = 's';
   transmit_to_rpi[TX_LEN - 1] = 'e';
@@ -67,14 +64,11 @@ update_transmit_buffer ()
   transmit_to_rpi[5] = rpi_phi_high;
   transmit_to_rpi[6] = rpi_phi_low;
 
-
-  transmit_to_rpi[7] = (uint8_t) (get_pts () - PTS_OFFSET);
-
   transmit_to_rpi[8] = camera_signal;
 }
 
 void
-edit_recieved_odom ()
+update_recieve_buffer ()
 {
   if (recieved_from_rpi[0] == 's' && recieved_from_rpi[RX_LEN] == 'e')
 	{

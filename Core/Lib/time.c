@@ -18,7 +18,7 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 	sys_time_ms += match_started && 1;
 
 	update_odom ();
-	// TODO:
+	check_sensors ();
 	switch (get_obstacle_detected ())
 		{
 		case 0:
@@ -45,7 +45,7 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 
 	// rpi communication
 	update_transmit_buffer ();
-	edit_recieved_odom ();
+	update_recieve_buffer ();
 }
 
 uint8_t

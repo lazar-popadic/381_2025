@@ -49,6 +49,8 @@ void
 pwm_start ();
 void
 pwm_stop ();
+void
+sg90_init();
 uint16_t
 angleToSG90 (float angle);
 void
@@ -126,7 +128,7 @@ rpi_init ();
 void
 update_transmit_buffer ();
 void
-edit_recieved_odom ();
+update_recieve_buffer ();
 
 // input.h
 uint8_t
