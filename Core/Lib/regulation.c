@@ -192,7 +192,7 @@ go_to_xy ()
 			d = sqrt (x_err * x_err + y_err * y_err);
 			d_proj = d * cos (phi_err * M_PI / 180);
 
-			base_ptr->v_ref = calc_pid (&d_loop, d_proj);
+			base_ptr->v_ref = calc_pid (&d_loop, d_proj*direction);
 
 			if (fabs (d) > D_2_TOL)
 				base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
@@ -370,6 +370,8 @@ move_on_dir (float distance, int8_t dir, float v_max)
 			set_reg_type (1);
 			direction = dir;
 			base_ptr->v_max = v_max;
+			base_ptr->x_ref = base_ptr->x + dir * distance * cos (base_ptr->phi * M_PI / 180);
+			base_ptr->y_ref = base_ptr->y + dir * distance * sin (base_ptr->phi * M_PI / 180);
 			base_ptr->phi_ref = base_ptr->phi;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje

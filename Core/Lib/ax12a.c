@@ -34,7 +34,7 @@ ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart)
 	uint8_t ax_move[] =
 		{ 0xff, 0xff, id, 0x07, 0x03, 0x1E, angle_low, angle_high, speed_low, speed_high, checksum };
 
-	HAL_UART_Transmit (&huart, ax_move, 11, 100);
-	HAL_Delay (10);
+	HAL_UART_Transmit (&huart, ax_move, 11, 200);
+	HAL_Delay (50);
 }
 

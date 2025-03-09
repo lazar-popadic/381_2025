@@ -234,6 +234,10 @@ get_mech_states ();
 void
 mechanism_init ();
 void
+prepare_front ();
+void
+prepare_back ();
+void
 lift_front_up ();
 void
 lift_front_down ();

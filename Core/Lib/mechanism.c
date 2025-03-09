@@ -18,48 +18,48 @@
 #define GRTL_BOR_ID 6
 #define LIFT_F_ID	5	// lift front
 #define LIFT_B_ID	10	// lift back
-#define RUC_FL_ID	11	// rucica front left
-#define RUC_FR_ID	12
-#define RUC_BL_ID	14
-#define RUC_BR_ID	13	// rucica back right
+#define RUC_FL_ID	13	// rucica front left
+#define RUC_FR_ID	14
+#define RUC_BL_ID	11
+#define RUC_BR_ID	12	// rucica back right
 #define GURL_L_ID	15	// guralica left
 #define GURL_R_ID	16	// guralica right
 
 #define GRTL_OL_OPEN	530
-#define GRTL_OL_GRIP	490
+#define GRTL_OL_GRIP	460
 #define GRTL_OL_CLOSE	180
 #define GRTL_IL_OPEN	490
-#define GRTL_IL_GRIP	450
+#define GRTL_IL_GRIP	430
 #define GRTL_IL_CLOSE	280
 #define GRTL_OR_OPEN	510
-#define GRTL_OR_GRIP	570
-#define GRTL_OR_CLOSE	750
+#define GRTL_OR_GRIP	590
+#define GRTL_OR_CLOSE	830
 #define GRTL_IR_OPEN	480
-#define GRTL_IR_GRIP	540
-#define GRTL_IR_CLOSE	830
+#define GRTL_IR_GRIP	580
+#define GRTL_IR_CLOSE	800
 #define GRTL_SPEED_FAST		500
 #define GRTL_SPEED_SLOW		100
 
-#define LIFT_DOWN		950
-#define LIFT_UP			0
-#define LIFT_DROP		100
+#define LIFT_DOWN		0
+#define LIFT_UP			1023
+#define LIFT_DROP		900
 #define LIFT_SPEED_FAST	400
-#define LIFT_SPEED_SLOW	100
+#define LIFT_SPEED_SLOW	200
 
-#define RUC_L_UP		511
-#define RUC_L_MID		0
+#define RUC_L_UP			511
+#define RUC_L_MID			320
 #define RUC_L_DOWN		180
-#define RUC_R_UP		511
-#define RUC_R_MID		0
+#define RUC_R_UP			511
+#define RUC_R_MID			705
 #define RUC_R_DOWN		845
 #define RUC_SPEED_FAST		500
-#define RUC_SPEED_SLOW		100
+#define RUC_SPEED_SLOW		250
 
-#define GURL_FULL_LEFT		1023
-#define GURL_MID			511
-#define GURL_FULL_RIGHT		0
-#define GURL_FAST		500
-#define GURL_SLOW		100
+#define GURL_FULL_LEFT		973
+#define GURL_MID					511
+#define GURL_FULL_RIGHT		50
+#define GURL_FAST					500
+#define GURL_SLOW					150
 
 mech_states mechanism_states;
 
@@ -133,10 +133,11 @@ lift_back_drop ()
 void
 grtl_front_open ()
 {
-	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
+	HAL_Delay (20);
+	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 2;
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_fir = 2;
@@ -353,65 +354,70 @@ gurl_mid ()
 }
 
 void
-vacuum_front (uint8_t on)
-{
-	vacuum_0 (on);
-	vacuum_1 (on);
-}
-
-void
 vacuum_back (uint8_t on)
 {
-	vacuum_2 (on);
-	vacuum_3 (on);
+	vacuum_0 (on);
+	HAL_Delay (20);
+	vacuum_1 (on);
+	HAL_Delay (20);
+
 }
 
 void
-bnr_close()
+vacuum_front (uint8_t on)
 {
-	sg90_1_move(0);
-	sg90_2_move(0);
-	sg90_3_move(0);
-	sg90_4_move(0);
+	vacuum_2 (on);
+	HAL_Delay (20);
+	vacuum_3 (on);
+	HAL_Delay (20);
+}
+
+void
+bnr_close ()
+{
+	sg90_1_move (0);
+	sg90_2_move (0);
+	sg90_3_move (0);
+	sg90_4_move (0);
 	mechanism_states.bnr = 0;
 }
 
 void
-bnr_1()
+bnr_1 ()
 {
-	sg90_1_move(90);
-	sg90_2_move(0);
-	sg90_3_move(0);
-	sg90_4_move(0);
+	sg90_1_move (90);
+	sg90_2_move (0);
+	sg90_3_move (0);
+	sg90_4_move (0);
 	mechanism_states.bnr = 1;
 }
 
 void
-bnr_2()
+bnr_2 ()
 {
-	sg90_1_move(90);
-	sg90_2_move(90);
-	sg90_3_move(0);
-	sg90_4_move(0);
+	sg90_1_move (90);
+	sg90_2_move (90);
+	sg90_3_move (0);
+	sg90_4_move (0);
 	mechanism_states.bnr = 2;
 }
 
 void
-bnr_3()
+bnr_3 ()
 {
-	sg90_1_move(90);
-	sg90_2_move(90);
-	sg90_3_move(90);
-	sg90_4_move(0);
+	sg90_1_move (90);
+	sg90_2_move (90);
+	sg90_3_move (90);
+	sg90_4_move (0);
 	mechanism_states.bnr = 3;
 }
 
 void
-bnr_4()
+bnr_4 ()
 {
-	sg90_1_move(90);
-	sg90_2_move(90);
-	sg90_3_move(90);
-	sg90_4_move(90);
+	sg90_1_move (90);
+	sg90_2_move (90);
+	sg90_3_move (90);
+	sg90_4_move (90);
 	mechanism_states.bnr = 4;
 }
