@@ -25,18 +25,18 @@
 #define GURL_L_ID	15	// guralica left
 #define GURL_R_ID	16	// guralica right
 
-#define GRTL_OL_OPEN	530
-#define GRTL_OL_GRIP	460
-#define GRTL_OL_CLOSE	180
-#define GRTL_IL_OPEN	490
-#define GRTL_IL_GRIP	430
-#define GRTL_IL_CLOSE	280
-#define GRTL_OR_OPEN	510
-#define GRTL_OR_GRIP	590
-#define GRTL_OR_CLOSE	830
-#define GRTL_IR_OPEN	480
-#define GRTL_IR_GRIP	580
-#define GRTL_IR_CLOSE	800
+#define GRTL_OL_OPEN		550
+#define GRTL_OL_GRIP		430
+#define GRTL_OL_CLOSE		180
+#define GRTL_IL_OPEN		490
+#define GRTL_IL_GRIP		430
+#define GRTL_IL_CLOSE		280
+#define GRTL_OR_OPEN		472
+#define GRTL_OR_GRIP		592
+#define GRTL_OR_CLOSE		842
+#define GRTL_IR_OPEN		532
+#define GRTL_IR_GRIP		592
+#define GRTL_IR_CLOSE		742
 #define GRTL_SPEED_FAST		500
 #define GRTL_SPEED_SLOW		100
 
@@ -53,7 +53,7 @@
 #define RUC_R_MID			705
 #define RUC_R_DOWN		845
 #define RUC_SPEED_FAST		500
-#define RUC_SPEED_SLOW		250
+#define RUC_SPEED_SLOW		300
 
 #define GURL_FULL_LEFT		973
 #define GURL_MID					511
