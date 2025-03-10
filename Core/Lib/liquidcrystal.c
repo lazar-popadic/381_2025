@@ -14,6 +14,8 @@ uint8_t dpControl;
 uint8_t dpMode;
 uint8_t dpRows;
 uint8_t dpBacklight;
+uint32_t delay_start = 0xffffffff;
+uint8_t init_fsm_case = 0;
 
 static void
 SendCommand (uint8_t);
@@ -31,18 +33,14 @@ static void
 DelayInit (void);
 static void
 DelayUS (uint32_t);
-
-uint8_t special1[8] =
-	{ 0b00000, 0b11001, 0b11011, 0b00110, 0b01100, 0b11011, 0b10011, 0b00000 };
-
-uint8_t special2[8] =
-	{ 0b11000, 0b11000, 0b00110, 0b01001, 0b01000, 0b01001, 0b00110, 0b00000 };
+static uint8_t
+DelayUS_nb (uint32_t);
 
 static char snum[4];
 static char snum_time[4];
 
 void
-display_write (uint8_t points, uint8_t time, char *tactic_str)
+display_write_all (uint8_t points, uint8_t time, char *tactic_str)
 {
 	itoa (points, snum, 10);
 	itoa (time, snum_time, 10);
@@ -61,59 +59,101 @@ display_write (uint8_t points, uint8_t time, char *tactic_str)
 }
 
 void
+display_write_numbers (uint8_t points, uint8_t time)
+{
+	itoa (points, snum, 10);
+	itoa (time, snum_time, 10);
+
+	if (points < 100)
+		HD44780_SetCursor (14, 0);
+	else
+		HD44780_SetCursor (13, 0);
+	HD44780_PrintStr (snum);
+	if (time < 100)
+		HD44780_SetCursor (14, 1);
+	else
+		HD44780_SetCursor (13, 1);
+	HD44780_PrintStr (snum_time);
+}
+
+uint8_t
 HD44780_Init (uint8_t rows)
 {
-	dpRows = rows;
-
-	dpBacklight = LCD_BACKLIGHT;
-
-	dpFunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
-
-	if (dpRows > 1)
+	switch (init_fsm_case)
 		{
-			dpFunction |= LCD_2LINE;
+		case 0:
+			dpRows = rows;
+			dpBacklight = LCD_BACKLIGHT;
+			dpFunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+			if (dpRows > 1)
+				{
+					dpFunction |= LCD_2LINE;
+				}
+			else
+				{
+					dpFunction |= LCD_5x10DOTS;
+				}
+			init_fsm_case = 1;
+			break;
+
+		case 1:
+			/* Wait for initialization */
+			DelayInit ();
+			if (DelayUS_nb (50000))
+				init_fsm_case = 2;
+			break;
+
+		case 2:
+			ExpanderWrite (dpBacklight);
+			if (DelayUS_nb (1000000))
+				init_fsm_case = 3;
+			break;
+
+		case 3:
+			/* 4bit Mode */
+			Write4Bits (0x03 << 4);
+			if (DelayUS_nb (4500))
+				init_fsm_case = 4;
+			break;
+
+		case 4:
+			Write4Bits (0x03 << 4);
+			if (DelayUS_nb (4500))
+				init_fsm_case = 5;
+			break;
+
+		case 5:
+			Write4Bits (0x03 << 4);
+			if (DelayUS_nb (4500))
+				init_fsm_case = 6;
+			break;
+
+		case 6:
+			Write4Bits (0x02 << 4);
+			if (DelayUS_nb (100))
+				init_fsm_case = 7;
+			break;
+
+		case 7:
+			/* Display Control */
+			SendCommand (LCD_FUNCTIONSET | dpFunction);
+			dpControl = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
+			HD44780_Display ();
+			HD44780_Clear ();
+			/* Display Mode */
+			dpMode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+			SendCommand (LCD_ENTRYMODESET | dpMode);
+			if (DelayUS_nb (4500))
+				init_fsm_case = 8;
+			break;
+
+		case 8:
+			HD44780_Home ();
+			return 1;
+			break;
+
 		}
-	else
-		{
-			dpFunction |= LCD_5x10DOTS;
-		}
-
-	/* Wait for initialization */
-	DelayInit ();
-	HAL_Delay (50);
-
-	ExpanderWrite (dpBacklight);
-	HAL_Delay (1000);
-
-	/* 4bit Mode */
-	Write4Bits (0x03 << 4);
-	DelayUS (4500);
-
-	Write4Bits (0x03 << 4);
-	DelayUS (4500);
-
-	Write4Bits (0x03 << 4);
-	DelayUS (4500);
-
-	Write4Bits (0x02 << 4);
-	DelayUS (100);
-
-	/* Display Control */
-	SendCommand (LCD_FUNCTIONSET | dpFunction);
-
-	dpControl = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
-	HD44780_Display ();
-	HD44780_Clear ();
-
-	/* Display Mode */
-	dpMode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
-	SendCommand (LCD_ENTRYMODESET | dpMode);
-	DelayUS (4500);
-
-	HD44780_CreateSpecialChar (0, special1);
-	HD44780_CreateSpecialChar (1, special2);
-
-	HD44780_Home ();
+	return 0;
 }
 
 void
@@ -351,4 +391,17 @@ DelayUS (uint32_t us)
 			cnt = DWT->CYCCNT - start;
 		}
 	while (cnt < cycles);
+}
+
+static uint8_t
+DelayUS_nb (uint32_t us)
+{
+	uint32_t cycles = (SystemCoreClock / 1000000L) * us;
+	delay_start = uint_min (delay_start, DWT->CYCCNT);
+
+	if (DWT->CYCCNT <= delay_start + cycles)
+		return 0;
+
+	delay_start = 0xffffffff;
+	return 1;
 }

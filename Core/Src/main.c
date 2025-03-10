@@ -46,11 +46,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
-/* promene i van glavnog programa: ISR, debugging...*/
+uint8_t sys_time_s = 0;
 tactic_num tactic;
 uint16_t main_fsm_case = 0;
 uint32_t delay_1_start = 0xFFFFFFFF;
+
+uint8_t points = 0;
+uint16_t display_fsm_case = 0;
+uint32_t display_delay = 0xFFFFFFFF;
 char *tactic_name = "tactic";
 
 /* test promenljive */
@@ -61,9 +64,6 @@ int8_t dir_test = 1;
 uint8_t in_0 = 0, in_1 = 0, in_2 = 0, in_3 = 0;
 uint8_t out_0 = 0, out_1 = 0, out_2 = 0, out_3 = 0;
 uint8_t sg90_1, sg90_2;
-
-/* samo promena u glavnom programu */
-uint16_t sys_time_s = 0;
 
 /* USER CODE END PV */
 
@@ -127,13 +127,6 @@ main (void)
 	rpi_init ();
 	sg90_init ();
 
-	/* Display */
-//  HD44780_Init (2);
-//  HD44780_NoBacklight ();
-//  HD44780_Clear ();
-//  HD44780_SetCursor (0, 0);
-//  HD44780_PrintStr (" +381  Robotics ");
-//  HD44780_Backlight ();
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -144,8 +137,6 @@ main (void)
 
 			/* USER CODE BEGIN 3 */
 			sys_time_s = get_time_ms () / 1000;
-			// TODO: points, tactic_str
-//			display_write (100, sys_time_s, tactic_name);
 
 			switch (main_fsm_case)
 				{
@@ -154,6 +145,7 @@ main (void)
 					if (cinc_db () || 1)	// TODO: ISKLJUCEN JE CINC
 						{
 							start_match ();
+							display_fsm_case = 3;
 							main_fsm_case = 100;
 							// ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
 							set_regulation_status (1);
@@ -273,7 +265,7 @@ main (void)
 					break;
 
 				case 105:
-					ruc_front_down();
+					ruc_front_down ();
 					if (delay_nb_2 (&delay_1_start, 100))
 						{
 							main_fsm_case = 106;
@@ -281,7 +273,7 @@ main (void)
 					break;
 
 				case 106:
-					vacuum_front(0);
+					vacuum_front (0);
 					if (delay_nb_2 (&delay_1_start, 100))
 						{
 							main_fsm_case = 107;
@@ -289,7 +281,7 @@ main (void)
 					break;
 
 				case 107:
-					ruc_front_up();
+					ruc_front_up ();
 					if (delay_nb_2 (&delay_1_start, 1000))
 						{
 							main_fsm_case = 108;
@@ -297,7 +289,7 @@ main (void)
 					break;
 
 				case 108:
-					lift_front_up();
+					lift_front_up ();
 					if (delay_nb_2 (&delay_1_start, 1000))
 						{
 							main_fsm_case = 109;
@@ -312,7 +304,7 @@ main (void)
 					break;
 
 				case 110:
-					lift_front_drop();
+					lift_front_drop ();
 					if (delay_nb_2 (&delay_1_start, 100))
 						{
 							main_fsm_case = 111;
@@ -320,7 +312,7 @@ main (void)
 					break;
 
 				case 111:
-					grtl_front_open();
+					grtl_front_open ();
 					if (delay_nb_2 (&delay_1_start, 100))
 						{
 							main_fsm_case = 112;
@@ -345,7 +337,48 @@ main (void)
 					break;
 
 					//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);	// PA11
+				}
 
+			/* Display FSM */
+			switch (display_fsm_case)
+				{
+
+				/* Inicijalizacija displeja */
+				case 0:
+					if (HD44780_Init (2))
+						display_fsm_case = 1;
+					break;
+
+				/* Ispis pre cinca */
+				case 1:
+					HD44780_NoBacklight ();
+					HD44780_Clear ();
+					HD44780_SetCursor (0, 0);
+					HD44780_PrintStr (" +381  Robotics ");
+					HD44780_SetCursor (3, 1);
+					HD44780_PrintStr (tactic_name);
+					HD44780_Backlight ();
+					display_fsm_case = 2;
+					break;
+
+					/* Cekanje pocetka */
+				case 2:
+					break;
+
+					/* Ispis celog displeja */
+				case 3:
+					display_write_all (points, sys_time_s, tactic_name);
+					break;
+
+					/* Ispisivanje samo brojeva svake sekunde */
+				case 4:
+					if (delay_nb_2 (&display_delay, 1000))
+						display_write_numbers (points, sys_time_s);
+					break;
+
+					/* Isteklo vreme, nista vise ne ispisuj */
+				case 5:
+					break;
 				}
 		}
 	/* USER CODE END 3 */
