@@ -5,17 +5,27 @@
  *      Author: lazar
  */
 
-/* message: 9 bytes
+/* transmit message: 10 bytes
  * uint8_t 's'
- * int16_t x = (-15000, +15000)			->	samo *10
- * int16_t y = (-10000, +10000)			->	samo *10
- * int16_t phi = (0, +3600)					->	wrap360 umesto wrap180 i *10
+ * int16_t x_robot		= (-15000, +15000)		->	samo *10
+ * int16_t y_robot		= (-10000, +10000)		->	samo *10
+ * int16_t phi_robot	= (0, +3600)					->	wrap360 umesto wrap180 i *10
  * uint8_t camera_signal
  * uint8_t 'e'
+ * uint8_t '\n'
+ * ---
+ * recieve message: 10 bytes
+ * uint8_t 's'
+ * int16_t x_obstacle			= (-15000, +15000)		->	samo *10
+ * int16_t y_obstacle			= (-10000, +10000)		->	samo *10
+ * int16_t phi_obstacle		= (0, +3600)					->	wrap360 umesto wrap180 i *10
+ * uint8_t camera_return	= (0, 255)
+ * uint8_t 'e'
+ * uint8_t '\n'
  */
 
-#define TX_LEN				9
-#define RX_LEN				8
+#define TX_LEN				10
+#define RX_LEN				10
 
 #include "main.h"
 #include <stdio.h>
@@ -39,8 +49,8 @@ rpi_init ()
   HAL_UART_Transmit_DMA (&huart1, transmit_to_rpi, TX_LEN);
   base_ptr = get_robot_base ();
   transmit_to_rpi[0] = 's';
-  transmit_to_rpi[TX_LEN - 1] = 'e';
-
+  transmit_to_rpi[TX_LEN - 2] = 'e';
+  transmit_to_rpi[TX_LEN - 1] = '\n';
 }
 
 void
@@ -70,7 +80,7 @@ update_transmit_buffer ()
 void
 update_recieve_buffer ()
 {
-  if (recieved_from_rpi[0] == 's' && recieved_from_rpi[RX_LEN] == 'e')
+  if (recieved_from_rpi[0] == 's' && recieved_from_rpi[RX_LEN - 2] == 'e')
 	{
 	  obstacle_x = ((int16_t) ((int16_t) recieved_from_rpi[1] << 8) | (uint8_t) recieved_from_rpi[2]) * 0.1;
 	  obstacle_y = ((int16_t) ((int16_t) recieved_from_rpi[3] << 8) | (uint8_t) recieved_from_rpi[4]) * 0.1;
