@@ -60,9 +60,9 @@ char *tactic_side_short = "b #";
 static char tactic_number[2];
 
 /* test promenljive */
-volatile uint8_t ax_id_test = 5;
+volatile uint8_t ax_id_test = 10;
 volatile uint16_t ax_angle_test = 511;
-volatile uint16_t ax_speed_test = 100;
+volatile uint16_t ax_speed_test = 200;
 int8_t dir_test = 1;
 uint8_t in_0 = 0, in_1 = 0, in_2 = 0, in_3 = 0;
 uint8_t out_0 = 0, out_1 = 0, out_2 = 0, out_3 = 0;
@@ -149,9 +149,9 @@ main (void)
 						{
 							start_match ();
 //							display_fsm_case = 3;
-							main_fsm_case = 100;
+							main_fsm_case = 13;
 							// ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
-							set_regulation_status (1);
+							set_regulation_status (0);
 						}
 					break;
 
@@ -338,8 +338,9 @@ main (void)
 //			{
 //			}
 					break;
-
-					//		  ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);	// PA11
+				case 13:
+					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+					break;
 				}
 
 			/* Display FSM */

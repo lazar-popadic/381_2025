@@ -14,11 +14,10 @@
  * uint8_t 'e'
  * uint8_t '\n'
  * ---
- * recieve message: 10 bytes
+ * recieve message: 8 bytes
  * uint8_t 's'
  * int16_t x_obstacle			= (-15000, +15000)		->	samo *10
  * int16_t y_obstacle			= (-10000, +10000)		->	samo *10
- * int16_t phi_obstacle		= (0, +3600)					->	wrap360 umesto wrap180 i *10
  * uint8_t camera_return	= (0, 255)
  * uint8_t 'e'
  * uint8_t '\n'
@@ -74,7 +73,7 @@ update_transmit_buffer ()
   transmit_to_rpi[5] = rpi_phi_high;
   transmit_to_rpi[6] = rpi_phi_low;
 
-  transmit_to_rpi[8] = camera_signal;
+  transmit_to_rpi[7] = camera_signal;
 }
 
 void
@@ -84,7 +83,6 @@ update_recieve_buffer ()
 	{
 	  obstacle_x = ((int16_t) ((int16_t) recieved_from_rpi[1] << 8) | (uint8_t) recieved_from_rpi[2]) * 0.1;
 	  obstacle_y = ((int16_t) ((int16_t) recieved_from_rpi[3] << 8) | (uint8_t) recieved_from_rpi[4]) * 0.1;
-	  obstacle_phi = ((int16_t) ((int16_t) recieved_from_rpi[5] << 8) | (uint8_t) recieved_from_rpi[6]) * 0.1;
 	}
 }
 
