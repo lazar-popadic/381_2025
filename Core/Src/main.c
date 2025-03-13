@@ -145,7 +145,7 @@ main (void)
 					if (cinc_db () || 1)	// TODO: ISKLJUCEN JE CINC
 						{
 							start_match ();
-							display_fsm_case = 3;
+//							display_fsm_case = 3;
 							main_fsm_case = 100;
 							// ovde se gasi brzinska petlja:	1 : upaljena,	0 : ugasena
 							set_regulation_status (1);
@@ -367,7 +367,8 @@ main (void)
 
 					/* Ispis celog displeja */
 				case 3:
-					display_write_all (points, sys_time_s, tactic_name);
+					if (delay_nb_2 (&display_delay, 1000))
+						display_write_all (points, sys_time_s, tactic_name);
 					break;
 
 					/* Ispisivanje samo brojeva svake sekunde */
