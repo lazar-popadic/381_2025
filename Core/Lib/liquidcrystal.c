@@ -40,7 +40,7 @@ static char snum[4];
 static char snum_time[4];
 
 void
-display_write_all (uint8_t points, uint8_t time, char *tactic_str)
+display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num)
 {
 	itoa (points, snum, 10);
 	itoa (time, snum_time, 10);
@@ -48,14 +48,14 @@ display_write_all (uint8_t points, uint8_t time, char *tactic_str)
 	HD44780_Clear ();
 	HD44780_SetCursor (0, 0);
 	HD44780_PrintStr ("+381");
-	HD44780_SetCursor (6, 0);
+	HD44780_SetCursor (6, 1);
 	HD44780_PrintStr ("points:");
-	HD44780_PrintStr (snum);
 	HD44780_SetCursor (0, 1);
-	HD44780_PrintStr (tactic_str);
-	HD44780_SetCursor (8, 1);
+	HD44780_PrintStr (tactic_side);
+	HD44780_PrintStr (tactic_num);
+	HD44780_SetCursor (8, 0);
 	HD44780_PrintStr ("time:");
-	HD44780_PrintStr (snum_time);
+	display_write_numbers (points, time);
 }
 
 void
@@ -64,15 +64,19 @@ display_write_numbers (uint8_t points, uint8_t time)
 	itoa (points, snum, 10);
 	itoa (time, snum_time, 10);
 
-	if (points < 100)
-		HD44780_SetCursor (14, 0);
-	else
-		HD44780_SetCursor (13, 0);
-	HD44780_PrintStr (snum);
-	if (time < 100)
+	if (points < 10)
+		HD44780_SetCursor (15, 1);
+	else if (points < 100)
 		HD44780_SetCursor (14, 1);
 	else
 		HD44780_SetCursor (13, 1);
+	HD44780_PrintStr (snum);
+	if (time < 10)
+		HD44780_SetCursor (15, 0);
+	else if (time < 100)
+		HD44780_SetCursor (14, 0);
+	else
+		HD44780_SetCursor (13, 0);
 	HD44780_PrintStr (snum_time);
 }
 

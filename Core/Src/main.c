@@ -47,6 +47,7 @@
 
 /* USER CODE BEGIN PV */
 uint8_t sys_time_s = 0;
+uint8_t prev_time = 0;
 tactic_num tactic;
 uint16_t main_fsm_case = 0;
 uint32_t delay_1_start = 0xFFFFFFFF;
@@ -54,7 +55,9 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 uint8_t points = 0;
 uint16_t display_fsm_case = 0;
 uint32_t display_delay = 0xFFFFFFFF;
-char *tactic_name = "tactic";
+char *tactic_side = "blue  #";
+char *tactic_side_short = "b #";
+static char tactic_number[2];
 
 /* test promenljive */
 volatile uint8_t ax_id_test = 5;
@@ -142,7 +145,7 @@ main (void)
 				{
 				case 0:
 					choose_tactic (&tactic);
-					if (cinc_db () || 1)	// TODO: ISKLJUCEN JE CINC
+					if (cinc_db () || 1)	// TODO: iskljucen cinc
 						{
 							start_match ();
 //							display_fsm_case = 3;
@@ -349,32 +352,47 @@ main (void)
 						display_fsm_case = 1;
 					break;
 
-				/* Ispis pre cinca */
+					/* Ispis pre cinca */
 				case 1:
 					HD44780_NoBacklight ();
 					HD44780_Clear ();
-					HD44780_SetCursor (0, 0);
-					HD44780_PrintStr (" +381  Robotics ");
-					HD44780_SetCursor (3, 1);
-					HD44780_PrintStr (tactic_name);
+					HD44780_SetCursor (2, 0);
+					HD44780_PrintStr ("+381Robotics");
 					HD44780_Backlight ();
 					display_fsm_case = 2;
 					break;
 
-					/* Cekanje pocetka */
+					/* Biranje taktike i cekanje pocetka */
 				case 2:
+					HD44780_SetCursor (3, 1);
+					if (tactic.side == 1)
+						{
+							tactic_side = " blue   #";
+							tactic_side_short = "B";
+						}
+					else
+						{
+							tactic_side = "yellow  #";
+							tactic_side_short = "Y";
+						}
+					HD44780_PrintStr (tactic_side);
+					itoa (tactic.num, tactic_number, 10);
+					HD44780_PrintStr (tactic_number);
 					break;
 
 					/* Ispis celog displeja */
 				case 3:
-					if (delay_nb_2 (&display_delay, 1000))
-						display_write_all (points, sys_time_s, tactic_name);
+					display_write_all (points, sys_time_s, tactic_side_short, tactic_number);
+					display_fsm_case = 4;
 					break;
 
 					/* Ispisivanje samo brojeva svake sekunde */
 				case 4:
-					if (delay_nb_2 (&display_delay, 1000))
-						display_write_numbers (points, sys_time_s);
+					if (prev_time != sys_time_s)
+						{
+							prev_time = sys_time_s;
+							display_write_numbers (points, sys_time_s);
+						}
 					break;
 
 					/* Isteklo vreme, nista vise ne ispisuj */
