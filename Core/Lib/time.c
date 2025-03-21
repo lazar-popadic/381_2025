@@ -9,6 +9,7 @@
 #include "tim.h"
 
 uint32_t sys_time_ms = 0;
+uint16_t sys_time_s = 0;
 uint8_t match_started = 0;
 uint8_t delay_free = 1;
 
@@ -16,6 +17,7 @@ void
 time_ISR ()	// poziva se u stm32f4xx_it.c
 {
 	sys_time_ms += match_started && 1;
+	sys_time_s = get_time_ms () / 1000;
 
 	update_odom ();
 	check_sensors ();
@@ -109,4 +111,10 @@ uint32_t
 get_time_ms ()
 {
 	return sys_time_ms;
+}
+
+uint16_t
+get_time_s ()
+{
+	return sys_time_s;
 }

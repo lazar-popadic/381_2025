@@ -192,7 +192,7 @@ go_to_xy ()
 			d = sqrt (x_err * x_err + y_err * y_err);
 			d_proj = d * cos (phi_err * M_PI / 180);
 
-			base_ptr->v_ref = calc_pid (&d_loop, d_proj*direction);
+			base_ptr->v_ref = calc_pid (&d_loop, d_proj * direction);
 
 			if (fabs (d) > D_2_TOL)
 				base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
@@ -305,7 +305,7 @@ set_reg_type (int8_t type)
 }
 
 int8_t
-move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
+move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check_sensors)
 {
 	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
@@ -318,6 +318,7 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 			direction = dir;
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = w_max;
+			base_ptr->obstacle_dir = check_sensors;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
@@ -328,13 +329,14 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max)
 			base_ptr->x_ref = base_ptr->x;
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
+			base_ptr->obstacle_dir = 0;
 		}
 
 	return move_status;
 }
 
 int8_t
-rot_to_phi (float phi, float w_max)
+rot_to_phi (float phi, float w_max, int8_t check_sensors)
 {
 	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
@@ -344,6 +346,7 @@ rot_to_phi (float phi, float w_max)
 			set_reg_type (-1);
 			base_ptr->phi_ref = phi;
 			base_ptr->w_max = w_max;
+			base_ptr->obstacle_dir = check_sensors;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
@@ -354,13 +357,14 @@ rot_to_phi (float phi, float w_max)
 			base_ptr->x_ref = base_ptr->x;
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
+			base_ptr->obstacle_dir = 0;
 		}
 
 	return move_status;
 }
 
 int8_t
-move_on_dir (float distance, int8_t dir, float v_max)
+move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 {
 	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
@@ -373,6 +377,7 @@ move_on_dir (float distance, int8_t dir, float v_max)
 			base_ptr->x_ref = base_ptr->x + dir * distance * cos (base_ptr->phi * M_PI / 180);
 			base_ptr->y_ref = base_ptr->y + dir * distance * sin (base_ptr->phi * M_PI / 180);
 			base_ptr->phi_ref = base_ptr->phi;
+			base_ptr->obstacle_dir = check_sensors;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
@@ -383,19 +388,20 @@ move_on_dir (float distance, int8_t dir, float v_max)
 			base_ptr->x_ref = base_ptr->x;
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
+			base_ptr->obstacle_dir = 0;
 		}
 
 	return move_status;
 }
 
 int8_t
-rot_to_xy (float x, float y, int dir, float w_max)
+rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors)
 {
-	return rot_to_phi (atan2 (y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + (dir - 1) * 90, w_max);
+	return rot_to_phi (atan2 (y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + (dir - 1) * 90, w_max, check_sensors);
 }
 
 int8_t
-move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid)
+move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors)
 {
 	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
@@ -407,6 +413,7 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = W_MAX_DEF;
 			create_curve (curve_ptr, x, y, phi, dir, avoid);
+			base_ptr->obstacle_dir = check_sensors;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
@@ -417,6 +424,7 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 			base_ptr->x_ref = base_ptr->x;
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
+			base_ptr->obstacle_dir = 0;
 		}
 
 	return move_status;

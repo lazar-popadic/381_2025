@@ -72,6 +72,7 @@ get_mech_states ()
 void
 mechanism_init ()
 {
+	// TODO: lepo uradi, jedno po jedno
 	lift_front_down ();
 	lift_back_down ();
 	grtl_front_close ();

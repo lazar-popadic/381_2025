@@ -38,6 +38,75 @@ DelayUS_nb (uint32_t);
 
 static char snum[4];
 static char snum_time[4];
+uint16_t display_fsm_case = 0;
+uint32_t display_delay = 0xFFFFFFFF;
+char *tactic_side = "blue  #";
+char *tactic_side_short = "b #";
+static char tactic_number[2];
+uint8_t prev_time = 0;
+extern tactic_num tactic;
+
+void
+display_fsm ()
+{
+	/* Display FSM */
+	switch (display_fsm_case)
+		{
+
+		/* Inicijalizacija displeja */
+		case 0:
+			if (HD44780_Init (2))
+				display_fsm_case = 1;
+			break;
+
+			/* Ispis pre cinca */
+		case 1:
+			HD44780_NoBacklight ();
+			HD44780_Clear ();
+			HD44780_SetCursor (2, 0);
+			HD44780_PrintStr ("+381Robotics");
+			HD44780_Backlight ();
+			display_fsm_case = 2;
+			break;
+
+			/* Biranje taktike i cekanje pocetka */
+		case 2:
+			HD44780_SetCursor (3, 1);
+			if (tactic.side == 1)
+				{
+					tactic_side = " blue   #";
+					tactic_side_short = "B";
+				}
+			else
+				{
+					tactic_side = "yellow  #";
+					tactic_side_short = "Y";
+				}
+			HD44780_PrintStr (tactic_side);
+			itoa (tactic.num, tactic_number, 10);
+			HD44780_PrintStr (tactic_number);
+			break;
+
+			/* Ispis celog displeja */
+		case 3:
+			display_write_all (get_points (), get_time_s (), tactic_side_short, tactic_number);
+			display_fsm_case = 4;
+			break;
+
+			/* Ispisivanje samo brojeva svake sekunde */
+		case 4:
+			if (prev_time != get_time_s ())
+				{
+					prev_time = get_time_s ();
+					display_write_numbers (get_points (), get_time_s ());
+				}
+			break;
+
+			/* Isteklo vreme, nista vise ne ispisuj */
+		case 5:
+			break;
+		}
+}
 
 void
 display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num)

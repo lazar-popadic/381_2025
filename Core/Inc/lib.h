@@ -27,6 +27,8 @@
 
 #define FORWARD		1
 #define BACKWARD	-1
+#define ALL_SENS	-2
+#define NO_SENS		0
 
 #define TRAP_VEL_PROFILE		0
 #define S_CURVE_VEL_PROFILE	1
@@ -50,17 +52,17 @@ pwm_start ();
 void
 pwm_stop ();
 void
-sg90_init();
+sg90_init ();
 uint16_t
 angleToSG90 (float angle);
 void
-sg90_1_move(float angle);
+sg90_1_move (float angle);
 void
-sg90_2_move(float angle);
+sg90_2_move (float angle);
 void
-sg90_3_move(float angle);
+sg90_3_move (float angle);
 void
-sg90_4_move(float angle);
+sg90_4_move (float angle);
 
 // time.h
 void
@@ -81,6 +83,8 @@ void
 set_time_ms (uint32_t time);
 uint32_t
 get_time_ms ();
+uint16_t
+get_time_s ();
 
 // ax12a.h
 void
@@ -214,15 +218,15 @@ velocity_loop ();
 void
 set_reg_type (int8_t type);
 int8_t
-move_to_xy (float x, float y, int8_t dir, float v_max, float w_max);
+move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check_sensors);
 int8_t
-rot_to_phi (float phi, float w_max);
+rot_to_phi (float phi, float w_max, int8_t check_sensors);
 int8_t
-move_on_dir (float distance, int8_t dir, float v_max);
+move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors);
 int8_t
-rot_to_xy (float x, float y, int dir, float w_max);
+rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors);
 int8_t
-move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid);
+move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors);
 void
 stop_moving ();
 void
@@ -300,15 +304,15 @@ vacuum_front (uint8_t on);
 void
 vacuum_back (uint8_t on);
 void
-bnr_close();
+bnr_close ();
 void
-bnr_1();
+bnr_1 ();
 void
-bnr_2();
+bnr_2 ();
 void
-bnr_3();
+bnr_3 ();
 void
-bnr_4();
+bnr_4 ();
 
 // curve.h
 void
@@ -317,5 +321,16 @@ void
 cubic_bezier_pts (curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y);
 void
 equ_coords (curve *curve_ptr);
+
+// tactics.h
+uint8_t
+get_points ();
+void
+set_points (uint8_t pts);
+void
+add_points (uint8_t pts);
+
+int8_t
+tact_dev ();
 
 #endif /* LIB_LIB_H_ */
