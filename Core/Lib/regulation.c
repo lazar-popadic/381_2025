@@ -64,7 +64,7 @@ regulation_init ()
 	init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
 	init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
 	// TODO: jos ovo
-	init_pid (&phi_curve_loop, 1.2, 0.1, 0, W_MAX_DEF, W_MAX_DEF * 0.2);
+	init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
 	init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
 	init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
 	curve_ptr = (curve*) malloc (sizeof(curve));

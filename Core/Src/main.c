@@ -118,7 +118,6 @@ main (void)
 	sg90_init ();
 
 	tactic_ptr = get_tact_num_ptr ();
-
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -128,7 +127,6 @@ main (void)
 			/* USER CODE END WHILE */
 
 			/* USER CODE BEGIN 3 */
-
 			switch (main_fsm_case)
 				{
 				case 0:
@@ -147,8 +145,19 @@ main (void)
 						}
 					break;
 
+				case 10:
+					if (tact_0 () == TASK_SUCCESS)
+						main_fsm_case = -1;
+					break;
+
+				case 11:
+					if (tact_1 () == TASK_SUCCESS)
+						main_fsm_case = -1;
+					break;
+
 				case 12:
-					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+					if (tact_homologation () == TASK_SUCCESS)
+						main_fsm_case = -1;
 					break;
 
 				case 13:
@@ -156,10 +165,14 @@ main (void)
 						main_fsm_case = -1;
 					break;
 
+				case 20:
+					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+					break;
+
 				case -1:
 					set_regulation_status (0);
-					HAL_Delay (10);
 					stop_match ();
+					HAL_Delay (10);
 					time_stop ();
 					break;
 				}

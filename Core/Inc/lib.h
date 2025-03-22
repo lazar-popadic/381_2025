@@ -338,8 +338,12 @@ tactic_num*
 get_tact_num_ptr ();
 
 int8_t
-tact_dev ();
-int8_t
 tact_0 ();
+int8_t
+tact_1 ();
+int8_t
+tact_homologation ();
+int8_t
+tact_dev ();
 
 #endif /* LIB_LIB_H_ */
