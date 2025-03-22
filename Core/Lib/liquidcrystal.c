@@ -44,7 +44,7 @@ char *tactic_side = "blue  #";
 char *tactic_side_short = "b #";
 static char tactic_number[2];
 uint8_t prev_time = 0;
-extern tactic_num tactic;
+static tactic_num *tactic_ptr;
 
 void
 display_fsm ()
@@ -55,6 +55,7 @@ display_fsm ()
 
 		/* Inicijalizacija displeja */
 		case 0:
+			tactic_ptr = get_tact_num_ptr ();
 			if (HD44780_Init (2))
 				display_fsm_case = 1;
 			break;
@@ -72,7 +73,7 @@ display_fsm ()
 			/* Biranje taktike i cekanje pocetka */
 		case 2:
 			HD44780_SetCursor (3, 1);
-			if (tactic.side == 1)
+			if (tactic_ptr->side == BLUE)
 				{
 					tactic_side = " blue   #";
 					tactic_side_short = "B";
@@ -83,7 +84,7 @@ display_fsm ()
 					tactic_side_short = "Y";
 				}
 			HD44780_PrintStr (tactic_side);
-			itoa (tactic.num, tactic_number, 10);
+			itoa (tactic_ptr->num, tactic_number, 10);
 			HD44780_PrintStr (tactic_number);
 			break;
 

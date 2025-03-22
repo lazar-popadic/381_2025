@@ -46,7 +46,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-tactic_num tactic;
+static tactic_num *tactic_ptr;
 int8_t main_fsm_case = 0;
 uint32_t delay_1_start = 0xFFFFFFFF;
 
@@ -54,10 +54,6 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 volatile uint8_t ax_id_test = 10;
 volatile uint16_t ax_angle_test = 511;
 volatile uint16_t ax_speed_test = 200;
-int8_t dir_test = 1;
-uint8_t in_0 = 0, in_1 = 0, in_2 = 0, in_3 = 0;
-uint8_t out_0 = 0, out_1 = 0, out_2 = 0, out_3 = 0;
-uint8_t sg90_1, sg90_2;
 
 /* USER CODE END PV */
 
@@ -121,6 +117,8 @@ main (void)
 	rpi_init ();
 	sg90_init ();
 
+	tactic_ptr = get_tact_num_ptr ();
+
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -134,27 +132,35 @@ main (void)
 			switch (main_fsm_case)
 				{
 				case 0:
-					choose_tactic (&tactic);
+					mechanism_init ();
+					set_regulation_status (0);
+					main_fsm_case = 1;
+					break;
+
+				case 1:
+					choose_tactic (tactic_ptr);
 					if (cinc_db () || 1)	// TODO: iskljucen cinc
 						{
 							start_match ();
-							main_fsm_case = tactic.num + 10;
-							mechanism_init ();
+							main_fsm_case = tactic_ptr->num + 10;
 							set_regulation_status (1);
 						}
 					break;
 
-				case 10:
+				case 12:
+					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+					break;
+
+				case 13:
 					if (tact_dev () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
-				case 23:
-					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
-					break;
-
-					// TODO: ZAVRSNI CASE
 				case -1:
+					set_regulation_status (0);
+					HAL_Delay (10);
+					stop_match ();
+					time_stop ();
 					break;
 				}
 

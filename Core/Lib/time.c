@@ -21,13 +21,14 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 
 	update_odom ();
 	check_sensors ();
-	switch (get_obstacle_detected ())
+
+	switch (!get_obstacle_detected () && get_regulation_status ())
 		{
-		case 0:
+		case 1:
 			continue_moving ();
 			position_loop ();
 			break;
-		case 1:
+		case 0:
 			// TODO: testiraj
 			stop_moving ();
 			break;
@@ -42,7 +43,6 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 			break;
 		}
 
-	check_sensors ();
 	update_base_status ();
 
 	// rpi communication
