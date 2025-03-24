@@ -72,13 +72,16 @@ get_mech_states ()
 void
 mechanism_init ()
 {
-	lift_front_down ();
-	lift_back_down ();
-	grtl_front_close ();
-	grtl_back_close ();
+	gurl_mid ();
+	HAL_Delay (200);
 	ruc_front_up ();
 	ruc_back_up ();
-	gurl_mid ();
+	HAL_Delay (200);
+	grtl_front_close ();
+	grtl_back_close ();
+	HAL_Delay (200);
+	lift_front_down ();
+	lift_back_down ();
 }
 
 void
@@ -133,9 +136,12 @@ lift_back_drop ()
 void
 grtl_front_open ()
 {
+	// Prvo unutrasnje zatvori, pa onda otvori sve
+	ax_move (GRTL_FIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
+	HAL_Delay (100);
 	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
-	HAL_Delay (20);
 	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 2;
@@ -147,10 +153,13 @@ grtl_front_open ()
 void
 grtl_back_open ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
+	HAL_Delay (100);
 	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_bil = 2;
 	mechanism_states.grtl_bol = 2;
 	mechanism_states.grtl_bir = 2;
@@ -357,9 +366,9 @@ void
 vacuum_back (uint8_t on)
 {
 	vacuum_0 (on);
-	HAL_Delay (20);
+	HAL_Delay (40);
 	vacuum_1 (on);
-	HAL_Delay (20);
+	HAL_Delay (40);
 
 }
 
@@ -367,9 +376,9 @@ void
 vacuum_front (uint8_t on)
 {
 	vacuum_2 (on);
-	HAL_Delay (20);
+	HAL_Delay (40);
 	vacuum_3 (on);
-	HAL_Delay (20);
+	HAL_Delay (40);
 }
 
 void

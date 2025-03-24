@@ -55,9 +55,12 @@ rpi_init ()
 void
 update_transmit_buffer ()
 {
-  rpi_x = (int16_t) (base_ptr->x * 10);
-  rpi_y = (int16_t) (base_ptr->y * 10);
-  rpi_phi = (int16_t) (base_ptr->phi * 10);
+//  rpi_x = (int16_t) (base_ptr->x * 10);
+//  rpi_y = (int16_t) (base_ptr->y * 10);
+//  rpi_phi = (int16_t) (base_ptr->phi * 10);
+	  rpi_x = 250;
+	  rpi_y = 1000;
+	  rpi_phi = 450;
 
   rpi_x_high = (rpi_x >> 8) & 0xFF;
   rpi_x_low = rpi_x & 0xFF;

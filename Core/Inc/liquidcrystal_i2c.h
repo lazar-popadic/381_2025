@@ -63,6 +63,8 @@ display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic
 void
 display_write_numbers (uint8_t points, uint8_t time);
 
+void
+display_fsm ();
 uint8_t
 HD44780_Init (uint8_t rows);
 void
