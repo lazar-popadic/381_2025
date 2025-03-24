@@ -69,6 +69,26 @@ get_mech_states ()
 	return mechanism_states;
 }
 
+void AX_Servo_Init()
+{
+	torque_enable(1);
+	torque_enable(2);
+	torque_enable(3);
+	torque_enable(4);
+	torque_enable(5);
+	torque_enable(6);
+	torque_enable(7);
+	torque_enable(8);
+	torque_enable(9);
+	torque_enable(10);
+	torque_enable(11);
+	torque_enable(12);
+	torque_enable(13);
+	torque_enable(14);
+	torque_enable(15);
+	torque_enable(16);
+}
+
 void
 mechanism_init ()
 {

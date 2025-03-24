@@ -92,6 +92,7 @@ get_time_s ();
 // ax12a.h
 void
 torque_enable (uint8_t id);
+void
 ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart);
 
 // odometry.h
@@ -239,6 +240,8 @@ continue_moving ();
 // mechanism.h
 mech_states
 get_mech_states ();
+void
+AX_Servo_Init();
 void
 mechanism_init ();
 void

@@ -116,7 +116,7 @@ main (void)
 	regulation_init ();
 	rpi_init ();
 	sg90_init ();
-
+	AX_Servo_Init();
 	tactic_ptr = get_tact_num_ptr ();
 	/* USER CODE END 2 */
 
