@@ -84,6 +84,7 @@ get_time_ms ();
 
 // ax12a.h
 void
+torque_enable (uint8_t id);
 ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart);
 
 // odometry.h
