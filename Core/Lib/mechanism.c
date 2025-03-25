@@ -32,7 +32,7 @@
 #define GRTL_IL_GRIP		430
 #define GRTL_IL_CLOSE		280
 #define GRTL_OR_OPEN		472
-#define GRTL_OR_GRIP		592
+#define GRTL_OR_GRIP		572
 #define GRTL_OR_CLOSE		842
 #define GRTL_IR_OPEN		532
 #define GRTL_IR_GRIP		592
@@ -69,24 +69,25 @@ get_mech_states ()
 	return mechanism_states;
 }
 
-void AX_Servo_Init()
+void
+ax_init ()
 {
-	torque_enable(1);
-	torque_enable(2);
-	torque_enable(3);
-	torque_enable(4);
-	torque_enable(5);
-	torque_enable(6);
-	torque_enable(7);
-	torque_enable(8);
-	torque_enable(9);
-	torque_enable(10);
-	torque_enable(11);
-	torque_enable(12);
-	torque_enable(13);
-	torque_enable(14);
-	torque_enable(15);
-	torque_enable(16);
+	torque_enable (1);
+	torque_enable (2);
+	torque_enable (3);
+	torque_enable (4);
+	torque_enable (5);
+	torque_enable (6);
+	torque_enable (7);
+	torque_enable (8);
+	torque_enable (9);
+	torque_enable (10);
+	torque_enable (11);
+	torque_enable (12);
+	torque_enable (13);
+	torque_enable (14);
+	torque_enable (15);
+	torque_enable (16);
 }
 
 void

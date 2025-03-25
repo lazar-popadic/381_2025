@@ -64,10 +64,20 @@ regulation_init ()
 	init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
 	init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
 	// TODO: jos ovo
-	init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
+	init_pid (&phi_curve_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
 	init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
 	init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
 	curve_ptr = (curve*) malloc (sizeof(curve));
+	for (int i = 0; i < BEZIER_RESOLUTION; i++)
+		{
+			curve_ptr->pts_x[i] = 0;
+			curve_ptr->pts_y[i] = 0;
+			if (i < MAX_EQU_PTS)
+				{
+					curve_ptr->equ_pts_x[i] = 0;
+					curve_ptr->equ_pts_y[i] = 0;
+				}
+		}
 }
 
 void
@@ -129,7 +139,13 @@ position_loop ()
 					go_to_xy ();
 					break;
 				case 2:
-					pure_pursuit (10, 5);
+					if (get_curve_ready ())
+						pure_pursuit (10, 5);
+					else
+						{
+							base_ptr->v_ref = 0;
+							base_ptr->w_ref = 0;
+						}
 					break;
 				}
 
@@ -294,6 +310,7 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 // TODO: zaobilazenje
 //		  if (get_avoid_obst_glb ())
 //			reset_push_pts_loop ();
+					set_curve_ready (0);
 				}
 		}
 }

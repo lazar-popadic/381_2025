@@ -16,6 +16,7 @@ uint8_t dpRows;
 uint8_t dpBacklight;
 uint32_t delay_start = 0xffffffff;
 uint8_t init_fsm_case = 0;
+int8_t ready = 0;
 
 static void
 SendCommand (uint8_t);
@@ -86,6 +87,8 @@ display_fsm ()
 			HD44780_PrintStr (tactic_side);
 			itoa (tactic_ptr->num, tactic_number, 10);
 			HD44780_PrintStr (tactic_number);
+			if (ready)
+				display_fsm_case = 3;
 			break;
 
 			/* Ispis celog displeja */
@@ -107,6 +110,12 @@ display_fsm ()
 		case 5:
 			break;
 		}
+}
+
+void
+display_ready ()
+{
+	ready = 1;;
 }
 
 void

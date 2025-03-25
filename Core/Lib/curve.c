@@ -7,7 +7,8 @@
 
 #include "main.h"
 
-int avoid_obst_glb = 0;
+int8_t avoid_obst_glb = 0;
+int8_t curve_ready = 0;
 
 void
 create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst)
@@ -40,6 +41,19 @@ create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir
 	equ_coords (curve_ptr);
 	avoid_obst_glb = avoid_obst;
 	curve_ptr->goal_phi = phi_ref;
+	curve_ready = 1;
+}
+
+int8_t
+get_curve_ready ()
+{
+	return curve_ready;
+}
+
+void
+set_curve_ready (int8_t ready)
+{
+	curve_ready = ready;
 }
 
 void

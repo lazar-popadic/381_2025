@@ -241,7 +241,7 @@ continue_moving ();
 mech_states
 get_mech_states ();
 void
-AX_Servo_Init();
+ax_init ();
 void
 mechanism_init ();
 void
@@ -328,6 +328,10 @@ void
 cubic_bezier_pts (curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y);
 void
 equ_coords (curve *curve_ptr);
+int8_t
+get_curve_ready ();
+void
+set_curve_ready (int8_t ready);
 
 // tactics.h
 uint8_t
@@ -349,5 +353,9 @@ int8_t
 tact_homologation ();
 int8_t
 tact_dev ();
+int8_t
+tact_dev_2 ();
+int8_t
+tact_dev_3 ();
 
 #endif /* LIB_LIB_H_ */

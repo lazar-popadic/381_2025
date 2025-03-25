@@ -116,7 +116,7 @@ main (void)
 	regulation_init ();
 	rpi_init ();
 	sg90_init ();
-	AX_Servo_Init();
+	ax_init ();
 	tactic_ptr = get_tact_num_ptr ();
 	/* USER CODE END 2 */
 
@@ -137,36 +137,39 @@ main (void)
 
 				case 1:
 					choose_tactic (tactic_ptr);
-					if (cinc_db () || 1)	// TODO: iskljucen cinc
+					if (cinc_db ())
 						{
 							start_match ();
+							display_ready ();
 							main_fsm_case = tactic_ptr->num + 10;
 							set_regulation_status (1);
 						}
 					break;
 
-				case 10:
+				case 11:
 					if (tact_0 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
-				case 11:
-					if (tact_1 () == TASK_SUCCESS)
+				case 10:
+					if (tact_dev_3 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
+
+//				case 12:
+//					if (tact_homologation () == TASK_SUCCESS)
+//						main_fsm_case = -1;
+//					break;
 
 				case 12:
-					if (tact_homologation () == TASK_SUCCESS)
-						main_fsm_case = -1;
-					break;
-
-				case 13:
 					if (tact_dev () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
-				case 20:
-					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+				case 13:
+//					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+					if (tact_dev_2() == TASK_SUCCESS)
+						main_fsm_case = -1;
 					break;
 
 				case -1:
