@@ -36,7 +36,6 @@ static int16_t curve_cnt = 0;
 
 static float v_err = 0;							// [ms/ms]
 static float w_err = 0;							// [deg/ms]
-
 static float x_err = 0;							// [mm]
 static float y_err = 0;							// [mm]
 static float phi_err = 0;						// [deg]
@@ -57,13 +56,14 @@ static volatile pid phi_curve_loop;
 static volatile pid v_loop;
 static volatile pid w_loop;
 
+int8_t move_status = TASK_RUNNING;
+
 void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
 	init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
 	init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
-	// TODO: jos ovo
 	init_pid (&phi_curve_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
 	init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
 	init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
@@ -286,7 +286,6 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 
 	wrap180_ptr (&phi_prim_err);
 	base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
-	// TODO: testiraj novu
 	if (cont_move)
 		base_ptr->v_ref = direction * base_ptr->v_max;
 	else
@@ -324,9 +323,9 @@ set_reg_type (int8_t type)
 int8_t
 move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
+			move_status = TASK_RUNNING;
 			base_ptr->movement_started = 1;				// kretnja zapoceta
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (1);
@@ -355,9 +354,9 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 int8_t
 rot_to_phi (float phi, float w_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
+			move_status = TASK_RUNNING;
 			base_ptr->movement_started = 1;				// kretnja zapoceta
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (-1);
@@ -383,9 +382,9 @@ rot_to_phi (float phi, float w_max, int8_t check_sensors)
 int8_t
 move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
+			move_status = TASK_RUNNING;
 			base_ptr->movement_started = 1;				// kretnja zapoceta
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (1);
@@ -398,7 +397,6 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 			move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
@@ -406,6 +404,8 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			// TODO: mozda je problem sto prvo ovo odradi, pa onda tek vrati da je zavrsen task kretnje
+			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
 
 	return move_status;
@@ -420,9 +420,9 @@ rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors)
 int8_t
 move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
+			move_status = TASK_RUNNING;
 			base_ptr->movement_started = 1;				// kretnja zapoceta
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (2);
