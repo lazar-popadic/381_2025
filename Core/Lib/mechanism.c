@@ -20,29 +20,30 @@
 #define LIFT_B_ID	10	// lift back
 #define RUC_FL_ID	13	// rucica front left
 #define RUC_FR_ID	14
-#define RUC_BL_ID	11
-#define RUC_BR_ID	12	// rucica back right
+#define RUC_BL_ID	12
+#define RUC_BR_ID	11	// rucica back right
 #define GURL_L_ID	15	// guralica left
 #define GURL_R_ID	16	// guralica right
 
-#define GRTL_OL_OPEN		550
-#define GRTL_OL_GRIP		430
-#define GRTL_OL_CLOSE		180
-#define GRTL_IL_OPEN		490
-#define GRTL_IL_GRIP		430
-#define GRTL_IL_CLOSE		280
-#define GRTL_OR_OPEN		472
-#define GRTL_OR_GRIP		572
-#define GRTL_OR_CLOSE		842
-#define GRTL_IR_OPEN		532
-#define GRTL_IR_GRIP		592
-#define GRTL_IR_CLOSE		742
+#define GRTL_OL_OPEN		561
+#define GRTL_OL_GRIP		501
+#define GRTL_OL_CLOSE		181
+#define GRTL_IL_OPEN		491
+#define GRTL_IL_GRIP		431
+#define GRTL_IL_CLOSE		281
+#define GRTL_OR_OPEN		471
+#define GRTL_OR_GRIP		531
+#define GRTL_OR_CLOSE		841
+#define GRTL_IR_OPEN		531
+#define GRTL_IR_GRIP		591
+#define GRTL_IR_CLOSE		741
 #define GRTL_SPEED_FAST		500
-#define GRTL_SPEED_SLOW		100
+#define GRTL_SPEED_SLOW		150
 
 #define LIFT_DOWN		0
+#define LIFT_CARRY	100
 #define LIFT_UP			1023
-#define LIFT_DROP		900
+#define LIFT_DROP		850
 #define LIFT_SPEED_FAST	400
 #define LIFT_SPEED_SLOW	200
 
@@ -96,9 +97,11 @@ mechanism_init ()
 	gurl_mid ();
 	HAL_Delay (200);
 	ruc_front_up ();
+	HAL_Delay (50);
 	ruc_back_up ();
 	HAL_Delay (200);
 	grtl_front_close ();
+	HAL_Delay (50);
 	grtl_back_close ();
 	HAL_Delay (200);
 	lift_front_down ();
@@ -113,10 +116,17 @@ prepare_front ()
 }
 
 void
+prepare_back ()
+{
+	grtl_back_open ();
+	ruc_back_mid ();
+}
+
+void
 lift_front_up ()
 {
 	ax_move (LIFT_F_ID, LIFT_UP, LIFT_SPEED_FAST, huart6);
-	mechanism_states.lift_front = 2;
+	mechanism_states.lift_front = 3;
 }
 
 void
@@ -130,6 +140,13 @@ void
 lift_front_drop ()
 {
 	ax_move (LIFT_F_ID, LIFT_DROP, LIFT_SPEED_SLOW, huart6);
+	mechanism_states.lift_front = 2;
+}
+
+void
+lift_front_carry ()
+{
+	ax_move (LIFT_F_ID, LIFT_CARRY, LIFT_SPEED_SLOW, huart6);
 	mechanism_states.lift_front = 1;
 }
 
@@ -137,7 +154,7 @@ void
 lift_back_up ()
 {
 	ax_move (LIFT_B_ID, LIFT_UP, LIFT_SPEED_FAST, huart6);
-	mechanism_states.lift_back = 2;
+	mechanism_states.lift_back = 3;
 }
 
 void
@@ -151,20 +168,23 @@ void
 lift_back_drop ()
 {
 	ax_move (LIFT_B_ID, LIFT_DROP, LIFT_SPEED_SLOW, huart6);
+	mechanism_states.lift_back = 2;
+}
+
+void
+lift_back_carry ()
+{
+	ax_move (LIFT_B_ID, LIFT_CARRY, LIFT_SPEED_SLOW, huart6);
 	mechanism_states.lift_back = 1;
 }
 
 void
 grtl_front_open ()
 {
-	// Prvo unutrasnje zatvori, pa onda otvori sve
-	ax_move (GRTL_FIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
-	HAL_Delay (100);
-	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 2;
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_fir = 2;
@@ -174,11 +194,8 @@ grtl_front_open ()
 void
 grtl_back_open ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_BIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
-	HAL_Delay (100);
-	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_bil = 2;
@@ -190,10 +207,10 @@ grtl_back_open ()
 void
 grtl_front_close ()
 {
-	ax_move (GRTL_FIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FOL_ID, GRTL_OL_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 0;
 	mechanism_states.grtl_fol = 0;
 	mechanism_states.grtl_fir = 0;
@@ -203,10 +220,10 @@ grtl_front_close ()
 void
 grtl_back_close ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BOL_ID, GRTL_OL_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_BOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_bil = 0;
 	mechanism_states.grtl_bol = 0;
 	mechanism_states.grtl_bir = 0;
@@ -216,10 +233,10 @@ grtl_back_close ()
 void
 grtl_front_grip_all ()
 {
-	ax_move (GRTL_FIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_GRIP, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_FOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fil = 1;
 	mechanism_states.grtl_fol = 1;
 	mechanism_states.grtl_fir = 1;
@@ -229,10 +246,10 @@ grtl_front_grip_all ()
 void
 grtl_back_grip_all ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_BOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_BIR_ID, GRTL_IR_GRIP, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_BOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_bil = 1;
 	mechanism_states.grtl_bol = 1;
 	mechanism_states.grtl_bir = 1;
@@ -242,8 +259,8 @@ grtl_back_grip_all ()
 void
 grtl_front_grip_inside ()
 {
-	ax_move (GRTL_FIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fil = 1;
 	mechanism_states.grtl_fir = 1;
 }
@@ -251,8 +268,8 @@ grtl_front_grip_inside ()
 void
 grtl_back_grip_inside ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_BIR_ID, GRTL_IR_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_bil = 1;
 	mechanism_states.grtl_bir = 1;
 }
@@ -260,8 +277,8 @@ grtl_back_grip_inside ()
 void
 grtl_front_grip_outside ()
 {
-	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fol = 1;
 	mechanism_states.grtl_for = 1;
 }
@@ -269,8 +286,8 @@ grtl_front_grip_outside ()
 void
 grtl_back_grip_outside ()
 {
-	ax_move (GRTL_BOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_BOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_bol = 1;
 	mechanism_states.grtl_bor = 1;
 }
@@ -278,8 +295,8 @@ grtl_back_grip_outside ()
 void
 grtl_front_open_inside ()
 {
-	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 2;
 	mechanism_states.grtl_fir = 2;
 }
@@ -287,8 +304,8 @@ grtl_front_open_inside ()
 void
 grtl_back_open_inside ()
 {
-	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_bil = 2;
 	mechanism_states.grtl_bir = 2;
 }
@@ -296,8 +313,8 @@ grtl_back_open_inside ()
 void
 grtl_front_open_outside ()
 {
-	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_for = 2;
 }
@@ -305,8 +322,8 @@ grtl_front_open_outside ()
 void
 grtl_back_open_outside ()
 {
-	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_BOR_ID, GRTL_OR_OPEN, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_BOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_bol = 2;
 	mechanism_states.grtl_bor = 2;
 }

@@ -146,13 +146,13 @@ main (void)
 						}
 					break;
 
-				case 11:
+				case 10:
 					if (tact_0 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
-				case 10:
-					if (tact_dev_3 () == TASK_SUCCESS)
+				case 11:
+					if (tact_dev () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
@@ -162,13 +162,13 @@ main (void)
 //					break;
 
 				case 12:
-					if (tact_dev () == TASK_SUCCESS)
+					if (tact_dev_2 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
 				case 13:
 //					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
-					if (tact_dev_2() == TASK_SUCCESS)
+					if (tact_dev_3() == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 

@@ -255,11 +255,15 @@ lift_front_down ();
 void
 lift_front_drop ();
 void
+lift_front_carry ();
+void
 lift_back_up ();
 void
 lift_back_down ();
 void
 lift_back_drop ();
+void
+lift_back_carry ();
 void
 grtl_front_open ();
 void
