@@ -11,8 +11,8 @@
 #define YELLOW	0
 #define BLUE		1
 
-#define V_MOVING_MIN	0.01	// [m/s]
-#define W_MOVING_MIN	1.8		// [deg/s]
+#define V_MOVING_MIN		0.1	// [m/s]
+#define W_MOVING_MIN		36		// [deg/s]
 
 #define V_MAX_DEF				1.0		// [m/s]
 #define W_MAX_DEF				360.0	// [deg/s]
@@ -257,6 +257,8 @@ lift_front_drop ();
 void
 lift_front_carry ();
 void
+lift_front_leave ();
+void
 lift_back_up ();
 void
 lift_back_down ();
@@ -264,6 +266,8 @@ void
 lift_back_drop ();
 void
 lift_back_carry ();
+void
+lift_back_leave ();
 void
 grtl_front_open ();
 void

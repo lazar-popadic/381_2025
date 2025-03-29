@@ -44,6 +44,7 @@
 #define LIFT_CARRY	100
 #define LIFT_UP			1023
 #define LIFT_DROP		850
+#define LIFT_LEAVE	750
 #define LIFT_SPEED_FAST	400
 #define LIFT_SPEED_SLOW	200
 
@@ -151,6 +152,13 @@ lift_front_carry ()
 }
 
 void
+lift_front_leave ()
+{
+	ax_move (LIFT_F_ID, LIFT_LEAVE, LIFT_SPEED_SLOW, huart6);
+	mechanism_states.lift_front = 4;
+}
+
+void
 lift_back_up ()
 {
 	ax_move (LIFT_B_ID, LIFT_UP, LIFT_SPEED_FAST, huart6);
@@ -176,6 +184,13 @@ lift_back_carry ()
 {
 	ax_move (LIFT_B_ID, LIFT_CARRY, LIFT_SPEED_SLOW, huart6);
 	mechanism_states.lift_back = 1;
+}
+
+void
+lift_back_leave ()
+{
+	ax_move (LIFT_B_ID, LIFT_LEAVE, LIFT_SPEED_SLOW, huart6);
+	mechanism_states.lift_back = 4;
 }
 
 void

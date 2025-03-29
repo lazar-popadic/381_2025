@@ -61,8 +61,8 @@ typedef struct st_robot_base
 
 typedef struct st_mechanism_states
 {
-	uint8_t lift_front :2;	// 4 pozicije: down = 0, carry = 1, drop = 2, up = 3
-	uint8_t lift_back :2;
+	uint8_t lift_front :3;	// 5 pozicija: down = 0, carry = 1, drop = 2, up = 3, leave = 4
+	uint8_t lift_back :3;
 
 	uint8_t grtl_fol :2;		// 3 pozicije: close = 0, grip = 1, open = 2
 	uint8_t grtl_fil :2;
