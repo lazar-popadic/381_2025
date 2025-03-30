@@ -12,6 +12,7 @@ uint32_t sys_time_ms = 0;
 uint16_t sys_time_s = 0;
 uint8_t match_started = 0;
 uint8_t delay_free = 1;
+volatile uint8_t sensors_time_isr_test = 0;
 
 void
 time_ISR ()	// poziva se u stm32f4xx_it.c
@@ -20,13 +21,14 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 	sys_time_s = get_time_ms () / 1000;
 
 	update_odom ();
-	check_sensors ();
+	sensors_time_isr_test = check_sensors ();
 
+	// TODO:  mzd ne mora get reg status ovde
 	switch (!get_obstacle_detected () && get_regulation_status ())
 		{
 		case 1:
 			continue_moving ();
-			position_loop ();
+//			position_loop ();
 			break;
 		case 0:
 			// TODO: testiraj
@@ -36,6 +38,7 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 	switch (get_regulation_status ())
 		{
 		case 1:
+			position_loop ();
 			velocity_loop ();
 			break;
 		case 0:

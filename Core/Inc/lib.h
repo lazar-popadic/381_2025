@@ -202,7 +202,7 @@ void
 reset_w_max ();
 void
 update_base_status ();
-void
+uint8_t
 check_sensors ();
 uint8_t
 get_regulation_status ();
