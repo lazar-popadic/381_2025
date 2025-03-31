@@ -158,7 +158,7 @@ main (void)
 						main_fsm_case = -1;
 					break;
 
-//				case 12:
+//				case 13:
 //					if (tact_homologation () == TASK_SUCCESS)
 //						main_fsm_case = -1;
 //					break;
@@ -169,12 +169,12 @@ main (void)
 					break;
 
 				case 13:
-//					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
 					if (tact_dev_3 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
 				case 20:
+//					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
 					in_0 = read_sensors_front ();
 					in_1 = read_sensors_back ();
 					vacuum_0 (out_0);
