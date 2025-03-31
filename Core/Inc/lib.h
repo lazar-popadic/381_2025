@@ -366,6 +366,6 @@ tact_dev_2 ();
 int8_t
 tact_dev_3 ();
 int8_t
-task_2_sprata (int8_t side);
+task_sprat_12 (int8_t side);
 
 #endif /* LIB_LIB_H_ */

@@ -55,7 +55,7 @@ tact_dev ()
 			break;
 
 		case 50:
-			cur_task = task_2_sprata (FORWARD);
+			cur_task = task_sprat_12 (FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 60;
 
