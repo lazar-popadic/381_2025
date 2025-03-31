@@ -1,6 +1,11 @@
 /*
  * tact_dev.c
  *
+ *		Taktika za razvoj i testiranje taskova.
+ *		Trenutno:
+ *			-	task za gradjenje 2 sprata
+ *
+ *
  *  Created on: Mar 21, 2025
  *      Author: lazar
  */

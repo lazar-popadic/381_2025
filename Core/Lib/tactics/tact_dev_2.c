@@ -1,6 +1,11 @@
 /*
  * tact_dev_2.c
  *
+ *		Taktika za razvoj i testiranje taskova.
+ *		Trenutno:
+ *			-	kvadrat
+ *
+ *
  *  Created on: Mar 21, 2025
  *      Author: lazar
  */

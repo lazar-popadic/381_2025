@@ -460,10 +460,13 @@ continue_moving ()
 void
 stop_moving ()
 {
-	if (!prev_reg_type)			// ovde treba da udje u ovo samo jednom, kada je prev_reg_type jednak 0, ili ako je reg_type razlicit od 0
+	if (!prev_reg_type)	// ovde treba da udje u ovo samo jednom, kada je prev_reg_type jednak 0, ili ako je reg_type razlicit od 0
 		{
 			prev_reg_type = reg_type;
 			reg_type = 0;
 			phase = 0;
+
+			base_ptr->v_ctrl = 0;
+			base_ptr->w_ctrl = 0;
 		}
 }
