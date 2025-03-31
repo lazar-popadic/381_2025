@@ -231,6 +231,8 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors);
 int8_t
 rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors);
 int8_t
+rot_relative (float angle, float w_max, int8_t check_sensors);
+int8_t
 move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors);
 void
 stop_moving ();
@@ -352,7 +354,6 @@ float
 x_side (float x);
 tactic_num*
 get_tact_num_ptr ();
-
 int8_t
 tact_0 ();
 int8_t
@@ -365,7 +366,15 @@ int8_t
 tact_dev_2 ();
 int8_t
 tact_dev_3 ();
+
+// tasks.h
+int8_t
+task_sprat_1 (int8_t side);
 int8_t
 task_sprat_12 (int8_t side);
+int8_t
+task_sprat_3 (int8_t side);
+int8_t
+task_sprat_3_1_full (int8_t side);
 
 #endif /* LIB_LIB_H_ */

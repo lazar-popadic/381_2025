@@ -11,6 +11,8 @@
 #define PHI_TOL			1
 #define PHI_PRIM_TOL	2
 
+#define REG_DELAY 10	// budz
+
 #include "main.h"
 
 static void
@@ -29,6 +31,8 @@ static int8_t prev_reg_type = 0;
 static int8_t phase = 0;
 static int8_t direction;
 static uint8_t position_cnt = 1;
+static uint32_t reg_delay = 0xFFFF;
+static int8_t delayed = 0;
 
 //static curve curve_var;
 static curve *curve_ptr;
@@ -335,10 +339,12 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = w_max;
 			base_ptr->obstacle_dir = check_sensors;
+			delayed = 0;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+			if (delay_nb_2 (&reg_delay, REG_DELAY))
+				delayed = 1;
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
@@ -346,6 +352,11 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			if (delayed)
+				{
+					base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+					delayed = 0;
+				}
 		}
 
 	return move_status;
@@ -363,10 +374,12 @@ rot_to_phi (float phi, float w_max, int8_t check_sensors)
 			base_ptr->phi_ref = phi;
 			base_ptr->w_max = w_max;
 			base_ptr->obstacle_dir = check_sensors;
+			delayed = 0;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+			if (delay_nb_2 (&reg_delay, REG_DELAY))
+				delayed = 1;
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
@@ -374,6 +387,11 @@ rot_to_phi (float phi, float w_max, int8_t check_sensors)
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			if (delayed)
+				{
+					base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+					delayed = 0;
+				}
 		}
 
 	return move_status;
@@ -394,9 +412,12 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 			base_ptr->y_ref = base_ptr->y + dir * distance * sin (base_ptr->phi * M_PI / 180);
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = check_sensors;
+			delayed = 0;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
+			if (delay_nb_2 (&reg_delay, REG_DELAY))
+				delayed = 1;
 			move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
@@ -405,7 +426,11 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
 			// TODO: mozda je problem sto prvo ovo odradi, pa onda tek vrati da je zavrsen task kretnje
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+			if (delayed)
+				{
+					base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+					delayed = 0;
+				}
 		}
 
 	return move_status;
@@ -415,6 +440,12 @@ int8_t
 rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors)
 {
 	return rot_to_phi (atan2 (y - base_ptr->y, x - base_ptr->x) * 180 / M_PI + (dir - 1) * 90, w_max, check_sensors);
+}
+
+int8_t
+rot_relative (float angle, float w_max, int8_t check_sensors)
+{
+	return rot_to_phi (base_ptr->phi + angle, w_max, check_sensors);
 }
 
 int8_t
@@ -431,10 +462,12 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 			base_ptr->w_max = W_MAX_DEF;
 			create_curve (curve_ptr, x, y, phi, dir, avoid);
 			base_ptr->obstacle_dir = check_sensors;
+			delayed = 0;
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+			if (delay_nb_2 (&reg_delay, REG_DELAY))
+				delayed = 1;
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
@@ -442,6 +475,11 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			if (delayed)
+				{
+					base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+					delayed = 0;
+				}
 		}
 
 	return move_status;

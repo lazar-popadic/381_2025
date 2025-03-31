@@ -1,0 +1,101 @@
+/*
+ * task_sprat_1.c
+ *
+ * 		Task odvajanja 1 sprata:
+ * 			- na pocetku drzi ceo MS
+ * 			- na kraju drzi pola MS (unutrasnje konzerve i 1 dasku)
+ *			- udaljen je za 140mm od centra ostavljenog sprata
+ *
+ *  Created on: Mar 31, 2025
+ *      Author: lazar
+ */
+
+#include "main.h"
+
+static int16_t task_fsm_case = 0;
+static uint32_t task_delay = 0xFFFF;
+static int8_t task_state;
+static int8_t cur_task;
+
+int8_t
+task_sprat_1 (int8_t side)
+{
+	switch (task_fsm_case)
+		{
+		case 0:
+			if (side == FORWARD)
+				{
+					lift_front_down ();
+					grtl_front_open_outside ();
+				}
+			else
+				{
+					lift_back_down ();
+					grtl_back_open_outside ();
+				}
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 10;
+			break;
+
+		case 10:
+			if (side == FORWARD)
+				{
+					vacuum_front (1);
+					ruc_front_mid ();
+				}
+			else
+				{
+					vacuum_back (1);
+					ruc_back_mid ();
+				}
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 20;
+			break;
+
+		case 20:
+			if (side == FORWARD)
+				gurl_front ();
+			else
+				gurl_back ();
+			cur_task = move_on_dir (70, -1 * side, 0.2, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				task_fsm_case = 30;
+			break;
+
+		case 30:
+			gurl_mid ();
+			cur_task = move_on_dir (70, -1 * side, 1.0, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				task_fsm_case = 40;
+			break;
+
+		case 40:
+			if (side == FORWARD)
+				ruc_front_down ();
+			else
+				ruc_back_down ();
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 50;
+			break;
+
+		case 50:
+			vacuum_front (0);
+			vacuum_back (0);
+			task_fsm_case = 60;
+			break;
+
+		case 60:
+			if (side == FORWARD)
+				ruc_front_up ();
+			else
+				ruc_back_up ();
+			if (delay_nb_2 (&task_delay, 200))
+				task_fsm_case = -1;
+			break;
+
+		case -1:
+			task_state = TASK_SUCCESS;
+			break;
+		}
+	return task_state;
+}

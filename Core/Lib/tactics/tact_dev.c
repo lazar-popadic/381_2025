@@ -2,9 +2,10 @@
  * tact_dev.c
  *
  *		Taktika za razvoj i testiranje taskova.
- *		Trenutno:
- *			-	task za gradjenje 2 sprata
- *
+ *			- uzme 2 ms
+ *			- ode do ca 1
+ *			- napravi 3 sprata i ostavi 1
+ *			- rotira se
  *
  *  Created on: Mar 21, 2025
  *      Author: lazar
@@ -23,43 +24,78 @@ tact_dev ()
 {
 	switch (tact_fsm_case)
 		{
+		/*
+		 *	Hvatanje MS 1
+		 *	prednjom stranom
+		 */
 		case 0:
 			prepare_front ();
 			tact_fsm_case = 10;
 			break;
 
 		case 10:
-			cur_task = move_on_dir (200, FORWARD, 1.0, NO_SENS);
+			cur_task = move_to_xy (300, 0, FORWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 20;
 			break;
 
 		case 20:
-			cur_task = move_on_dir (100, FORWARD, 0.25, NO_SENS);
+			cur_task = move_on_dir (100, FORWARD, 0.2, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
 			break;
 
 		case 30:
+			if (delay_nb_2 (&tact_delay_1, 100))
+				tact_fsm_case = 40;
 			grtl_front_grip_all ();
 			ruc_front_down ();
 			lift_front_carry ();
-			if (delay_nb_2 (&tact_delay_1, 100))
-				tact_fsm_case = 40;
+			prepare_back ();
 			break;
 
+			/*
+			 *	Hvatanje MS 2
+			 *	zadnjom stranom
+			 */
 		case 40:
-			cur_task = move_on_path (300, -600, 180, FORWARD, 0, 0.5, 0, FORWARD);
+			cur_task = move_to_xy (-300, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 50;
 			break;
 
 		case 50:
-			cur_task = task_sprat_12 (FORWARD);
+			cur_task = move_on_dir (100, BACKWARD, 0.2, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 60;
+			break;
 
 		case 60:
+			if (delay_nb_2 (&tact_delay_1, 100))
+				tact_fsm_case = 70;
+			grtl_back_grip_all ();
+			ruc_back_down ();
+			lift_back_carry ();
+			break;
+
+			/*
+			 *	Idi do CA 1
+			 */
+		case 70:
+			cur_task = move_on_path (400, -200, 0, FORWARD, 0, V_MAX_DEF, 0, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 80;
+			break;
+
+			/*
+			 *	Izgradi 3 sprata i ostavi preostali 1 sprat
+			 */
+		case 80:
+			cur_task = task_sprat_3_1_full (FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 90;
+
+		case 90:
 			cur_task = rot_to_phi (0, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = -1;

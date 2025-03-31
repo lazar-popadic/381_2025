@@ -9,7 +9,7 @@
 
 tactic_num tactic;
 uint16_t tact_fsm_case;
-uint32_t tact_delay_1 = 0xFFFFFFFF;
+uint32_t tact_delay_1 = 0xFFFF;
 uint8_t points = 0;
 int8_t tact_state = TASK_RUNNING;
 
