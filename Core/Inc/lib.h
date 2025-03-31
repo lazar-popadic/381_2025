@@ -203,9 +203,9 @@ set_w_max(float multiplier);
 void
 reset_w_max();
 void
-update_base_status();
-void
-check_sensors();
+update_base_status ();
+uint8_t
+check_sensors ();
 uint8_t
 get_regulation_status();
 void

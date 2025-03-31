@@ -54,6 +54,8 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 volatile uint8_t ax_id_test = 10;
 volatile uint16_t ax_angle_test = 511;
 volatile uint16_t ax_speed_test = 200;
+volatile uint8_t out_0, out_1, out_2, out_3;
+volatile uint8_t in_0, in_1;
 
 /* USER CODE END PV */
 
@@ -168,8 +170,17 @@ main (void)
 
 				case 13:
 //					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
-					if (tact_dev_3() == TASK_SUCCESS)
+					if (tact_dev_3 () == TASK_SUCCESS)
 						main_fsm_case = -1;
+					break;
+
+				case 20:
+					in_0 = read_sensors_front ();
+					in_1 = read_sensors_back ();
+					vacuum_0 (out_0);
+					vacuum_1 (out_1);
+					vacuum_2 (out_2);
+					vacuum_3 (out_3);
 					break;
 
 				case -1:

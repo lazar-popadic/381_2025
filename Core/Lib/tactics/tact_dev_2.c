@@ -1,5 +1,5 @@
 /*
- * tact_dev.c
+ * tact_dev_2.c
  *
  *  Created on: Mar 21, 2025
  *      Author: lazar
@@ -24,7 +24,7 @@ tact_dev_2 ()
 			break;
 
 		case 1:
-			cur_task = move_to_xy (x_side (-800), 0, FORWARD, 1.0, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (x_side (-800), 0, FORWARD, 1.0, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 2;
@@ -36,7 +36,7 @@ tact_dev_2 ()
 			break;
 
 		case 2:
-			cur_task = move_to_xy (x_side (-800), -400, BACKWARD, 1.0, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (x_side (-800), -400, BACKWARD, 1.0, W_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 3;
@@ -48,7 +48,7 @@ tact_dev_2 ()
 			break;
 
 		case 3:
-			cur_task = move_to_xy (0, -400, FORWARD, 1.0, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (0, -400, FORWARD, 1.0, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 4;
@@ -60,7 +60,7 @@ tact_dev_2 ()
 			break;
 
 		case 4:
-			cur_task = move_to_xy (0, 0, BACKWARD, 0.5, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (0, 0, BACKWARD, 0.5, W_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = -1;

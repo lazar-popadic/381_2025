@@ -100,7 +100,7 @@ update_base_status ()
 		base_ptr->moving = 1;
 }
 
-void
+uint8_t
 check_sensors ()
 {
 	switch (base_ptr->obstacle_dir)
@@ -118,6 +118,7 @@ check_sensors ()
 			base_ptr->obstacle_detected = read_sensors_back () || read_sensors_front ();
 			break;
 		}
+	return base_ptr->obstacle_detected;
 }
 
 uint8_t
