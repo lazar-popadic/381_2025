@@ -59,7 +59,7 @@ tact_dev ()
 			 *	zadnjom stranom
 			 */
 		case 40:
-			cur_task = move_to_xy (-300, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (-100, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 50;
 			break;
@@ -82,7 +82,8 @@ tact_dev ()
 			 *	Idi do CA 1
 			 */
 		case 70:
-			cur_task = move_on_path (400, -200, 0, FORWARD, 0, V_MAX_DEF, 0, NO_SENS);
+			//			cur_task = move_on_path (200, -200, 0, FORWARD, 0, V_MAX_DEF, 0, NO_SENS);
+			cur_task = move_to_xy (0, 0, FORWARD, V_MAX_DEF, 0, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 80;
 			break;
@@ -94,6 +95,7 @@ tact_dev ()
 			cur_task = task_sprat_3_1_full (FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 90;
+			break;
 
 		case 90:
 			cur_task = rot_to_phi (0, W_MAX_DEF, NO_SENS);

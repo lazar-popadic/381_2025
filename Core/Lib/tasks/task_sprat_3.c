@@ -15,7 +15,7 @@
 
 static int16_t task_fsm_case = 0;
 static uint32_t task_delay = 0xFFFF;
-static int8_t task_state;
+static int8_t task_state = TASK_RUNNING;
 static int8_t cur_task;
 
 int8_t
@@ -24,6 +24,7 @@ task_sprat_3 (int8_t side)
 	switch (task_fsm_case)
 		{
 		case 0:
+			task_state = TASK_RUNNING;
 			cur_task = move_on_dir (70, side, 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 10;
@@ -97,6 +98,7 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case -1:
+			task_fsm_case = 0;
 			task_state = TASK_SUCCESS;
 			break;
 		}

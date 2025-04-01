@@ -149,7 +149,7 @@ main (void)
 					break;
 
 				case 10:
-					if (tact_0 () == TASK_SUCCESS)
+					if (tact_dev () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
