@@ -25,13 +25,13 @@ task_sprat_3 (int8_t side)
 		{
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = move_on_dir (70, side, 0.5, NO_SENS);
+			cur_task = move_on_dir (70, side, 1.0, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 10;
 			break;
 
 		case 10:
-			cur_task = move_on_dir (100, side, 0.2, NO_SENS);
+			cur_task = move_on_dir (100, side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
@@ -55,7 +55,7 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 50:
-			cur_task = move_on_dir (110, side, 0.1, NO_SENS);
+			cur_task = move_on_dir (110, side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 60;
 			break;

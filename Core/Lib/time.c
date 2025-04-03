@@ -23,21 +23,19 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 	update_odom ();
 	sensors_time_isr_test = check_sensors ();
 
-	// TODO:  mzd ne mora get reg status ovde
-	switch (!get_obstacle_detected () && get_regulation_status ())
-		{
-		case 1:
-			continue_moving ();
-//			position_loop ();
-			break;
-		case 0:
-			// TODO: testiraj
-			stop_moving ();
-			break;
-		}
 	switch (get_regulation_status ())
 		{
 		case 1:
+			switch (!get_obstacle_detected ())
+				{
+				case 1:
+					continue_moving ();
+					break;
+				case 0:
+					// TODO: testiraj
+					stop_moving ();
+					break;
+				}
 			position_loop ();
 			velocity_loop ();
 			break;

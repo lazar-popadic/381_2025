@@ -24,10 +24,22 @@ tact_dev_3 ()
 			break;
 
 		case 1:
-			cur_task = move_on_path (800, -400, -90, FORWARD, 0, 1.0, 0, NO_SENS);
+			cur_task = move_on_path (0, -500, 180, FORWARD, 1, 1.0, 0, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				{
+					tact_fsm_case = 2;
+				}
+			else if (cur_task == TASK_FAIL)
+				{
 					tact_fsm_case = -1;
+				}
+			break;
+
+		case 2:
+			cur_task = move_on_path (0, 0, 0, FORWARD, 1, 1.0, 0, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				{
+					tact_fsm_case = 1;
 				}
 			else if (cur_task == TASK_FAIL)
 				{

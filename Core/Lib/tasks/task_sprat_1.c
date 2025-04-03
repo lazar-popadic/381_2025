@@ -58,7 +58,7 @@ task_sprat_1 (int8_t side)
 				gurl_front ();
 			else
 				gurl_back ();
-			cur_task = move_on_dir (70, -1 * side, 0.2, NO_SENS);
+			cur_task = move_on_dir (70, -1 * side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;

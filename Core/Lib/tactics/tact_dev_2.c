@@ -29,10 +29,10 @@ tact_dev_2 ()
 			break;
 
 		case 1:
-			cur_task = move_to_xy (x_side (-800), 0, FORWARD, 1.0, W_MAX_DEF, FORWARD);
+			cur_task = move_to_xy (1000, 0, FORWARD, 1.0, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
-					tact_fsm_case = 2;
+					tact_fsm_case = -1;
 				}
 //			else if (cur_task == TASK_FAIL)
 //				{
@@ -41,7 +41,7 @@ tact_dev_2 ()
 			break;
 
 		case 2:
-			cur_task = move_to_xy (x_side (-800), -400, BACKWARD, 1.0, W_MAX_DEF, BACKWARD);
+			cur_task = move_to_xy (500, -500, BACKWARD, 1.0, W_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 3;
@@ -53,7 +53,7 @@ tact_dev_2 ()
 			break;
 
 		case 3:
-			cur_task = move_to_xy (0, -400, FORWARD, 1.0, W_MAX_DEF, FORWARD);
+			cur_task = move_to_xy (0, -500, FORWARD, 1.0, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 4;

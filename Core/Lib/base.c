@@ -94,7 +94,7 @@ reset_w_max ()
 void
 update_base_status ()
 {
-	if (base_ptr->v < V_MOVING_MIN && base_ptr->w < W_MOVING_MIN)
+	if (fabs (base_ptr->v) < V_MOVING_MIN && fabs (base_ptr->w) < W_MOVING_MIN)
 		base_ptr->moving = 0;
 	else
 		base_ptr->moving = 1;

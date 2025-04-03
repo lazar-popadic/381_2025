@@ -40,7 +40,7 @@ tact_dev ()
 			break;
 
 		case 20:
-			cur_task = move_on_dir (100, FORWARD, 0.2, NO_SENS);
+			cur_task = move_on_dir (100, FORWARD, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
 			break;
@@ -65,7 +65,7 @@ tact_dev ()
 			break;
 
 		case 50:
-			cur_task = move_on_dir (100, BACKWARD, 0.2, NO_SENS);
+			cur_task = move_on_dir (100, BACKWARD, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 60;
 			break;

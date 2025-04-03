@@ -16,10 +16,10 @@
 
 #define V_MAX_DEF				1.0			// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
-#define A_MAX_DEF				0.33333	// [m/s * 1/10ms]				// za 30ms dodje do 1m/s
-#define ALPHA_MAX_DEF		120			// [deg/s * 1/10ms]			// za 30ms dodje do 360deg/s
-#define J_MAX_DEF				0.02675	// [mm/ms * 1/10ms^2]		// za 30ms dodje do 1m/s i sve vreme je jerk-limited
-#define J_ROT_MAX_DEF		9.6		// [deg/s * 1/10ms^2]		// za 30ms dodje do 360deg/s i sve vreme je jerk-limited
+#define A_MAX_DEF				0.25			// [m/s * 1/10ms]				// za 50ms dodje do 1m/s
+#define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 50ms dodje do 360deg/s
+#define J_MAX_DEF				0.1			// [mm/ms * 1/10ms^2]		// za 40ms dodje do 1m/s i sve vreme je jerk-limited
+#define J_ROT_MAX_DEF		36			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX				4200		// [inc]
 #define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
@@ -35,13 +35,14 @@
 
 #define TRAP_VEL_PROFILE		0
 #define S_CURVE_VEL_PROFILE	1
+#define STOPPING						2
 
 #define BEZIER_RESOLUTION 500
 #define MAX_EQU_PTS				200
-#define POINT_DISTANCE 		20
+#define POINT_DISTANCE 		25
 
-#define OFFS_ROBOT 		500
-#define OFFS_DESIRED	500
+#define OFFS_ROBOT 		333
+#define OFFS_DESIRED	667
 
 #include "structs.h"
 
@@ -186,6 +187,8 @@ float
 calc_pid_2 (volatile pid *pid_ptr, float ref, float val);
 void
 init_pid (volatile pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
+void
+reset_pid (volatile pid *pid_ptr);
 
 // base.h
 void

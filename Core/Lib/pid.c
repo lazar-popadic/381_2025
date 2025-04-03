@@ -40,3 +40,14 @@ init_pid (volatile pid *pid_ptr, float p, float i, float d, float limit, float s
   pid_ptr->err_sum = 0;
   pid_ptr->err_dif = 0;
 }
+
+void
+reset_pid(volatile pid *pid_ptr)
+{
+  pid_ptr->ctrl = 0;
+  pid_ptr->ctrl_p = 0;
+  pid_ptr->ctrl_pp = 0;
+  pid_ptr->err_p = 0;
+  pid_ptr->err_sum = 0;
+  pid_ptr->err_dif = 0;
+}
