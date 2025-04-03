@@ -11,17 +11,17 @@
 #define YELLOW	0
 #define BLUE		1
 
-#define V_MOVING_MIN		0.1	// [m/s]
-#define W_MOVING_MIN		36		// [deg/s]
+#define V_MOVING_MIN		0.01	// [m/s]
+#define W_MOVING_MIN		3.6		// [deg/s]
 
 #define V_MAX_DEF				1.0			// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
-#define A_MAX_DEF				0.1334	// [m/s * 1/10ms]				// za 75ms dodje do 1m/s
-#define ALPHA_MAX_DEF		48			// [deg/s * 1/10ms]			// za 75ms dodje do 360deg/s
-#define J_MAX_DEF				0.0107	// [mm/ms * 1/10ms^2]		// za 75ms dodje do 1m/s i sve vreme je jerk-limited
-#define J_ROT_MAX_DEF		3.84		// [deg/s * 1/10ms^2]		// za 75ms dodje do 360deg/s i sve vreme je jerk-limited
+#define A_MAX_DEF				0.33333	// [m/s * 1/10ms]				// za 30ms dodje do 1m/s
+#define ALPHA_MAX_DEF		120			// [deg/s * 1/10ms]			// za 30ms dodje do 360deg/s
+#define J_MAX_DEF				0.02675	// [mm/ms * 1/10ms^2]		// za 30ms dodje do 1m/s i sve vreme je jerk-limited
+#define J_ROT_MAX_DEF		9.6		// [deg/s * 1/10ms^2]		// za 30ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX				4200		// [inc]
-#define MAX_PWM_CHANGE	560			// [inc/ms]					// za 7.5ms dodje do 4200
+#define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
 
 #define TASK_RUNNING	0
