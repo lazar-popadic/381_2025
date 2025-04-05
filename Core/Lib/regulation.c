@@ -128,13 +128,15 @@ position_loop ()
 
 			switch (reg_type)
 				{
+				case -2:
+					pos_hold ();
+					break;
 				case -1:
 					rotate ();
 					break;
 				case 0:
 					base_ptr->v_ref = 0;
 					base_ptr->w_ref = 0;
-//		  pos_hold ();
 					break;
 				case 1:
 					go_to_xy ();

@@ -5,7 +5,7 @@
  * 			- na pocetku ne drzi nista na strani na kojoj radi i otvorene su mu grtalice
  * 			- vec su spremna 2 sprata i odvojen 1 sprat ispred njih
  * 			- na kraju ne drzi nista u toj strani i izgradjena su 3 sprata
- *			- udaljen je za 140mm od centra ostavljenog sprata
+ *			- udaljen je za 200mm od centra ostavljenog sprata
  *
  *  Created on: Mar 31, 2025
  *      Author: lazar
@@ -25,13 +25,7 @@ task_sprat_3 (int8_t side)
 		{
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = move_on_dir (70, side, 1.0, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 10;
-			break;
-
-		case 10:
-			cur_task = move_on_dir (100, side, 0.25, NO_SENS);
+			cur_task = move_on_dir (200, side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
@@ -55,21 +49,23 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 50:
-			cur_task = move_on_dir (110, side, 0.25, NO_SENS);
+			cur_task = move_on_dir (200, side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 60;
 			break;
 
 		case 60:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 70;
 			if (side == FORWARD)
 				lift_front_drop ();
 			else
 				lift_back_drop ();
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 70;
 			break;
 
 		case 70:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 80;
 			if (side == FORWARD)
 				{
 					grtl_front_open ();
@@ -80,12 +76,10 @@ task_sprat_3 (int8_t side)
 					grtl_back_open ();
 					lift_back_leave ();
 				}
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 80;
 			break;
 
 		case 80:
-			cur_task = move_on_dir (140, -1 * side, 1.0, NO_SENS);
+			cur_task = move_on_dir (200, -1 * side, 1.0, NO_SENS);
 			if (delay_nb_2 (&task_delay, 500))
 				{
 					if (side == FORWARD)

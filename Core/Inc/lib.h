@@ -57,16 +57,14 @@ void
 pwm_stop ();
 void
 sg90_init ();
-uint16_t
-angleToSG90 (float angle);
 void
-sg90_1_move (float angle);
+sg90_1_move (float us);
 void
-sg90_2_move (float angle);
+sg90_2_move (float us);
 void
-sg90_3_move (float angle);
+sg90_3_move (float us);
 void
-sg90_4_move (float angle);
+sg90_4_move (float us);
 
 // time.h
 void
@@ -313,6 +311,10 @@ void
 ruc_front_up ();
 void
 ruc_back_up ();
+void
+ruc_front_carry ();
+void
+ruc_back_carry ();
 void
 gurl_front ();
 void

@@ -30,13 +30,13 @@ task_sprat_3_1_full (int8_t side)
 		 */
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = task_sprat_1 (BACKWARD);
+			cur_task = task_sprat_1 (side);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 10;
 			break;
 
 		case 10:
-			cur_task = rot_to_phi (180, W_MAX_DEF, NO_SENS);
+			cur_task = rot_relative (180, W_MAX_DEF * 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 20;
 			break;
@@ -45,7 +45,7 @@ task_sprat_3_1_full (int8_t side)
 			 *	Napravi 2 sprata
 			 */
 		case 20:
-			cur_task = task_sprat_12 (FORWARD);
+			cur_task = task_sprat_12 (-1 * side);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
@@ -54,7 +54,7 @@ task_sprat_3_1_full (int8_t side)
 			 *	Podigne ih na 3.
 			 */
 		case 30:
-			cur_task = task_sprat_3 (FORWARD);
+			cur_task = task_sprat_3 (-1 * side);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 40;
 			break;
@@ -75,7 +75,7 @@ task_sprat_3_1_full (int8_t side)
 			break;
 
 		case 60:
-			cur_task = move_on_dir (140, side, V_MAX_DEF, side);
+			cur_task = move_on_dir (200, side, V_MAX_DEF, side);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = -1;
 			break;

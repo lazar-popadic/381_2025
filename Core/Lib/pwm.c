@@ -8,6 +8,11 @@
 #include "../Inc/main.h"
 #include "../Inc/tim.h"
 
+static uint16_t
+to_arr (uint16_t us);
+static uint16_t
+angleToSG90 (float angle);
+
 void
 pwm_left_dc (int16_t duty_cycle)
 {
@@ -43,42 +48,55 @@ pwm_stop ()
  *	ARR			= 1000 - 1
  *	50  ARR	=		0	deg
  *	100 ARR	=	180	deg
+ *	---
+ *	1000 ARR	==	20 000 us
+ *	1 ARR			==	20 us
  */
 void
-sg90_init()
+sg90_init ()
 {
 	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_1);
 	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_2);
 	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_3);
 	HAL_TIM_PWM_Start (&htim2, TIM_CHANNEL_4);
+	bnr_close ();
+	// cisto da ne izlazi warning
+	(void) angleToSG90 (0);
 }
 
-uint16_t
+static uint16_t
 angleToSG90 (float angle)
 {
+	// Only works with standard sg90, limited to 180deg
 	return angle * 50 / 180 + 50;
 }
 
-void
-sg90_1_move (float angle)
+static uint16_t
+to_arr (uint16_t us)
 {
-	TIM2->CCR3 = angleToSG90(angle);
+	return (uint16_t) us * 0.05;
 }
 
 void
-sg90_2_move (float angle)
+sg90_1_move (float us)
 {
-	TIM2->CCR4 = angleToSG90(angle);
+	TIM2->CCR3 = to_arr (us);
 }
 
 void
-sg90_3_move (float angle)
+sg90_2_move (float us)
 {
-	TIM2->CCR1 = angleToSG90(angle);
+	TIM2->CCR4 = to_arr (us);
 }
 
 void
-sg90_4_move (float angle)
+sg90_3_move (float us)
 {
-	TIM2->CCR2 = angleToSG90(angle);
+	TIM2->CCR1 = to_arr (us);
+}
+
+void
+sg90_4_move (float us)
+{
+	TIM2->CCR2 = to_arr (us);
 }

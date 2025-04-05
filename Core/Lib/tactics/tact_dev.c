@@ -34,13 +34,7 @@ tact_dev ()
 			break;
 
 		case 10:
-			cur_task = move_to_xy (300, 0, FORWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 20;
-			break;
-
-		case 20:
-			cur_task = move_on_dir (100, FORWARD, 0.25, NO_SENS);
+			cur_task = move_to_xy (100, 0, FORWARD, 0.25, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
 			break;
@@ -49,7 +43,7 @@ tact_dev ()
 			if (delay_nb_2 (&tact_delay_1, 100))
 				tact_fsm_case = 40;
 			grtl_front_grip_all ();
-			ruc_front_down ();
+			ruc_front_carry ();
 			lift_front_carry ();
 			prepare_back ();
 			break;
@@ -59,13 +53,13 @@ tact_dev ()
 			 *	zadnjom stranom
 			 */
 		case 40:
-			cur_task = move_to_xy (-100, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (0, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 50;
 			break;
 
 		case 50:
-			cur_task = move_on_dir (100, BACKWARD, 0.25, NO_SENS);
+			cur_task = move_to_xy (-100, 0, BACKWARD, 0.25, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 60;
 			break;
@@ -74,7 +68,7 @@ tact_dev ()
 			if (delay_nb_2 (&tact_delay_1, 100))
 				tact_fsm_case = 70;
 			grtl_back_grip_all ();
-			ruc_back_down ();
+			ruc_back_carry ();
 			lift_back_carry ();
 			break;
 
@@ -83,7 +77,7 @@ tact_dev ()
 			 */
 		case 70:
 			//			cur_task = move_on_path (200, -200, 0, FORWARD, 0, V_MAX_DEF, 0, NO_SENS);
-			cur_task = move_to_xy (0, 0, FORWARD, V_MAX_DEF, 0, NO_SENS);
+			cur_task = move_to_xy (0, 0, FORWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 80;
 			break;
@@ -93,12 +87,6 @@ tact_dev ()
 			 */
 		case 80:
 			cur_task = task_sprat_3_1_full (FORWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 90;
-			break;
-
-		case 90:
-			cur_task = rot_to_phi (0, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = -1;
 			break;

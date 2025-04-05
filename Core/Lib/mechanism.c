@@ -50,9 +50,11 @@
 
 #define RUC_L_UP			511
 #define RUC_L_MID			320
+#define RUC_L_CARRY		230
 #define RUC_L_DOWN		180
 #define RUC_R_UP			511
 #define RUC_R_MID			705
+#define RUC_R_CARRY		795
 #define RUC_R_DOWN		845
 #define RUC_SPEED_FAST		500
 #define RUC_SPEED_SLOW		300
@@ -61,7 +63,7 @@
 #define GURL_MID					511
 #define GURL_FULL_RIGHT		50
 #define GURL_FAST					500
-#define GURL_SLOW					150
+#define GURL_SLOW					225
 
 mech_states mechanism_states;
 
@@ -95,6 +97,7 @@ ax_init ()
 void
 mechanism_init ()
 {
+	bnr_close ();
 	gurl_mid ();
 	HAL_Delay (200);
 	ruc_front_up ();
@@ -386,6 +389,22 @@ ruc_front_up ()
 void
 ruc_back_up ()
 {
+	ax_move (RUC_BL_ID, RUC_L_CARRY, RUC_SPEED_FAST, huart6);
+	ax_move (RUC_BR_ID, RUC_R_CARRY, RUC_SPEED_FAST, huart6);
+	mechanism_states.ruc_back = 3;
+}
+
+void
+ruc_front_carry ()
+{
+	ax_move (RUC_FL_ID, RUC_L_CARRY, RUC_SPEED_FAST, huart6);
+	ax_move (RUC_FR_ID, RUC_R_CARRY, RUC_SPEED_FAST, huart6);
+	mechanism_states.ruc_front = 3;
+}
+
+void
+ruc_back_carry ()
+{
 	ax_move (RUC_BL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
 	ax_move (RUC_BR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
 	mechanism_states.ruc_back = 0;
@@ -437,49 +456,49 @@ vacuum_front (uint8_t on)
 void
 bnr_close ()
 {
-	sg90_1_move (0);
-	sg90_2_move (0);
-	sg90_3_move (0);
-	sg90_4_move (0);
+	sg90_1_move (1350);
+	sg90_2_move (1700);
+	sg90_3_move (1650);
+	sg90_4_move (1550);
 	mechanism_states.bnr = 0;
 }
 
 void
 bnr_1 ()
 {
-	sg90_1_move (90);
-	sg90_2_move (0);
-	sg90_3_move (0);
-	sg90_4_move (0);
+	sg90_1_move (700);
+	sg90_2_move (1700);
+	sg90_3_move (1650);
+	sg90_4_move (1550);
 	mechanism_states.bnr = 1;
 }
 
 void
 bnr_2 ()
 {
-	sg90_1_move (90);
-	sg90_2_move (90);
-	sg90_3_move (0);
-	sg90_4_move (0);
+	sg90_1_move (700);
+	sg90_2_move (1100);
+	sg90_3_move (1650);
+	sg90_4_move (1550);
 	mechanism_states.bnr = 2;
 }
 
 void
 bnr_3 ()
 {
-	sg90_1_move (90);
-	sg90_2_move (90);
-	sg90_3_move (90);
-	sg90_4_move (0);
+	sg90_1_move (700);
+	sg90_2_move (1100);
+	sg90_3_move (1650);
+	sg90_4_move (2200);
 	mechanism_states.bnr = 3;
 }
 
 void
 bnr_4 ()
 {
-	sg90_1_move (90);
-	sg90_2_move (90);
-	sg90_3_move (90);
-	sg90_4_move (90);
+	sg90_1_move (700);
+	sg90_2_move (1100);
+	sg90_3_move (2300);
+	sg90_4_move (2200);
 	mechanism_states.bnr = 4;
 }

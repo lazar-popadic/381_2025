@@ -4,7 +4,7 @@
  * 		Task odvajanja 1 sprata:
  * 			- na pocetku drzi ceo MS
  * 			- na kraju drzi pola MS (unutrasnje konzerve i 1 dasku)
- *			- udaljen je za 140mm od centra ostavljenog sprata
+ *			- udaljen je za 200mm od centra ostavljenog sprata
  *
  *  Created on: Mar 31, 2025
  *      Author: lazar
@@ -24,6 +24,8 @@ task_sprat_1 (int8_t side)
 		{
 		case 0:
 			task_state = TASK_RUNNING;
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 10;
 			if (side == FORWARD)
 				{
 					lift_front_down ();
@@ -34,11 +36,11 @@ task_sprat_1 (int8_t side)
 					lift_back_down ();
 					grtl_back_open_outside ();
 				}
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 10;
 			break;
 
 		case 10:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 20;
 			if (side == FORWARD)
 				{
 					vacuum_front (1);
@@ -49,8 +51,7 @@ task_sprat_1 (int8_t side)
 					vacuum_back (1);
 					ruc_back_mid ();
 				}
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 20;
+
 			break;
 
 		case 20:
@@ -65,18 +66,18 @@ task_sprat_1 (int8_t side)
 
 		case 30:
 			gurl_mid ();
-			cur_task = move_on_dir (70, -1 * side, 1.0, NO_SENS);
+			cur_task = move_on_dir (130, -1 * side, 1.0, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 40;
 			break;
 
 		case 40:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 50;
 			if (side == FORWARD)
 				ruc_front_down ();
 			else
 				ruc_back_down ();
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 50;
 			break;
 
 		case 50:
@@ -90,8 +91,7 @@ task_sprat_1 (int8_t side)
 				ruc_front_up ();
 			else
 				ruc_back_up ();
-			if (delay_nb_2 (&task_delay, 200))
-				task_fsm_case = -1;
+			task_fsm_case = -1;
 			break;
 
 		case -1:

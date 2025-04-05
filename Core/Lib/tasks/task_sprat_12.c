@@ -4,7 +4,7 @@
  * 		Task odvajanja i sastavljanja 2 sprata:
  * 			- na pocetku drzi ceo MS
  * 			- na kraju ne drzi nista u toj strani i izgradjena su 2 sprata
- *			- udaljen je za 140mm od centra ostavljenog sprata
+ *			- udaljen je za 200mm od centra ostavljenog sprata
  *			- otvorene su mu grtalice na zadatoj strani i lift je dole
  *
  *  Created on: Mar 31, 2025
@@ -31,39 +31,41 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 5:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 10;
 			if (side == FORWARD)
 				ruc_front_up ();
 			else
 				ruc_back_up ();
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 10;
 			break;
 
 		case 10:
+			if (delay_nb_2 (&task_delay, 750))
+				task_fsm_case = 20;
 			if (side == FORWARD)
 				lift_front_up ();
 			else
 				lift_back_up ();
-			if (delay_nb_2 (&task_delay, 500))
-				task_fsm_case = 20;
 			break;
 
 		case 20:
-			cur_task = move_on_dir (140, side, 0.25, NO_SENS);
+			cur_task = move_on_dir (200, side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
 
 		case 30:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 40;
 			if (side == FORWARD)
 				lift_front_drop ();
 			else
 				lift_back_drop ();
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 40;
 			break;
 
 		case 40:
+			if (delay_nb_2 (&task_delay, 100))
+				task_fsm_case = 50;
 			if (side == FORWARD)
 				{
 					grtl_front_open ();
@@ -74,13 +76,11 @@ task_sprat_12 (int8_t side)
 					grtl_back_open ();
 					lift_back_leave ();
 				}
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 50;
 			break;
 
 		case 50:
-			cur_task = move_on_dir (140, -1 * side, 1.0, NO_SENS);
-			if (delay_nb_2 (&task_delay, 500))
+			cur_task = move_on_dir (200, -1 * side, 1.0, NO_SENS);
+			if (delay_nb_2 (&task_delay, 750))
 				{
 					if (side == FORWARD)
 						lift_front_down ();
