@@ -73,8 +73,8 @@ typedef struct st_mechanism_states
 	uint8_t grtl_bor :2;
 	uint8_t grtl_bir :2;
 
-	uint8_t ruc_front :2;		// 3 pozicije: up = 0, mid = 1, down = 2, carry = 3
-	uint8_t ruc_back :2;
+	uint8_t ruc_front :3;		// 5 pozicija: up = 0, mid = 1, down = 2, carry = 3, full down = 4
+	uint8_t ruc_back :3;
 
 	uint8_t gurl :2;				// 3 pozicije: mid = 0, front = 1, back = 2, carry = 3
 

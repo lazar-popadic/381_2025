@@ -34,32 +34,28 @@ tact_dev ()
 			break;
 
 		case 10:
-			cur_task = move_to_xy (100, 0, FORWARD, 0.25, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (200, 0, FORWARD, 0.5, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
 			break;
 
 		case 30:
 			if (delay_nb_2 (&tact_delay_1, 100))
-				tact_fsm_case = 40;
+				tact_fsm_case = 50;
 			grtl_front_grip_all ();
 			ruc_front_carry ();
 			lift_front_carry ();
 			prepare_back ();
+			vacuum_front (1);
 			break;
 
 			/*
 			 *	Hvatanje MS 2
 			 *	zadnjom stranom
 			 */
-		case 40:
-			cur_task = move_to_xy (0, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 50;
-			break;
 
 		case 50:
-			cur_task = move_to_xy (-100, 0, BACKWARD, 0.25, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (-200, 0, BACKWARD, 0.5, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 60;
 			break;
@@ -70,6 +66,7 @@ tact_dev ()
 			grtl_back_grip_all ();
 			ruc_back_carry ();
 			lift_back_carry ();
+			vacuum_back (1);
 			break;
 
 			/*

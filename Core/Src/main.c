@@ -149,7 +149,7 @@ main (void)
 					break;
 
 				case 10:
-					if (tact_dev () == TASK_SUCCESS)
+					if (tact_0 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
@@ -174,9 +174,7 @@ main (void)
 					break;
 
 				case 20:
-//					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
-					in_0 = read_sensors_front ();
-					in_1 = read_sensors_back ();
+					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
 					vacuum_0 (out_0);
 					vacuum_1 (out_1);
 					vacuum_2 (out_2);

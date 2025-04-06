@@ -304,6 +304,10 @@ ruc_front_down ();
 void
 ruc_back_down ();
 void
+ruc_front_full_down ();
+void
+ruc_back_full_down ();
+void
 ruc_front_mid ();
 void
 ruc_back_mid ();
