@@ -11,12 +11,11 @@
 #define YELLOW	0
 #define BLUE		1
 
-#define V_MOVING_MIN		0.1	// [m/s]
-#define W_MOVING_MIN		36		// [deg/s]
-
+#define V_MOVING_MIN		0.1			// [m/s]
+#define W_MOVING_MIN		36			// [deg/s]
 #define V_MAX_DEF				1.0			// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
-#define A_MAX_DEF				0.25			// [m/s * 1/10ms]				// za 50ms dodje do 1m/s
+#define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 50ms dodje do 1m/s
 #define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 50ms dodje do 360deg/s
 #define J_MAX_DEF				0.1			// [mm/ms * 1/10ms^2]		// za 40ms dodje do 1m/s i sve vreme je jerk-limited
 #define J_ROT_MAX_DEF		36			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
@@ -37,12 +36,12 @@
 #define S_CURVE_VEL_PROFILE	1
 #define STOPPING						2
 
-#define BEZIER_RESOLUTION 500
-#define MAX_EQU_PTS				200
 #define POINT_DISTANCE 		25
-
+#define BEZIER_RESOLUTION 500
+#define MAX_EQU_PTS				220
 #define OFFS_ROBOT 		333
 #define OFFS_DESIRED	667
+#define PAD_NUM				20
 
 #include "structs.h"
 
@@ -351,6 +350,8 @@ int8_t
 get_curve_ready ();
 void
 set_curve_ready (int8_t ready);
+void
+pad_curve (curve *curve_ptr);
 
 // tactics.h
 uint8_t

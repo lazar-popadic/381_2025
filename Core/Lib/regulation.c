@@ -6,6 +6,7 @@
  */
 
 // Tolerancije za distancu i ugao kada smatram da je zadovoljen uslov
+#define D_PROJ_TOL	10
 #define D_TOL				20
 #define D_2_TOL			30
 #define D_3_TOL			50
@@ -222,7 +223,7 @@ go_to_xy ()
 			else
 				base_ptr->w_ref = 0;
 
-			if (d_proj < 0 && fabs (d) < D_2_TOL && !(base_ptr->moving))
+			if (d_proj < D_PROJ_TOL && fabs (d) < D_2_TOL && !(base_ptr->moving))
 				{
 					base_ptr->movement_finished = 1;
 					base_ptr->v_ref = 0;
@@ -274,22 +275,22 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 	// projektovana do sledece tacke + sve preostale tacke * POINT_DISTANCE
 	d_total = d_proj + curve_ptr->dis - (curve_ptr->num_equ_pts - curve_cnt - 1) * POINT_DISTANCE;
 
-	if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num)	// ako ima vise od lookahead_pnt_num
-		{
+//	if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num)	// ako ima vise od lookahead_pnt_num
+//		{
 			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num] - base_ptr->x;
 			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num] - base_ptr->y;
 			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
-		}
-	else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2)	// ako ima manje od lookahead_pnt_num, a vise od lookahead_pnt_num_2
-		{
-			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num_2] - base_ptr->x;
-			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num_2] - base_ptr->y;
-			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
-		}
-	else	// ako ima manje od lookahead_pnt_num_2
-		{
-			phi_prim_err = curve_ptr->goal_phi - base_ptr->phi;
-		}
+//		}
+//	else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2)	// ako ima manje od lookahead_pnt_num, a vise od lookahead_pnt_num_2
+//		{
+//			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num_2] - base_ptr->x;
+//			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num_2] - base_ptr->y;
+//			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
+//		}
+//	else	// ako ima manje od lookahead_pnt_num_2
+//		{
+//			phi_prim_err = curve_ptr->goal_phi - base_ptr->phi;
+//		}
 
 	wrap180_ptr (&phi_prim_err);
 	base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
@@ -298,13 +299,13 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 	else
 		base_ptr->v_ref = direction * calc_pid (&d_loop, d_total);
 
-	if (d_proj < 0)
+	if (d_proj < D_PROJ_TOL)
 		{
 			curve_cnt++;
 			if (curve_cnt > curve_ptr->num_equ_pts)
 				{
 					// TODO: testiraj
-					if (fabs (d) < D_TOL * 2)
+					if (fabs (d) < D_2_TOL)
 						base_ptr->on_target = 1;
 					else
 						base_ptr->on_target = 0;
