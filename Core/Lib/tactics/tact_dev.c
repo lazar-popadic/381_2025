@@ -40,13 +40,12 @@ tact_dev ()
 			break;
 
 		case 30:
-			if (delay_nb_2 (&tact_delay_1, 100))
-				tact_fsm_case = 50;
 			grtl_front_grip_all ();
 			ruc_front_carry ();
+			vacuum_front (1);
 			lift_front_carry ();
 			prepare_back ();
-			vacuum_front (1);
+			tact_fsm_case = 50;
 			break;
 
 			/*
@@ -61,12 +60,11 @@ tact_dev ()
 			break;
 
 		case 60:
-			if (delay_nb_2 (&tact_delay_1, 100))
-				tact_fsm_case = 70;
 			grtl_back_grip_all ();
 			ruc_back_carry ();
-			lift_back_carry ();
 			vacuum_back (1);
+			lift_back_carry ();
+			tact_fsm_case = 70;
 			break;
 
 			/*
