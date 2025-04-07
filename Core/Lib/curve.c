@@ -39,7 +39,7 @@ create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir
 	cubic_bezier_pts (curve_ptr, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 
 	equ_coords (curve_ptr);
-	pad_curve (curve_ptr);
+	pad_curve (curve_ptr, dir);
 	avoid_obst_glb = avoid_obst;
 	curve_ptr->goal_phi = phi_ref;
 	curve_ready = 1;
@@ -106,13 +106,13 @@ equ_coords (curve *curve_ptr)
 }
 
 void
-pad_curve (curve *curve_ptr)
+pad_curve (curve *curve_ptr, int8_t dir)
 {
 	for (int i = 1; i < PAD_NUM; i++)
 		{
 			curve_ptr->equ_pts_x[curve_ptr->num_equ_pts + i] = curve_ptr->equ_pts_x[curve_ptr->num_equ_pts]
-					+ i * POINT_DISTANCE * cos (curve_ptr->goal_phi * M_PI / 180);
+					+ dir * i * POINT_DISTANCE * cos (curve_ptr->goal_phi * M_PI / 180);
 			curve_ptr->equ_pts_y[curve_ptr->num_equ_pts + i] = curve_ptr->equ_pts_y[curve_ptr->num_equ_pts]
-					+ i * POINT_DISTANCE * sin (curve_ptr->goal_phi * M_PI / 180);
+					+ dir * i * POINT_DISTANCE * sin (curve_ptr->goal_phi * M_PI / 180);
 		}
 }

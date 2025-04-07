@@ -351,7 +351,7 @@ get_curve_ready ();
 void
 set_curve_ready (int8_t ready);
 void
-pad_curve (curve *curve_ptr);
+pad_curve (curve *curve_ptr, int8_t dir);
 
 // tactics.h
 uint8_t
