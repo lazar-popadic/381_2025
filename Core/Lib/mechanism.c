@@ -48,7 +48,7 @@
 #define LIFT_DROP		850
 #define LIFT_LEAVE	750
 #define LIFT_SPEED_FAST	500
-#define LIFT_SPEED_SLOW	250
+#define LIFT_SPEED_SLOW	300
 
 #define RUC_L_UP				561
 #define RUC_L_MID				320

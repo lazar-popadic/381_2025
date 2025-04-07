@@ -42,8 +42,8 @@ tact_dev ()
 		case 30:
 			grtl_front_grip_all ();
 			ruc_front_carry ();
-			vacuum_front (1);
 			lift_front_carry ();
+			vacuum_front (1);
 			prepare_back ();
 			tact_fsm_case = 50;
 			break;
@@ -62,8 +62,8 @@ tact_dev ()
 		case 60:
 			grtl_back_grip_all ();
 			ruc_back_carry ();
-			vacuum_back (1);
 			lift_back_carry ();
+			vacuum_back (1);
 			tact_fsm_case = 70;
 			break;
 

@@ -39,21 +39,19 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 5:
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 10;
 			if (side == FORWARD)
 				ruc_front_up ();
 			else
 				ruc_back_up ();
+			task_fsm_case = 10;
 			break;
 
 		case 10:
-			if (delay_nb_2 (&task_delay, 750))
-				task_fsm_case = 20;
 			if (side == FORWARD)
 				lift_front_up ();
 			else
 				lift_back_up ();
+			task_fsm_case = 20;
 			break;
 
 		case 20:
@@ -63,17 +61,14 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 30:
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 40;
 			if (side == FORWARD)
 				lift_front_drop ();
 			else
 				lift_back_drop ();
+			task_fsm_case = 40;
 			break;
 
 		case 40:
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 50;
 			if (side == FORWARD)
 				{
 					grtl_front_open ();
@@ -84,11 +79,12 @@ task_sprat_12 (int8_t side)
 					grtl_back_open ();
 					lift_back_leave ();
 				}
+			task_fsm_case = 50;
 			break;
 
 		case 50:
-			cur_task = move_on_dir (210, -1 * side, 1.0, NO_SENS);
-			if (delay_nb_2 (&task_delay, 750))
+			cur_task = move_on_dir (210, -1 * side, V_MAX_DEF, NO_SENS);
+			if (delay_nb_2 (&task_delay, 500))
 				{
 					if (side == FORWARD)
 						lift_front_down ();

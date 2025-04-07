@@ -31,21 +31,19 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 30:
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 40;
 			if (side == FORWARD)
 				grtl_front_grip_all ();
 			else
 				grtl_back_grip_all ();
+			task_fsm_case = 40;
 			break;
 
 		case 40:
-			if (delay_nb_2 (&task_delay, 1000))
-				task_fsm_case = 50;
 			if (side == FORWARD)
 				lift_front_up ();
 			else
 				lift_back_up ();
+			task_fsm_case = 50;
 			break;
 
 		case 50:
@@ -55,12 +53,11 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 60:
-			if (delay_nb_2 (&task_delay, 100))
-				task_fsm_case = 70;
 			if (side == FORWARD)
 				lift_front_drop ();
 			else
 				lift_back_drop ();
+			task_fsm_case = 70;
 			break;
 
 		case 70:
