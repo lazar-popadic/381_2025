@@ -34,7 +34,7 @@ tact_dev ()
 			break;
 
 		case 10:
-			cur_task = move_to_xy (200, 0, FORWARD, 0.5, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (200, 0, FORWARD, V_MAX_DEF*0.5, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
 			break;

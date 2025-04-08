@@ -20,21 +20,54 @@ tact_0 ()
 {
 	switch (tact_fsm_case)
 		{
-		case 0:
+		case 0://krece prednjom straanom ka ms24
 			prepare_front ();
 			if (delay_nb_2 (&tact_delay_1, 500))
 				{
-					tact_fsm_case = 1;
+					tact_fsm_case = 10;
 				}
 			break;
 
-		case 1:
-			if (move_to_xy (x_side (500), 0, FORWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS) == TASK_SUCCESS)
-				{
-					tact_fsm_case = -1;
-					tact_state = TASK_SUCCESS;
-				}
+		case 10:
+			cur_task = move_on_path(x_side (700), -550, FORWARD, V_MAX_DEF, W_MAX_DEF*(-0.25), FORWARD);
+				if (cur_task == TASK_SUCCESS)
+					tact_fsm_case = 20;
 			break;
-		}
+		case 20:
+			cur_task = rot_relative (90, W_MAX_DEF, FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				task_fsm_case = 30;
+			break;
+		case 30:
+			grtl_front_grip_all ();
+			ruc_front_carry ();
+			lift_front_carry ();
+			vacuum_front (1);
+			prepare_back ();
+			tact_fsm_case = 40;
+			break;
+		case 40:
+			cur_task = move_to_xy (side(700), -575, BACKWARD, 1, W_MAX_DEF, BACKWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 50;
+			break;
+		case 50://krece ka ms23
+			cur_task = move_to_xy (side(1150), -575, BACKWARD, 1, W_MAX_DEF, BACKWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 60;
+			break;
+		case 60:
+			grtl_back_grip_all ();
+			ruc_back_carry ();
+			lift_back_carry ();
+			vacuum_back (1);
+			tact_fsm_case = 70;
+			break;
+		case 70://krece ka ca6
+			cur_task = move_on_path(x_side (1300), -100, FORWARD, V_MAX_DEF, W_MAX_DEF*(0), FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 80;
+			break;
+
 	return tact_state;
 }
