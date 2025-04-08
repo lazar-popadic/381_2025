@@ -75,7 +75,7 @@ task_sprat_3_1_full (int8_t side)
 			break;
 
 		case 60:
-			cur_task = move_on_dir (100, side, V_MAX_DEF, side);
+			cur_task = move_on_dir (75, side, V_MAX_DEF, side);
 			vacuum_front (0);
 			vacuum_back (0);
 			if (cur_task == TASK_SUCCESS)

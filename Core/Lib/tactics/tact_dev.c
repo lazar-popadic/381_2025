@@ -81,7 +81,7 @@ tact_dev ()
 			 *	Izgradi 3 sprata i ostavi preostali 1 sprat
 			 */
 		case 80:
-			cur_task = task_sprat_3_1_full (FORWARD);
+			cur_task = task_sprat_3_1_full (BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = -1;
 			break;

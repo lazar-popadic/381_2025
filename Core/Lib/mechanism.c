@@ -109,9 +109,9 @@ mechanism_init ()
 	ruc_back_up ();
 	HAL_Delay (200);
 	grtl_front_close ();
-	HAL_Delay (50);
+	HAL_Delay (250);
 	grtl_back_close ();
-	HAL_Delay (200);
+	HAL_Delay (250);
 	lift_front_down ();
 	lift_back_down ();
 }
@@ -458,9 +458,9 @@ void
 vacuum_back (uint8_t on)
 {
 	vacuum_0 (on);
-	HAL_Delay (40);
+	HAL_Delay (60);
 	vacuum_1 (on);
-	HAL_Delay (40);
+	HAL_Delay (60);
 
 }
 
@@ -468,16 +468,16 @@ void
 vacuum_front (uint8_t on)
 {
 	vacuum_2 (on);
-	HAL_Delay (40);
+	HAL_Delay (60);
 	vacuum_3 (on);
-	HAL_Delay (40);
+	HAL_Delay (60);
 }
 
 void
 bnr_close ()
 {
-	sg90_1_move (1350);
-	sg90_2_move (1700);
+	sg90_1_move (1500);
+	sg90_2_move (1800);
 	sg90_3_move (1650);
 	sg90_4_move (1550);
 	mechanism_states.bnr = 0;
@@ -486,8 +486,8 @@ bnr_close ()
 void
 bnr_1 ()
 {
-	sg90_1_move (700);
-	sg90_2_move (1700);
+	sg90_1_move (500);
+	sg90_2_move (1800);
 	sg90_3_move (1650);
 	sg90_4_move (1550);
 	mechanism_states.bnr = 1;
@@ -496,8 +496,8 @@ bnr_1 ()
 void
 bnr_2 ()
 {
-	sg90_1_move (700);
-	sg90_2_move (1100);
+	sg90_1_move (500);
+	sg90_2_move (800);
 	sg90_3_move (1650);
 	sg90_4_move (1550);
 	mechanism_states.bnr = 2;
@@ -506,8 +506,8 @@ bnr_2 ()
 void
 bnr_3 ()
 {
-	sg90_1_move (700);
-	sg90_2_move (1100);
+	sg90_1_move (500);
+	sg90_2_move (800);
 	sg90_3_move (1650);
 	sg90_4_move (2200);
 	mechanism_states.bnr = 3;
@@ -516,8 +516,8 @@ bnr_3 ()
 void
 bnr_4 ()
 {
-	sg90_1_move (700);
-	sg90_2_move (1100);
+	sg90_1_move (500);
+	sg90_2_move (800);
 	sg90_3_move (2300);
 	sg90_4_move (2200);
 	mechanism_states.bnr = 4;

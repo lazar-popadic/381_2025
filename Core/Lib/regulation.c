@@ -144,7 +144,7 @@ position_loop ()
 					break;
 				case 2:
 					if (get_curve_ready ())
-						pure_pursuit (8, 4);
+						pure_pursuit (9, 4);
 					else
 						{
 							base_ptr->v_ref = 0;
@@ -431,14 +431,14 @@ move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, in
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (2);
 			direction = dir;
+			create_curve (curve_ptr, x, y, phi, dir, avoid);
+			cont_move = cont;
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = W_MAX_DEF;
 			base_ptr->x_ref = base_ptr->x;
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
-			create_curve (curve_ptr, x, y, phi, dir, avoid);
 			base_ptr->obstacle_dir = check_sensors;
-			cont_move = cont;
 			base_ptr->movement_started = 1;				// kretnja zapoceta
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje

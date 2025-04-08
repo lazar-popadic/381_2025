@@ -54,7 +54,7 @@ uint32_t delay_1_start = 0xFFFFFFFF;
 volatile uint8_t ax_id_test = 10;
 volatile uint16_t ax_angle_test = 511;
 volatile uint16_t ax_speed_test = 200;
-volatile uint8_t out_0, out_1, out_2, out_3;
+volatile uint16_t out_0, out_1, out_2, out_3;
 volatile uint8_t in_0, in_1;
 
 /* USER CODE END PV */
@@ -179,6 +179,13 @@ main (void)
 					vacuum_1 (out_1);
 					vacuum_2 (out_2);
 					vacuum_3 (out_3);
+					break;
+
+				case 21:
+					sg90_1_move (out_0);
+					sg90_2_move (out_1);
+					sg90_3_move (out_2);
+					sg90_4_move (out_3);
 					break;
 
 				case -1:

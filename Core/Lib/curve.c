@@ -39,9 +39,9 @@ create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir
 	cubic_bezier_pts (curve_ptr, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 
 	equ_coords (curve_ptr);
+	curve_ptr->goal_phi = phi_ref;
 	pad_curve (curve_ptr, dir);
 	avoid_obst_glb = avoid_obst;
-	curve_ptr->goal_phi = phi_ref;
 	curve_ready = 1;
 }
 
