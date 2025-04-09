@@ -67,7 +67,7 @@
 #define GURL_MID					511
 #define GURL_FULL_RIGHT		50
 #define GURL_FAST					500
-#define GURL_SLOW					225
+#define GURL_SLOW					275
 
 mech_states mechanism_states;
 
