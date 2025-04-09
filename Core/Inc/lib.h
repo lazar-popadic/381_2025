@@ -233,7 +233,7 @@ rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors);
 int8_t
 rot_relative (float angle, float w_max, int8_t check_sensors);
 int8_t
-move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors);
+move_on_path (float x, float y, float phi, int8_t dir, int8_t cont, float v_max, int8_t avoid, int8_t check_sensors);
 void
 stop_moving ();
 void
@@ -386,5 +386,7 @@ int8_t
 task_sprat_3 (int8_t side);
 int8_t
 task_sprat_3_1_full (int8_t side);
+int8_t
+task_sprat_3_2_full (int8_t side);
 
 #endif /* LIB_LIB_H_ */

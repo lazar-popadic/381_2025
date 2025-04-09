@@ -423,7 +423,7 @@ rot_relative (float angle, float w_max, int8_t check_sensors)
 }
 
 int8_t
-move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors)
+move_on_path (float x, float y, float phi, int8_t dir, int8_t cont, float v_max, int8_t avoid, int8_t check_sensors)
 {
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{

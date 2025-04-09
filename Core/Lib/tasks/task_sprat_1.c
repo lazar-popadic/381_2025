@@ -13,7 +13,7 @@
 #include "main.h"
 
 static int16_t task_fsm_case = 0;
-static uint32_t task_delay = 0xFFFF;
+//static uint32_t task_delay = 0xFFFF;
 static int8_t task_state = TASK_RUNNING;
 static int8_t cur_task;
 
