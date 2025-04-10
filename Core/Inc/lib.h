@@ -385,6 +385,10 @@ task_sprat_12 (int8_t side);
 int8_t
 task_sprat_3 (int8_t side);
 int8_t
+task_sprat_3_full (int8_t side);
+int8_t
+task_sprat_3_half (int8_t side);
+int8_t
 task_sprat_3_1_full (int8_t side);
 int8_t
 task_sprat_3_2_full (int8_t side);

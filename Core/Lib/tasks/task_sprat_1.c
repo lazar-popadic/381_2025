@@ -26,15 +26,17 @@ task_sprat_1 (int8_t side)
 			task_state = TASK_RUNNING;
 			if (side == FORWARD)
 				{
-					lift_front_down ();
 					grtl_front_open_outside ();
+					lift_front_down ();
 					ruc_front_down ();
+					grtl_front_open_outside ();
 				}
 			else
 				{
-					lift_back_down ();
 					grtl_back_open_outside ();
+					lift_back_down ();
 					ruc_back_down ();
+					grtl_back_open_outside ();
 				}
 			task_fsm_case = 10;
 			break;

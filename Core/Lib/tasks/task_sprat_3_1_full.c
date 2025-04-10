@@ -30,34 +30,11 @@ task_sprat_3_1_full (int8_t side)
 		 */
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = task_sprat_1 (side);
-			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 10;
-			break;
-
-		case 10:
-			cur_task = rot_relative (180, W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 20;
-			break;
-
-			/*
-			 *	Napravi 2 sprata
-			 */
-		case 20:
-			cur_task = task_sprat_12 (-1 * side);
-			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 30;
-			break;
-
-			/*
-			 *	Podigne ih na 3.
-			 */
-		case 30:
-			cur_task = task_sprat_3 (-1 * side);
+			cur_task = task_sprat_3_full (side);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 40;
 			break;
+
 
 		case 40:
 			cur_task = rot_relative (180, W_MAX_DEF, NO_SENS);
