@@ -34,7 +34,7 @@ add_points (uint8_t pts)
 float
 x_side (float x)
 {
-	if (get_tact_num_ptr ())
+	if (get_tact_num_ptr ()->side)
 		return -x;
 	return x;
 }
