@@ -28,6 +28,7 @@ tact_0 ()
 			tact_fsm_case = 10;
 		}
 		break;
+		// TODO: move on path proveri sta treba da saljes
 
 	case 10:
 		cur_task = move_on_path (x_side (700), -550, -90, FORWARD, 0, V_MAX_DEF, W_MAX_DEF, FORWARD);
@@ -35,7 +36,7 @@ tact_0 ()
 			tact_fsm_case = 20;
 		break;
 	case 20:
-		cur_task = move_to_xy (x_side (700), -800, FORWARD, 0, V_MAX_DEF, W_MAX_DEF, FORWARD);
+		cur_task = move_to_xy (x_side (700), -800, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 30;
 		break;
