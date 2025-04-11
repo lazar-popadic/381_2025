@@ -67,7 +67,7 @@ tact_dev_2 ()
 			 */
 		case 70:
 			//			cur_task = move_on_path (200, -200, 0, FORWARD, 0, V_MAX_DEF, 0, NO_SENS);
-			cur_task = move_to_xy (0, 0, FORWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
+			cur_task = move_to_xy (-400, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 80;
 			break;
@@ -76,6 +76,8 @@ tact_dev_2 ()
 			 *	Izgradi 3 sprata i ostavi preostali 1 sprat
 			 */
 		case 80:
+//			cur_task = task_sprat_3_half (BACKWARD);
+//			cur_task = task_sprat_3_full (BACKWARD);
 			cur_task = task_sprat_3_2_full (BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = -1;

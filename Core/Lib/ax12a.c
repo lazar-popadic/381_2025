@@ -44,12 +44,12 @@ ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart)
 	uint16_t checksum_local = id + 7 + 3 + 0x1e + angle_low + angle_high + speed_low + speed_high;
 	uint8_t checksum = (uint8_t) (~checksum_local);
 	uint8_t ax_move[] =
-		{ 0xff, 0xff, id, 0x07, 0x03, 0x1E, angle_low, angle_high, speed_low, speed_high, checksum, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+		{ 0xff, 0xff, id, 0x07, 0x03, 0x1E, angle_low, angle_high, speed_low, speed_high, checksum};
 
-	HAL_UART_Transmit (&huart, ax_move, 17, 100);
-	HAL_UART_Transmit (&huart, ax_move, 17, 100);
-	HAL_UART_Transmit (&huart, ax_move, 17, 100);
-	HAL_UART_Transmit (&huart, ax_move, 17, 100);
-	HAL_Delay (25);
+	HAL_UART_Transmit (&huart, ax_move, 11, 100);
+	HAL_UART_Transmit (&huart, ax_move, 11, 100);
+	HAL_UART_Transmit (&huart, ax_move, 11, 100);
+	HAL_UART_Transmit (&huart, ax_move, 11, 100);
+	HAL_Delay (20);
 }
 

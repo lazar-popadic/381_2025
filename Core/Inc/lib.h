@@ -13,7 +13,7 @@
 
 #define V_MOVING_MIN		0.05		// [m/s]
 #define W_MOVING_MIN		18			// [deg/s]
-#define V_MAX_DEF				1.0			// [m/s]
+#define V_MAX_DEF				0.5			// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
 #define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 50ms dodje do 1m/s
 #define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 50ms dodje do 360deg/s
@@ -384,6 +384,10 @@ int8_t
 task_sprat_12 (int8_t side);
 int8_t
 task_sprat_3 (int8_t side);
+int8_t
+task_sprat_3_full (int8_t side);
+int8_t
+task_sprat_3_half (int8_t side);
 int8_t
 task_sprat_3_1_full (int8_t side);
 int8_t

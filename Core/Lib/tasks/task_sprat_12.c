@@ -47,7 +47,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 10:
-			if (delay_nb_2 (&task_delay, 500))
+			if (delay_nb_2 (&task_delay, 1000))
 				task_fsm_case = 20;
 			if (side == FORWARD)
 				lift_front_up ();
