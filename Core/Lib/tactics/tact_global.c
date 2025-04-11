@@ -34,9 +34,19 @@ add_points (uint8_t pts)
 float
 x_side (float x)
 {
-	if (get_tact_num_ptr ()->side)
+	if (get_tact_num_ptr ()->side)	// plava
 		return -x;
+	// zuta
 	return x;
+}
+
+float
+phi_side (float phi)
+{
+	if (get_tact_num_ptr ()->side)	// plava
+		return phi + 180;
+	// zuta
+	return phi;
 }
 
 tactic_num*

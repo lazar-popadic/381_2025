@@ -362,6 +362,8 @@ void
 add_points (uint8_t pts);
 float
 x_side (float x);
+float
+phi_side (float phi);
 tactic_num*
 get_tact_num_ptr ();
 int8_t
