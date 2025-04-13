@@ -150,27 +150,27 @@ main (void)
 
 				case 10:
 					if (tact_0 () == TASK_SUCCESS)
-						main_fsm_case = -1;
+						main_fsm_case = -10;
 					break;
 
 				case 11:
 					if (tact_dev () == TASK_SUCCESS)
-						main_fsm_case = -1;
+						main_fsm_case = -10;
 					break;
 
 //				case 13:
 //					if (tact_homologation () == TASK_SUCCESS)
-//						main_fsm_case = -1;
+//						main_fsm_case = -10;
 //					break;
 
 				case 12:
 					if (tact_dev_2 () == TASK_SUCCESS)
-						main_fsm_case = -1;
+						main_fsm_case = -10;
 					break;
 
 				case 13:
 					if (tact_dev_3 () == TASK_SUCCESS)
-						main_fsm_case = -1;
+						main_fsm_case = -10;
 					break;
 
 				case 20:
@@ -186,6 +186,12 @@ main (void)
 					sg90_2_move (out_1);
 					sg90_3_move (out_2);
 					sg90_4_move (out_3);
+					break;
+
+// Go to HOME
+				case -10:
+					if (move_to_xy (x_side (-1200), 500, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD))
+						main_fsm_case = -10;
 					break;
 
 				case -1:

@@ -15,8 +15,8 @@
 #define W_MOVING_MIN		18			// [deg/s]
 #define V_MAX_DEF				0.5			// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
-#define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 50ms dodje do 1m/s
-#define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 50ms dodje do 360deg/s
+#define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 40ms dodje do 1m/s
+#define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 40ms dodje do 360deg/s
 #define J_MAX_DEF				0.1			// [mm/ms * 1/10ms^2]		// za 40ms dodje do 1m/s i sve vreme je jerk-limited
 #define J_ROT_MAX_DEF		36			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX				4200		// [inc]
@@ -42,6 +42,8 @@
 #define OFFS_ROBOT 		320
 #define OFFS_DESIRED	400
 #define PAD_NUM				20
+
+#define HOME_TIME			95
 
 #include "structs.h"
 
@@ -366,6 +368,8 @@ float
 phi_side (float phi);
 tactic_num*
 get_tact_num_ptr ();
+uint8_t
+timeout (uint32_t time);
 int8_t
 tact_0 ();
 int8_t
