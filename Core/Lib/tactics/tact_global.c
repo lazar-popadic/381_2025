@@ -46,7 +46,7 @@ float
 phi_side (float phi)
 {
 	if (get_tact_num_ptr ()->side)	// plava
-		return phi + 180;
+		return 180 - phi;
 	// zuta
 	return phi;
 }
