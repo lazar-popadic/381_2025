@@ -1191,6 +1191,8 @@ int8_t tact_0() {
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 4200;
 		break;
+
+
 	case 4500: //krece prednjom stranom ka ms14
 		cur_task = move_on_path(x_side(900), 0, -90, FORWARD, 1, V_MAX_DEF,
 				0, FORWARD);
@@ -1308,7 +1310,12 @@ int8_t tact_0() {
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 4710;
 		break;
-
+	case 4800:
+		cur_task = move_on_path(x_side(0), 200, 0, FORWARD, 1, V_MAX_DEF, 0,
+						FORWARD);
+				if (cur_task == TASK_SUCCESS)
+					tact_fsm_case = 4500;
+	break;
 
 
 
