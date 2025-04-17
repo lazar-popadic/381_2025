@@ -54,13 +54,13 @@ tact_0 ()
 		tact_fsm_case = 40;
 		break;
 	case 40:
-		cur_task = move_to_xy (x_side (700), -600, BACKWARD, V_MAX_DEF, W_MAX_DEF,
+		cur_task = move_to_xy (x_side (725), -540, BACKWARD, V_MAX_DEF, W_MAX_DEF,
 				BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
 		break;
 	case 50: //krece ka ms23
-		cur_task = move_to_xy (x_side (1400), -575, BACKWARD, V_MAX_DEF,
+		cur_task = move_to_xy (x_side (1335), -540, BACKWARD, V_MAX_DEF,
 				W_MAX_DEF,
 				BACKWARD);
 		if (cur_task == TASK_SUCCESS)
