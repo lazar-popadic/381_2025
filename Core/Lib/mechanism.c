@@ -52,14 +52,14 @@
 
 #define RUC_L_UP				561
 #define RUC_L_MID				320
-#define RUC_L_CARRY			210
-#define RUC_L_DOWN			180
-#define RUC_L_FULL_DOWN	130
+#define RUC_L_CARRY			230
+#define RUC_L_DOWN			200
+#define RUC_L_FULL_DOWN	160
 #define RUC_R_UP				461
 #define RUC_R_MID				705
-#define RUC_R_CARRY			815
-#define RUC_R_DOWN			845
-#define RUC_R_FULL_DOWN	895
+#define RUC_R_CARRY			785
+#define RUC_R_DOWN			815
+#define RUC_R_FULL_DOWN	865
 #define RUC_SPEED_FAST		500
 #define RUC_SPEED_SLOW		300
 
@@ -457,20 +457,21 @@ gurl_mid ()
 void
 vacuum_back (uint8_t on)
 {
+	HAL_Delay (120);
 	vacuum_0 (on);
-	HAL_Delay (60);
+	HAL_Delay (120);
 	vacuum_1 (on);
-	HAL_Delay (60);
-
+	HAL_Delay (120);
 }
 
 void
 vacuum_front (uint8_t on)
 {
+	HAL_Delay (120);
 	vacuum_2 (on);
-	HAL_Delay (60);
+	HAL_Delay (120);
 	vacuum_3 (on);
-	HAL_Delay (60);
+	HAL_Delay (120);
 }
 
 void

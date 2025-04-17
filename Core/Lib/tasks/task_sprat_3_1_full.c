@@ -35,9 +35,8 @@ task_sprat_3_1_full (int8_t side)
 				task_fsm_case = 40;
 			break;
 
-
 		case 40:
-			cur_task = rot_relative (180, W_MAX_DEF, NO_SENS);
+			cur_task = rot_relative (180, W_MAX_DEF * 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 50;
 			break;
