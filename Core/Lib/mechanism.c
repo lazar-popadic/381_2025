@@ -32,13 +32,13 @@
 #define GRTL_OL_CLOSE		181
 #define GRTL_IL_OPEN		511
 #define GRTL_IL_GRIP		431
-#define GRTL_IL_CLOSE		281
+#define GRTL_IL_CLOSE		251
 #define GRTL_OR_OPEN		451
 #define GRTL_OR_GRIP		536
 #define GRTL_OR_CLOSE		841
 #define GRTL_IR_OPEN		511
 #define GRTL_IR_GRIP		591
-#define GRTL_IR_CLOSE		741
+#define GRTL_IR_CLOSE		781
 #define GRTL_SPEED_FAST		500
 #define GRTL_SPEED_SLOW		300
 
