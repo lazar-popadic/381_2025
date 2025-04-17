@@ -22,15 +22,15 @@ tact_0 ()
 	switch (tact_fsm_case)
 	{
 	case 0: //krece ka ms24
-		get_robot_base ()->x = 1400;
+		get_robot_base ()->x = x_side(1216);
 		// TODO: strane, ovo je za zutu, ne radi x_side
-		get_robot_base ()->phi = 180;
-		get_robot_base ()->y = -100;
+		get_robot_base ()->phi = phi_side(180);
+		get_robot_base ()->y = -78;
 		prepare_front ();
 		tact_fsm_case = 10;
 		break;
 	case 10:
-		cur_task = move_on_path (x_side (700), -550, phi_side(-90), FORWARD, 0, V_MAX_DEF, 0, FORWARD);
+		cur_task = move_on_path (x_side (725), -500, phi_side(-90), FORWARD, 0, V_MAX_DEF, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 11;
 		break;
@@ -40,7 +40,7 @@ tact_0 ()
 			tact_fsm_case = 20;
 		break;
 	case 20:
-		cur_task = move_to_xy (x_side (700), -800, FORWARD, V_MAX_DEF, W_MAX_DEF,
+		cur_task = move_to_xy (x_side (725), -600, FORWARD, V_MAX_DEF, W_MAX_DEF,
 				FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 30;
