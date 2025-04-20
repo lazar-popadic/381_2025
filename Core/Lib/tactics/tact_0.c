@@ -140,6 +140,8 @@ tact_0 ()
 		cur_task = move_on_path (x_side (-730), -450, phi_side (0), BACKWARD, 0, 0.5, 0, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 130;
+		if (cur_task == TASK_FAIL)
+			tact_fsm_case = 15000;
 		break;
 	case 130:
 		cur_task = rot_to_phi (phi_side (90), W_MAX_DEF, NO_SENS);
@@ -2283,7 +2285,7 @@ tact_0 ()
 		break;
 	case 10610: //krece ka ca6
 		cur_task = move_on_path (x_side (1120), -120, phi_side (45), FORWARD, 0, 0.5, 0,
-						FORWARD);
+				FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 10620;
 		if (cur_task == TASK_FAIL)
@@ -3152,6 +3154,143 @@ tact_0 ()
 		cur_task = task_sprat_3_half(FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 13030;
+		break;
+
+	case 15000: //krece ka ms21
+		cur_task = move_on_path(x_side(1300), 350, phi_side(0), FORWARD, 0, V_MAX_DEF, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15010;
+		break;
+	case 15010:
+		cur_task = rot_to_phi(phi_side(0), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15020;
+		break;
+	case 15020:
+		prepare_front();
+		tact_fsm_case = 15030;
+		break;
+	case 15030:
+		cur_task = move_to_xy(x_side(1400), 350, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15040;
+		break;
+	case 15040:
+		grtl_front_grip_all ();
+		ruc_front_carry ();
+		lift_front_carry ();
+		vacuum_front (1);
+		tact_fsm_case = 15050;
+		break;
+	case 15050: //krece ka ca6
+		cur_task = move_on_path(x_side(820), -120, phi_side(45), FORWARD, 0, 0.5, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15060;
+		break;
+	case 15060:
+		cur_task = rot_to_phi(phi_side(0), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15070;
+		break;
+	case 15070:
+		cur_task = move_on_dir(100, FORWARD, 0.5, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15080;
+		break;
+	case 15080:
+		cur_task = task_sprat_3_full(FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15100;
+		break;
+	case 15100: //krece ka ms10
+		cur_task = move_on_path(x_side(0), 200, phi_side(180), FORWARD, 1, V_MAX_DEF, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15110;
+		if (cur_task == TASK_FAIL)
+			tact_fsm_case = 15500;
+		break;
+	case 15110:
+		cur_task = move_on_path(x_side(-650), 600, phi_side(-90), FORWARD, 0, V_MAX_DEF, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15120;
+		if (cur_task == TASK_FAIL)
+			tact_fsm_case = 15????;
+		break;
+	case 15120:
+		cur_task = rot_to_phi(phi_side(90), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15130;
+		break;
+	case 15130:
+		prepare_back();
+		tact_fsm_case = 15140;
+		break;
+	case 15140:
+		cur_task = move_to_xy(x_side(-650), 750, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15150;
+		break;
+	case 15150:
+		grtl_back_grip_all();
+		ruc_back_carry();
+		lift_back_carry();
+		vacuum_back(1);
+		tact_fsm_case = 15160;
+		break;
+	case 15160: //krece ka ca1
+		cur_task = move_on_path(x_side(-900), 0, phi_side(90), FORWARD, 1, V_MAX_DEF, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15170;
+		break;
+	case 15170:
+		cur_task = move_on_path(x_side(-700), -800, phi_side(90), FORWARD, 0, V_MAX_DEF, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15180;
+		break;
+	case 15180:
+		cur_task = rot_to_phi(phi_side(180), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15190;
+		break;
+	case 15190:
+		bnr_1();
+		if (delay_nb_2(&tact_delay_1, 500))
+			tact_fsm_case = 15210;
+		break;
+	case 15210:
+		bnr_2();
+		if (delay_nb_2(&tact_delay_1, 500))
+			tact_fsm_case = 15220;
+		break;
+	case 15220:
+		cur_task = move_on_dir(500, BACKWARD, V_MAX_DEF, BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15230;
+		break;
+	case 15230:
+		bnr_3();
+		if (delay_nb_2(&tact_delay_1, 500))
+			tact_fsm_case = 15240;
+		break;
+	case 15240:
+		bnr_4();
+		if (delay_nb_2(&tact_delay_1, 500))
+			tact_fsm_case = 15250;
+		break;
+	case 15260: //Gradi na ca4/1
+		cur_task = task_sprat_3_1_full(BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15270;
+		break;
+	case 15270: //krece ka kraju
+		cur_task = move_on_path(x_side(-900), 0, phi_side(-90), BACKWARD, 1, V_MAX_DEF, 0, BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15280;
+		break;
+	case 15280:
+		cur_task = move_on_path(x_side(-1100), 800, phi_side(-90), BACKWARD, 0, V_MAX_DEF, 0, BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 15290;
 		break;
 
 
