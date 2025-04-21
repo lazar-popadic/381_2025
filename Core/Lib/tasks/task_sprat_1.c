@@ -69,12 +69,20 @@ task_sprat_1 (int8_t side)
 			cur_task = move_on_dir (125, -1 * side, 1.0, NO_SENS);
 			gurl_mid ();
 			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 40;
-			break;
+			task_fsm_case = 35;
+		break;
 
-		case 40:
-			if (side == FORWARD)
-				ruc_front_full_down ();
+	case 35:
+		if (side == FORWARD)
+			ruc_front_down();
+		else
+			ruc_back_down();
+		task_fsm_case = 40;
+		break;
+
+	case 40:
+		if (side == FORWARD)
+			ruc_front_full_down ();
 			else
 				ruc_back_full_down ();
 			task_fsm_case = -1;

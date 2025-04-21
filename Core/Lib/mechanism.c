@@ -47,7 +47,7 @@
 #define LIFT_UP			1023
 #define LIFT_DROP		850
 #define LIFT_LEAVE	750
-#define LIFT_SPEED_FAST	500
+#define LIFT_SPEED_FAST	800 //500
 #define LIFT_SPEED_SLOW	300
 
 #define RUC_L_UP				561
@@ -96,6 +96,7 @@ ax_init ()
 	torque_enable (14);
 	torque_enable (15);
 	torque_enable (16);
+	torque_enable (18);
 }
 
 void
@@ -401,16 +402,18 @@ ruc_back_mid ()
 void
 ruc_front_up ()
 {
-	ax_move (RUC_FL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
-	ax_move (RUC_FR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
+
+	ax_move(RUC_FL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
+	ax_move(RUC_FR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
 	mechanism_states.ruc_front = 0;
 }
 
 void
 ruc_back_up ()
 {
-	ax_move (RUC_BL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
-	ax_move (RUC_BR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
+
+	ax_move(RUC_BL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
+	ax_move(RUC_BR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
 	mechanism_states.ruc_back = 3;
 }
 
