@@ -43,9 +43,10 @@ task_sprat_3 (int8_t side)
 				task_fsm_case = 50;
 			if (side == FORWARD)
 				lift_front_up ();
-			else if (side == BACKWARD) {
-				lift_back_up ();
-			}
+			else if (side == BACKWARD)
+				{
+					lift_back_up ();
+				}
 			break;
 
 		case 50:
@@ -92,6 +93,7 @@ task_sprat_3 (int8_t side)
 
 		case -1:
 			task_fsm_case = 0;
+			task_delay = 0xFFFF;
 			task_state = TASK_SUCCESS;
 			break;
 		}

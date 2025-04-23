@@ -27,41 +27,41 @@
 #define GURL_L_ID	15	// guralica left
 #define GURL_R_ID	16	// guralica right
 
-#define GRTL_OL_OPEN		581
+#define GRTL_OL_OPEN		561
 #define GRTL_OL_GRIP		496
 #define GRTL_OL_CLOSE		181
 #define GRTL_IL_OPEN		511
-#define GRTL_IL_GRIP		431
+#define GRTL_IL_GRIP		441
 #define GRTL_IL_CLOSE		251
-#define GRTL_OR_OPEN		451
+#define GRTL_OR_OPEN		471
 #define GRTL_OR_GRIP		536
 #define GRTL_OR_CLOSE		841
 #define GRTL_IR_OPEN		511
-#define GRTL_IR_GRIP		591
+#define GRTL_IR_GRIP		581
 #define GRTL_IR_CLOSE		781
 #define GRTL_SPEED_FAST		500
-#define GRTL_SPEED_SLOW		300
+#define GRTL_SPEED_SLOW		120
 
 #define LIFT_DOWN		0
 #define LIFT_CARRY	100
 #define LIFT_UP			1023
 #define LIFT_DROP		850
 #define LIFT_LEAVE	750
-#define LIFT_SPEED_FAST	800 //500
+#define LIFT_SPEED_FAST	500
 #define LIFT_SPEED_SLOW	300
 
 #define RUC_L_UP				561
 #define RUC_L_MID				320
-#define RUC_L_CARRY			230
+#define RUC_L_CARRY			215
 #define RUC_L_DOWN			200
 #define RUC_L_FULL_DOWN	160
 #define RUC_R_UP				461
 #define RUC_R_MID				705
-#define RUC_R_CARRY			785
+#define RUC_R_CARRY			800
 #define RUC_R_DOWN			815
 #define RUC_R_FULL_DOWN	865
 #define RUC_SPEED_FAST		500
-#define RUC_SPEED_SLOW		300
+#define RUC_SPEED_SLOW		200
 
 #define GURL_FULL_LEFT		973
 #define GURL_MID					511
@@ -403,8 +403,8 @@ void
 ruc_front_up ()
 {
 
-	ax_move(RUC_FL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
-	ax_move(RUC_FR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
+	ax_move(RUC_FL_ID, RUC_L_UP, RUC_SPEED_SLOW, huart6);
+	ax_move(RUC_FR_ID, RUC_R_UP, RUC_SPEED_SLOW, huart6);
 	mechanism_states.ruc_front = 0;
 }
 
@@ -412,8 +412,8 @@ void
 ruc_back_up ()
 {
 
-	ax_move(RUC_BL_ID, RUC_L_UP, RUC_SPEED_FAST, huart6);
-	ax_move(RUC_BR_ID, RUC_R_UP, RUC_SPEED_FAST, huart6);
+	ax_move(RUC_BL_ID, RUC_L_UP, RUC_SPEED_SLOW, huart6);
+	ax_move(RUC_BR_ID, RUC_R_UP, RUC_SPEED_SLOW, huart6);
 	mechanism_states.ruc_back = 3;
 }
 

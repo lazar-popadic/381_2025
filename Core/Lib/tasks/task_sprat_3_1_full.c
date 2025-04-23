@@ -81,6 +81,7 @@ task_sprat_3_1_full (int8_t side)
 
 		case -1:
 			task_fsm_case = 0;
+			task_delay = 0xFFFF;
 			task_state = TASK_SUCCESS;
 			break;
 		}

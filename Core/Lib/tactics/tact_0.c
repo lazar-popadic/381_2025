@@ -54,7 +54,7 @@ tact_0 ()
 		tact_fsm_case = 40;
 		break;
 	case 40:
-		cur_task = move_to_xy (x_side (1035), -600, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
+		cur_task = move_to_xy (x_side (1185), -600, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
 		break;
