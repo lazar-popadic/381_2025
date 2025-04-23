@@ -25,7 +25,8 @@ task_sprat_3 (int8_t side)
 		{
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = move_on_dir (280, side, 0.5, NO_SENS);
+			task_delay = 0xFFFF;
+			cur_task = move_on_dir (280, side, 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
@@ -35,22 +36,22 @@ task_sprat_3 (int8_t side)
 				grtl_front_grip_all ();
 			else
 				grtl_back_grip_all ();
+			task_delay = 0xFFFF;
 			task_fsm_case = 40;
 			break;
 
 		case 40:
-			if (delay_nb_2 (&task_delay, 1000))
-				task_fsm_case = 50;
+//			if (delay_nb_2 (&task_delay, 1500))
+			task_fsm_case = 50;
 			if (side == FORWARD)
 				lift_front_up ();
-			else if (side == BACKWARD)
-				{
-					lift_back_up ();
-				}
+			else
+				lift_back_up ();
+			HAL_Delay (1500);
 			break;
 
 		case 50:
-			cur_task = move_on_dir (255, side, 0.2, NO_SENS);
+			cur_task = move_on_dir (155, side, 0.2, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 60;
 			break;
@@ -79,16 +80,20 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 80:
-			cur_task = move_on_dir (260, -1 * side, 1.0, NO_SENS);
+			cur_task = move_on_dir (210, -1 * side, 1.0, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				task_fsm_case = 90;
+			break;
+
+		case 90:
+			if (side == FORWARD)
+				lift_front_down ();
+			else
+				lift_back_down ();
 			if (delay_nb_2 (&task_delay, 500))
 				{
-					if (side == FORWARD)
-						lift_front_down ();
-					else
-						lift_back_down ();
+					task_fsm_case = -1;
 				}
-			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = -1;
 			break;
 
 		case -1:

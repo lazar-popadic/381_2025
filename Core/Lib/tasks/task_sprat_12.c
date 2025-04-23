@@ -35,12 +35,12 @@ task_sprat_12 (int8_t side)
 				vacuum_front (0);
 			else
 				vacuum_back (0);
-			if (delay_nb_2 (&task_delay, 100))
+			if (delay_nb_2 (&task_delay, 50))
 				task_fsm_case = 5;
 			break;
 
 		case 5:
-			if (delay_nb_2 (&task_delay, 500))
+			if (delay_nb_2 (&task_delay, 300))
 				task_fsm_case = 10;
 			if (side == FORWARD)
 				ruc_front_up ();

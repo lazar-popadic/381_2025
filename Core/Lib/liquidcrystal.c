@@ -17,6 +17,7 @@ uint8_t dpBacklight;
 uint32_t delay_start = 0xffffffff;
 uint8_t init_fsm_case = 0;
 int8_t ready = 0;
+extern int16_t tact_fsm_case;
 
 static void
 SendCommand (uint8_t);
@@ -102,7 +103,7 @@ display_fsm ()
 			if (prev_time != get_time_s ())
 				{
 					prev_time = get_time_s ();
-					display_write_numbers (get_points (), get_time_s ());
+					display_write_numbers (tact_fsm_case, get_time_s ());
 				}
 			break;
 
@@ -115,7 +116,8 @@ display_fsm ()
 void
 display_ready ()
 {
-	ready = 1;;
+	ready = 1;
+	;
 }
 
 void
