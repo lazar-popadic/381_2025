@@ -47,7 +47,7 @@
 #define LIFT_UP			1023
 #define LIFT_DROP		850
 #define LIFT_LEAVE	750
-#define LIFT_SPEED_FAST	1023
+#define LIFT_SPEED_FAST	500
 #define LIFT_SPEED_SLOW	300
 
 #define RUC_L_UP				561
@@ -70,11 +70,11 @@
 #define GURL_SLOW					275
 
 #define BNR_ID		18
-#define BNR_0			426
-#define BNR_1			266
-#define BNR_2			41
-#define BNR_3			624
-#define BNR_4			798
+#define BNR_0			426 //start
+#define BNR_1			266 //donji levi
+#define BNR_2			41 //gornji levi
+#define BNR_3			635 //donji desni
+#define BNR_4			850 //gornji desni
 #define BNR_SPEED_FAST	500
 
 mech_states mechanism_states;
