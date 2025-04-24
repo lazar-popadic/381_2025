@@ -366,6 +366,8 @@ float
 x_side (float x);
 float
 phi_side (float phi);
+int8_t
+bnr_side ();
 tactic_num*
 get_tact_num_ptr ();
 uint8_t

@@ -24,63 +24,40 @@ tact_dev_2 ()
 	switch (tact_fsm_case)
 		{
 		case 0:
-			prepare_front ();
-			tact_fsm_case = 10;
+//			prepare_front ();
+			if (delay_nb_2 (&tact_delay_1, 1000))
+				tact_fsm_case = 10;
+			bnr_close ();
 			break;
 
 		case 10:
-			cur_task = move_to_xy (200, 0, FORWARD, V_MAX_DEF * 0.5, W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
+			if (delay_nb_2 (&tact_delay_1, 600))
+				tact_fsm_case = 20;
+			bnr_1 ();
+			break;
+
+		case 20:
+			if (delay_nb_2 (&tact_delay_1, 2000))
 				tact_fsm_case = 30;
+			bnr_2 ();
 			break;
 
 		case 30:
-			grtl_front_grip_all ();
-			ruc_front_carry ();
-			lift_front_carry ();
-			vacuum_front (1);
-			prepare_back ();
-			tact_fsm_case = 50;
+			if (delay_nb_2 (&tact_delay_1, 600))
+				tact_fsm_case = 40;
+			bnr_3 ();
 			break;
 
-			/*
-			 *	Hvatanje MS 2
-			 *	zadnjom stranom
-			 */
+		case 40:
+			if (delay_nb_2 (&tact_delay_1, 2000))
+				tact_fsm_case = 50;
+			bnr_4 ();
+			break;
 
 		case 50:
-			cur_task = move_to_xy (-200, 0, BACKWARD, 0.5, W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 60;
-			break;
-
-		case 60:
-			grtl_back_grip_all ();
-			ruc_back_carry ();
-			lift_back_carry ();
-			vacuum_back (1);
-			tact_fsm_case = 70;
-			break;
-
-			/*
-			 *	Idi do CA 1
-			 */
-		case 70:
-			//			cur_task = move_on_path (200, -200, 0, FORWARD, 0, V_MAX_DEF, 0, NO_SENS);
-			cur_task = move_to_xy (-400, 0, BACKWARD, V_MAX_DEF, W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 80;
-			break;
-
-			/*
-			 *	Izgradi 3 sprata i ostavi preostali 1 sprat
-			 */
-		case 80:
-//			cur_task = task_sprat_3_half (BACKWARD);
-//			cur_task = task_sprat_3_full (BACKWARD);
-			cur_task = task_sprat_3_2_full (BACKWARD);
-			if (cur_task == TASK_SUCCESS)
+			if (delay_nb_2 (&tact_delay_1, 10000))
 				tact_fsm_case = -1;
+			bnr_close ();
 			break;
 
 		case -1:

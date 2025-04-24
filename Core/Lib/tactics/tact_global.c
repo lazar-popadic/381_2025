@@ -51,6 +51,14 @@ phi_side (float phi)
 	return phi;
 }
 
+int8_t
+bnr_side ()
+{
+	if (get_tact_num_ptr ()->side)	// plava
+		return FORWARD;
+	return BACKWARD;
+}
+
 tactic_num*
 get_tact_num_ptr ()
 {

@@ -5,7 +5,7 @@
  * 			- na pocetku ne drzi nista na strani na kojoj radi i otvorene su mu grtalice
  * 			- vec su spremna 2 sprata i odvojen 1 sprat ispred njih
  * 			- na kraju ne drzi nista u toj strani i izgradjena su 3 sprata
- *			- udaljen je za 200mm od centra ostavljenog sprata
+ *			- udaljen je za oko 200mm od centra ostavljenog sprata
  *
  *  Created on: Mar 31, 2025
  *      Author: lazar
@@ -26,7 +26,7 @@ task_sprat_3 (int8_t side)
 		case 0:
 			task_state = TASK_RUNNING;
 			task_delay = 0xFFFF;
-			cur_task = move_on_dir (280, side, 0.25, NO_SENS);
+			cur_task = move_on_dir (295, side, 0.2, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
@@ -37,6 +37,7 @@ task_sprat_3 (int8_t side)
 			else
 				grtl_back_grip_all ();
 			task_delay = 0xFFFF;
+			HAL_Delay (200);
 			task_fsm_case = 40;
 			break;
 
@@ -51,7 +52,7 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 50:
-			cur_task = move_on_dir (155, side, 0.2, NO_SENS);
+			cur_task = move_on_dir (115, side, 0.2, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 60;
 			break;
@@ -80,7 +81,7 @@ task_sprat_3 (int8_t side)
 			break;
 
 		case 80:
-			cur_task = move_on_dir (210, -1 * side, 1.0, NO_SENS);
+			cur_task = move_on_dir (200, -1 * side, 1.0, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 90;
 			break;
