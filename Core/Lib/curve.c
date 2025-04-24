@@ -7,7 +7,8 @@
 
 #include "main.h"
 
-int avoid_obst_glb = 0;
+int8_t avoid_obst_glb = 0;
+int8_t curve_ready = 0;
 
 void
 create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir, int avoid_obst)
@@ -38,8 +39,22 @@ create_curve (curve *curve_ptr, float x_ref, float y_ref, float phi_ref, int dir
 	cubic_bezier_pts (curve_ptr, p0_x, p0_y, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y);
 
 	equ_coords (curve_ptr);
-	avoid_obst_glb = avoid_obst;
 	curve_ptr->goal_phi = phi_ref;
+	pad_curve (curve_ptr, dir);
+	avoid_obst_glb = avoid_obst;
+	curve_ready = 1;
+}
+
+int8_t
+get_curve_ready ()
+{
+	return curve_ready;
+}
+
+void
+set_curve_ready (int8_t ready)
+{
+	curve_ready = ready;
 }
 
 void
@@ -90,3 +105,14 @@ equ_coords (curve *curve_ptr)
 	curve_ptr->equ_pts_y[curve_ptr->num_equ_pts] = curve_ptr->pts_y[BEZIER_RESOLUTION - 1];
 }
 
+void
+pad_curve (curve *curve_ptr, int8_t dir)
+{
+	for (int i = 1; i < PAD_NUM; i++)
+		{
+			curve_ptr->equ_pts_x[curve_ptr->num_equ_pts + i] = curve_ptr->equ_pts_x[curve_ptr->num_equ_pts]
+					+ dir * i * POINT_DISTANCE * cos (curve_ptr->goal_phi * M_PI / 180);
+			curve_ptr->equ_pts_y[curve_ptr->num_equ_pts + i] = curve_ptr->equ_pts_y[curve_ptr->num_equ_pts]
+					+ dir * i * POINT_DISTANCE * sin (curve_ptr->goal_phi * M_PI / 180);
+		}
+}

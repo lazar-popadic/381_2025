@@ -6,8 +6,10 @@
  */
 
 // Tolerancije za distancu i ugao kada smatram da je zadovoljen uslov
-#define D_TOL			20
-#define D_2_TOL			75
+#define D_PROJ_TOL	10
+#define D_TOL				20
+#define D_2_TOL			30
+#define D_3_TOL			50
 #define PHI_TOL			1
 #define PHI_PRIM_TOL	2
 
@@ -36,7 +38,6 @@ static int16_t curve_cnt = 0;
 
 static float v_err = 0;							// [ms/ms]
 static float w_err = 0;							// [deg/ms]
-
 static float x_err = 0;							// [mm]
 static float y_err = 0;							// [mm]
 static float phi_err = 0;						// [deg]
@@ -57,17 +58,28 @@ static volatile pid phi_curve_loop;
 static volatile pid v_loop;
 static volatile pid w_loop;
 
+int8_t move_status = TASK_RUNNING;
+
 void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
-	init_pid (&d_loop, 0.0024, 0.002, 0, V_MAX_DEF, V_MAX_DEF * 0.2);
-	init_pid (&phi_loop, 3.2, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.2);
-	// TODO: jos ovo
-	init_pid (&phi_curve_loop, 1.6, 0.01, 0.1, W_MAX_DEF, W_MAX_DEF * 0.2);
-	init_pid (&v_loop, 6000, 30, 0, CTRL_MAX, 1600);
-	init_pid (&w_loop, 64, 0.32, 6, CTRL_MAX, 1600);
+	init_pid (&d_loop, 0.004, 0.0064, 0.06, V_MAX_DEF, V_MAX_DEF * 0.25);
+	init_pid (&phi_loop, 4.0, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
+	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
+	init_pid (&v_loop, 6800, 32, 0, CTRL_MAX, 2100);
+	init_pid (&w_loop, 72, 0.36, 3, CTRL_MAX, 2100);
 	curve_ptr = (curve*) malloc (sizeof(curve));
+	for (int i = 0; i < BEZIER_RESOLUTION; i++)
+		{
+			curve_ptr->pts_x[i] = 0;
+			curve_ptr->pts_y[i] = 0;
+			if (i < MAX_EQU_PTS)
+				{
+					curve_ptr->equ_pts_x[i] = 0;
+					curve_ptr->equ_pts_y[i] = 0;
+				}
+		}
 }
 
 void
@@ -117,19 +129,27 @@ position_loop ()
 
 			switch (reg_type)
 				{
+				case -2:
+					pos_hold ();
+					break;
 				case -1:
 					rotate ();
 					break;
 				case 0:
 					base_ptr->v_ref = 0;
 					base_ptr->w_ref = 0;
-//		  pos_hold ();
 					break;
 				case 1:
 					go_to_xy ();
 					break;
 				case 2:
-					pure_pursuit (10, 5);
+					if (get_curve_ready ())
+						pure_pursuit (9, 4);
+					else
+						{
+							base_ptr->v_ref = 0;
+							base_ptr->w_ref = 0;
+						}
 					break;
 				}
 
@@ -150,6 +170,10 @@ position_loop ()
 					base_ptr->w_ref = get_sign (base_ptr->w_ref)
 							* min3 (fabs (base_ptr->w_ref), base_ptr->w_max, fabs (vel_ramp_up (base_ptr->w, base_ptr->w_ref, base_ptr->alpha_max)));
 					break;
+				case STOPPING:
+					base_ptr->v_ref = 0;
+					base_ptr->w_ref = 0;
+					break;
 				}
 		}
 }
@@ -163,11 +187,11 @@ rotate ()
 	base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 	if (fabs (phi_err) < PHI_TOL)
 		{
+			base_ptr->on_target = 1;
+			base_ptr->movement_finished = 1;
 			base_ptr->v_ref = 0;
 			base_ptr->w_ref = 0;
 			set_reg_type (0);
-			base_ptr->on_target = 1;
-			base_ptr->movement_finished = 1;
 		}
 }
 
@@ -194,18 +218,18 @@ go_to_xy ()
 
 			base_ptr->v_ref = calc_pid (&d_loop, d_proj * direction);
 
-			if (fabs (d) > D_2_TOL)
+			if (fabs (d) > D_3_TOL)
 				base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 			else
 				base_ptr->w_ref = 0;
 
-			if (d_proj < 0 && !(base_ptr->moving))
+			if (d_proj < D_PROJ_TOL && fabs (d) < D_2_TOL && !(base_ptr->moving))
 				{
+					base_ptr->movement_finished = 1;
 					base_ptr->v_ref = 0;
 					base_ptr->w_ref = 0;
 					phase = 0;
 					set_reg_type (0);
-					base_ptr->movement_finished = 1;
 // TODO: testiraj
 					if (fabs (d) < D_TOL)
 						base_ptr->on_target = 1;
@@ -251,49 +275,50 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 	// projektovana do sledece tacke + sve preostale tacke * POINT_DISTANCE
 	d_total = d_proj + curve_ptr->dis - (curve_ptr->num_equ_pts - curve_cnt - 1) * POINT_DISTANCE;
 
-	if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num)	// ako ima vise od lookahead_pnt_num
-		{
+//	if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num)	// ako ima vise od lookahead_pnt_num
+//		{
 			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num] - base_ptr->x;
 			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num] - base_ptr->y;
 			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
-		}
-	else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2)	// ako ima manje od lookahead_pnt_num, a vise od lookahead_pnt_num_2
-		{
-			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num_2] - base_ptr->x;
-			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num_2] - base_ptr->y;
-			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
-		}
-	else	// ako ima manje od lookahead_pnt_num_2
-		{
-			phi_prim_err = curve_ptr->goal_phi - base_ptr->phi;
-		}
+//		}
+//	else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2)	// ako ima manje od lookahead_pnt_num, a vise od lookahead_pnt_num_2
+//		{
+//			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num_2] - base_ptr->x;
+//			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num_2] - base_ptr->y;
+//			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
+//		}
+//	else	// ako ima manje od lookahead_pnt_num_2
+//		{
+//			phi_prim_err = curve_ptr->goal_phi - base_ptr->phi;
+//		}
 
 	wrap180_ptr (&phi_prim_err);
 	base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
-	// TODO: testiraj novu
 	if (cont_move)
 		base_ptr->v_ref = direction * base_ptr->v_max;
 	else
 		base_ptr->v_ref = direction * calc_pid (&d_loop, d_total);
 
-	if (d_proj < 0)
+	if (d_proj < D_PROJ_TOL)
 		{
 			curve_cnt++;
 			if (curve_cnt > curve_ptr->num_equ_pts)
 				{
+					// TODO: testiraj
+					if (fabs (d) < D_2_TOL)
+						base_ptr->on_target = 1;
+					else
+						base_ptr->on_target = 0;
+					base_ptr->movement_finished = 1;
 					curve_cnt = 0;
 					base_ptr->v_ref = 0;
 					base_ptr->w_ref = 0;
 					set_reg_type (0);
-					base_ptr->movement_finished = 1;
-// TODO: testiraj
-					if (fabs (d) < D_TOL)
-						base_ptr->on_target = 1;
-					else
-						base_ptr->on_target = 0;
+
 // TODO: zaobilazenje
 //		  if (get_avoid_obst_glb ())
 //			reset_push_pts_loop ();
+					set_curve_ready (0);
 				}
 		}
 }
@@ -307,10 +332,9 @@ set_reg_type (int8_t type)
 int8_t
 move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
-			base_ptr->movement_started = 1;				// kretnja zapoceta
+			move_status = TASK_RUNNING;
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (1);
 			base_ptr->x_ref = x;
@@ -319,17 +343,15 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = w_max;
 			base_ptr->obstacle_dir = check_sensors;
+			base_ptr->movement_started = 1;				// kretnja zapoceta
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
-			base_ptr->x_ref = base_ptr->x;
-			base_ptr->y_ref = base_ptr->y;
-			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
 
 	return move_status;
@@ -338,26 +360,23 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 int8_t
 rot_to_phi (float phi, float w_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
-			base_ptr->movement_started = 1;				// kretnja zapoceta
+			move_status = TASK_RUNNING;
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (-1);
 			base_ptr->phi_ref = phi;
 			base_ptr->w_max = w_max;
 			base_ptr->obstacle_dir = check_sensors;
+			base_ptr->movement_started = 1;				// kretnja zapoceta
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
-			base_ptr->x_ref = base_ptr->x;
-			base_ptr->y_ref = base_ptr->y;
-			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
 
 	return move_status;
@@ -366,10 +385,9 @@ rot_to_phi (float phi, float w_max, int8_t check_sensors)
 int8_t
 move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
-			base_ptr->movement_started = 1;				// kretnja zapoceta
+			move_status = TASK_RUNNING;
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (1);
 			direction = dir;
@@ -378,17 +396,15 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 			base_ptr->y_ref = base_ptr->y + dir * distance * sin (base_ptr->phi * M_PI / 180);
 			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = check_sensors;
+			base_ptr->movement_started = 1;				// kretnja zapoceta
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 			move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
 			reset_v_max ();
 			reset_w_max ();
-			base_ptr->x_ref = base_ptr->x;
-			base_ptr->y_ref = base_ptr->y;
-			base_ptr->phi_ref = base_ptr->phi;
 			base_ptr->obstacle_dir = 0;
+			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
 
 	return move_status;
@@ -401,30 +417,37 @@ rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors)
 }
 
 int8_t
-move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors)
+rot_relative (float angle, float w_max, int8_t check_sensors)
 {
-	int8_t move_status = TASK_RUNNING;
+	return rot_to_phi (base_ptr->phi + angle, w_max, check_sensors);
+}
+
+int8_t
+move_on_path (float x, float y, float phi, int8_t dir, int8_t cont, float v_max, int8_t avoid, int8_t check_sensors)
+{
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
 		{
-			base_ptr->movement_started = 1;				// kretnja zapoceta
+			move_status = TASK_RUNNING;
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (2);
 			direction = dir;
+			create_curve (curve_ptr, x, y, phi, dir, avoid);
+			cont_move = cont;
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = W_MAX_DEF;
-			create_curve (curve_ptr, x, y, phi, dir, avoid);
-			base_ptr->obstacle_dir = check_sensors;
-		}
-	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
-		{
-			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
-			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
-			reset_v_max ();
-			reset_w_max ();
 			base_ptr->x_ref = base_ptr->x;
 			base_ptr->y_ref = base_ptr->y;
 			base_ptr->phi_ref = base_ptr->phi;
+			base_ptr->obstacle_dir = check_sensors;
+			base_ptr->movement_started = 1;				// kretnja zapoceta
+		}
+	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
+		{
+			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
+			reset_v_max ();
+			reset_w_max ();
 			base_ptr->obstacle_dir = 0;
+			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
 
 	return move_status;
@@ -437,16 +460,48 @@ continue_moving ()
 		{
 			reg_type = prev_reg_type;
 			prev_reg_type = 0;
+			vel_profile = S_CURVE_VEL_PROFILE;
 		}
 }
 
 void
 stop_moving ()
 {
-	if (!prev_reg_type)			// ovde treba da udje u ovo samo jednom, kada je prev_reg_type jednak 0, ili ako je reg_type razlicit od 0
+	if (!prev_reg_type)	// ovde treba da udje u ovo samo jednom, kada je prev_reg_type jednak 0, ili ako je reg_type razlicit od 0
 		{
 			prev_reg_type = reg_type;
 			reg_type = 0;
 			phase = 0;
+			vel_profile = STOPPING;
+			reset_pid (&d_loop);
+			reset_pid (&phi_loop);
+			reset_pid (&phi_curve_loop);
+			reset_pid (&v_loop);
+			reset_pid (&w_loop);
 		}
+	base_ptr->v_ref = 0;
+	base_ptr->w_ref = 0;
+	base_ptr->v_ctrl = 0;
+	base_ptr->w_ctrl = 0;
+	base_ptr->motor_r_ctrl = 0;
+	base_ptr->motor_l_ctrl = 0;
+	base_ptr->motor_r_ctrl_uint = 0;
+	base_ptr->motor_l_ctrl_uint = 0;
+	pwm_right_dc (0);
+	pwm_left_dc (0);
+
+}
+
+void
+reset_movement ()
+{
+	reset_v_max ();
+	reset_w_max ();
+	base_ptr->obstacle_dir = 0;
+	base_ptr->movement_finished = 0;
+	base_ptr->x_ref = base_ptr->x;
+	base_ptr->y_ref = base_ptr->y;
+	base_ptr->phi_ref = base_ptr->phi;
+	base_ptr->movement_started = 0;
+
 }

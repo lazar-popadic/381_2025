@@ -11,17 +11,16 @@
 #define YELLOW	0
 #define BLUE		1
 
-#define V_MOVING_MIN	0.01	// [m/s]
-#define W_MOVING_MIN	1.8		// [deg/s]
-
-#define V_MAX_DEF				1.0		// [m/s]
-#define W_MAX_DEF				360.0	// [deg/s]
-#define A_MAX_DEF				0.1		// [m/s * 1/10ms]				// za 100ms dodje do 1m/s
-#define ALPHA_MAX_DEF		36		// [deg/s * 1/10ms]			// za 100ms dodje do 360deg/s
-#define J_MAX_DEF				0.008	// [mm/ms * 1/10ms^2]		// za 100ms dodje do 1m/s i sve vreme je jerk-limited
-#define J_ROT_MAX_DEF		2.88	// [deg/s * 1/10ms^2]		// za 100ms dodje do 360deg/s i sve vreme je jerk-limited
-#define CTRL_MAX				4200	// [inc]
-#define MAX_PWM_CHANGE	420		// [inc/ms]					// za 10ms dodje do 4200
+#define V_MOVING_MIN		0.05		// [m/s]
+#define W_MOVING_MIN		18			// [deg/s]
+#define V_MAX_DEF				1.0			// [m/s]
+#define W_MAX_DEF				360.0		// [deg/s]
+#define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 40ms dodje do 1m/s
+#define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 40ms dodje do 360deg/s
+#define J_MAX_DEF				0.1			// [mm/ms * 1/10ms^2]		// za 40ms dodje do 1m/s i sve vreme je jerk-limited
+#define J_ROT_MAX_DEF		36			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
+#define CTRL_MAX				4200		// [inc]
+#define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
 
 #define TASK_RUNNING	0
@@ -35,13 +34,16 @@
 
 #define TRAP_VEL_PROFILE		0
 #define S_CURVE_VEL_PROFILE	1
+#define STOPPING						2
 
+#define POINT_DISTANCE 		25
 #define BEZIER_RESOLUTION 500
-#define MAX_EQU_PTS				200
-#define POINT_DISTANCE 		20
+#define MAX_EQU_PTS				220
+#define OFFS_ROBOT 		320
+#define OFFS_DESIRED	360
+#define PAD_NUM				20
 
-#define OFFS_ROBOT 		500
-#define OFFS_DESIRED	500
+#define HOME_TIME			95
 
 #include "structs.h"
 
@@ -56,16 +58,14 @@ void
 pwm_stop ();
 void
 sg90_init ();
-uint16_t
-angleToSG90 (float angle);
 void
-sg90_1_move (float angle);
+sg90_1_move (float us);
 void
-sg90_2_move (float angle);
+sg90_2_move (float us);
 void
-sg90_3_move (float angle);
+sg90_3_move (float us);
 void
-sg90_4_move (float angle);
+sg90_4_move (float us);
 
 // time.h
 void
@@ -90,6 +90,8 @@ uint16_t
 get_time_s ();
 
 // ax12a.h
+void
+torque_enable (uint8_t id);
 void
 ax_move (uint8_t id, uint16_t angle, uint16_t speed, UART_HandleTypeDef huart);
 
@@ -184,6 +186,8 @@ float
 calc_pid_2 (volatile pid *pid_ptr, float ref, float val);
 void
 init_pid (volatile pid *pid_ptr, float p, float i, float d, float limit, float sum_limit);
+void
+reset_pid (volatile pid *pid_ptr);
 
 // base.h
 void
@@ -200,7 +204,7 @@ void
 reset_w_max ();
 void
 update_base_status ();
-void
+uint8_t
 check_sensors ();
 uint8_t
 get_regulation_status ();
@@ -229,7 +233,9 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors);
 int8_t
 rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors);
 int8_t
-move_on_path (float x, float y, float phi, int8_t dir, int cont, float v_max, int avoid, int8_t check_sensors);
+rot_relative (float angle, float w_max, int8_t check_sensors);
+int8_t
+move_on_path (float x, float y, float phi, int8_t dir, int8_t cont, float v_max, int8_t avoid, int8_t check_sensors);
 void
 stop_moving ();
 void
@@ -238,6 +244,8 @@ continue_moving ();
 // mechanism.h
 mech_states
 get_mech_states ();
+void
+ax_init ();
 void
 mechanism_init ();
 void
@@ -251,11 +259,19 @@ lift_front_down ();
 void
 lift_front_drop ();
 void
+lift_front_carry ();
+void
+lift_front_leave ();
+void
 lift_back_up ();
 void
 lift_back_down ();
 void
 lift_back_drop ();
+void
+lift_back_carry ();
+void
+lift_back_leave ();
 void
 grtl_front_open ();
 void
@@ -289,6 +305,10 @@ ruc_front_down ();
 void
 ruc_back_down ();
 void
+ruc_front_full_down ();
+void
+ruc_back_full_down ();
+void
 ruc_front_mid ();
 void
 ruc_back_mid ();
@@ -296,6 +316,10 @@ void
 ruc_front_up ();
 void
 ruc_back_up ();
+void
+ruc_front_carry ();
+void
+ruc_back_carry ();
 void
 gurl_front ();
 void
@@ -324,6 +348,12 @@ void
 cubic_bezier_pts (curve *curve_ptr, float p0_x, float p0_y, float p1_x, float p1_y, float p2_x, float p2_y, float p3_x, float p3_y);
 void
 equ_coords (curve *curve_ptr);
+int8_t
+get_curve_ready ();
+void
+set_curve_ready (int8_t ready);
+void
+pad_curve (curve *curve_ptr, int8_t dir);
 
 // tactics.h
 uint8_t
@@ -334,9 +364,12 @@ void
 add_points (uint8_t pts);
 float
 x_side (float x);
+float
+phi_side (float phi);
 tactic_num*
 get_tact_num_ptr ();
-
+uint8_t
+timeout (uint32_t time);
 int8_t
 tact_0 ();
 int8_t
@@ -345,5 +378,25 @@ int8_t
 tact_homologation ();
 int8_t
 tact_dev ();
+int8_t
+tact_dev_2 ();
+int8_t
+tact_dev_3 ();
+
+// tasks.h
+int8_t
+task_sprat_1 (int8_t side);
+int8_t
+task_sprat_12 (int8_t side);
+int8_t
+task_sprat_3 (int8_t side);
+int8_t
+task_sprat_3_full (int8_t side);
+int8_t
+task_sprat_3_half (int8_t side);
+int8_t
+task_sprat_3_1_full (int8_t side);
+int8_t
+task_sprat_3_2_full (int8_t side);
 
 #endif /* LIB_LIB_H_ */

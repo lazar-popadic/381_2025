@@ -27,10 +27,10 @@ static volatile robot_base *base_ptr;
 void
 odometry_init ()
 {
-	L_wheel = 341;																		// [mm], rastojanje izmedju odometrijskih tockova
+	L_wheel = 342;																		// [mm], rastojanje izmedju odometrijskih tockova
 	L_wheel_recip = 1000 / L_wheel;										// [1/m]
-	d_odom_left = 75.3;																// [mm]
-	d_odom_right = 75.8;															// [mm]
+	d_odom_left = 75.34;																// [mm]
+	d_odom_right = 75.92;															// [mm]
 	inc2mm_left = d_odom_left * M_PI / (4 * 2048);		// [mm/inc]
 	inc2mm_right = d_odom_right * M_PI / (4 * 2048);	// [mm/inc]
 	rad2deg = 180 / M_PI;															// [deg/rad]

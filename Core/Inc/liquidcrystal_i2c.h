@@ -59,6 +59,8 @@
 #define DEVICE_ADDR     (0x27 << 1)
 
 void
+display_ready ();
+void
 display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num);
 void
 display_write_numbers (uint8_t points, uint8_t time);
