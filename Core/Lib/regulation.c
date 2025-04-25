@@ -328,7 +328,6 @@ set_reg_type (int8_t type)
 {
 	reg_type = type;
 }
-
 int8_t
 move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check_sensors)
 {
@@ -343,7 +342,7 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 			base_ptr->v_max = v_max;
 			base_ptr->w_max = w_max;
 			base_ptr->obstacle_dir = check_sensors;
-			base_ptr->movement_started = 1;				// kretnja zapoceta
+			base_ptr->movement_started = 1;	// kretnja zapoceta
 		}
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
