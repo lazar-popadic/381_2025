@@ -53,7 +53,11 @@ tact_1 ()
 			tact_fsm_case = 40;
 			break;
 		case 40: //bunt pored startnog polja
+			if (get_tact_num_ptr()->side)	// plava
 			cur_task = move_on_path (x_side (-680), -400, phi_side (0), BACKWARD, 0, 0.5, 0, NO_SENS);
+			else
+			cur_task = move_on_path (x_side (-670), -400, phi_side (0), BACKWARD, 0, 0.5, 0, NO_SENS);
+
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 45;
 			break;
@@ -98,7 +102,7 @@ tact_1 ()
 			cur_task = move_to_xy (x_side (-1182), -597, BACKWARD, V_MAX_DEF,
 						W_MAX_DEF,NO_SENS);
 		else
-			cur_task = move_to_xy (x_side (-1182), -597, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (-1182), -582, FORWARD, V_MAX_DEF,
 						W_MAX_DEF,NO_SENS);
 
 			if (cur_task == TASK_SUCCESS)
@@ -109,7 +113,7 @@ tact_1 ()
 			cur_task = move_to_xy(x_side(-1300), -595, BACKWARD, 0.2,
 			W_MAX_DEF, NO_SENS);
 		else
-			cur_task = move_to_xy(x_side(-1300), -595, FORWARD, 0.2,
+			cur_task = move_to_xy(x_side(-1300), -580, FORWARD, 0.2,
 			W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 110;
@@ -135,7 +139,7 @@ tact_1 ()
 			cur_task = move_on_path(x_side(-735), 400, phi_side(90), FORWARD, 0,
 					0.5, 0, NO_SENS);
 		else
-			cur_task = move_on_path(x_side(-735), 400, phi_side(90), BACKWARD,
+			cur_task = move_on_path(x_side(-685), 400, phi_side(-90), BACKWARD,
 					0, 0.5, 0, NO_SENS);
 
 			if (cur_task == TASK_SUCCESS)
@@ -157,7 +161,7 @@ tact_1 ()
 			cur_task = move_to_xy(x_side(-735), 620, FORWARD, 0.3, W_MAX_DEF,
 					NO_SENS);
 		else
-			cur_task = move_to_xy(x_side(-735), 620, BACKWARD, 0.3, W_MAX_DEF,
+			cur_task = move_to_xy(x_side(-685), 620, BACKWARD, 0.3, W_MAX_DEF,
 			NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 150;
@@ -182,7 +186,7 @@ tact_1 ()
 			cur_task = move_to_xy(x_side(-735), -700, BACKWARD, 0.5, W_MAX_DEF,
 			NO_SENS);
 		else
-			cur_task = move_to_xy(x_side(-735), -700, FORWARD, 0.5, W_MAX_DEF,
+			cur_task = move_to_xy(x_side(-685), -700, FORWARD, 0.5, W_MAX_DEF,
 			NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 170;
@@ -226,7 +230,7 @@ tact_1 ()
 			cur_task = rot_to_phi(phi_side(180), W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 200;
-			break;
+		break;
 
 		case 200:
 			if (get_tact_num_ptr ()->side)	// plava
@@ -236,7 +240,7 @@ tact_1 ()
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 210;
 		break;
-	case 210: //krece ka ms14
+	case 210: //zavrsetak
 		if (get_tact_num_ptr()->side)
 			cur_task = move_to_xy(x_side(-1000), 500, BACKWARD, 0.5, W_MAX_DEF,
 			NO_SENS);
