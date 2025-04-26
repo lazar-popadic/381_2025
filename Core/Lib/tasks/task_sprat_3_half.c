@@ -14,7 +14,7 @@
 #include "main.h"
 
 static int16_t task_fsm_case = 0;
-static uint32_t task_delay = 0xFFFF;
+extern uint32_t task_delay_s3h;
 static int8_t task_state = TASK_RUNNING;
 static int8_t cur_task;
 
@@ -40,7 +40,7 @@ task_sprat_3_half (int8_t side)
 					grtl_back_open_outside ();
 					ruc_back_down ();
 				}
-			if (delay_nb_2 (&task_delay, 500))
+			if (delay_nb_2 (&task_delay_s3h, 500))
 				task_fsm_case = 5;
 			break;
 
@@ -76,7 +76,7 @@ task_sprat_3_half (int8_t side)
 
 		case -1:
 			task_fsm_case = 0;
-			task_delay = 0xFFFF;
+			task_delay_s3h = 0xFFFF;
 			task_state = TASK_SUCCESS;
 			break;
 		}

@@ -230,7 +230,6 @@ go_to_xy ()
 					base_ptr->w_ref = 0;
 					phase = 0;
 					set_reg_type (0);
-// TODO: testiraj
 					if (fabs (d) < D_TOL)
 						base_ptr->on_target = 1;
 					else
@@ -277,9 +276,9 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 
 //	if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num)	// ako ima vise od lookahead_pnt_num
 //		{
-			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num] - base_ptr->x;
-			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num] - base_ptr->y;
-			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
+	x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num] - base_ptr->x;
+	y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num] - base_ptr->y;
+	phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
 //		}
 //	else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2)	// ako ima manje od lookahead_pnt_num, a vise od lookahead_pnt_num_2
 //		{
@@ -304,7 +303,6 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 			curve_cnt++;
 			if (curve_cnt > curve_ptr->num_equ_pts)
 				{
-					// TODO: testiraj
 					if (fabs (d) < D_2_TOL)
 						base_ptr->on_target = 1;
 					else
@@ -501,6 +499,6 @@ reset_movement ()
 	base_ptr->x_ref = base_ptr->x;
 	base_ptr->y_ref = base_ptr->y;
 	base_ptr->phi_ref = base_ptr->phi;
+	set_curve_ready (0);
 	base_ptr->movement_started = 0;
-
 }

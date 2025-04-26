@@ -33,7 +33,6 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 					continue_moving ();
 					break;
 				case 0:
-					// TODO: testiraj
 					stop_moving ();
 					break;
 				}
@@ -78,6 +77,7 @@ delay_nb_2 (uint32_t *start_time, uint32_t delay_ms)
 	if (sys_time_ms <= *start_time + delay_ms)
 		return 0;
 	*start_time = 0xffffffff;
+	reset_all_delays ();
 	return 1;
 }
 

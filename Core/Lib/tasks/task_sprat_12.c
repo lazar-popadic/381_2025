@@ -14,7 +14,7 @@
 #include "main.h"
 
 static int16_t task_fsm_case = 0;
-static uint32_t task_delay = 0xFFFF;
+extern uint32_t task_delay_s12;
 static int8_t task_state = TASK_RUNNING;
 static int8_t cur_task;
 
@@ -25,7 +25,7 @@ task_sprat_12 (int8_t side)
 		{
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = task_sprat_1 (side);
+			cur_task = task_sprat_1 (side, IN_GRTL);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 3;
 			break;
@@ -35,12 +35,12 @@ task_sprat_12 (int8_t side)
 				vacuum_front (0);
 			else
 				vacuum_back (0);
-			if (delay_nb_2 (&task_delay, 50))
+			if (delay_nb_2 (&task_delay_s12, 50))
 				task_fsm_case = 5;
 			break;
 
 		case 5:
-			if (delay_nb_2 (&task_delay, 300))
+			if (delay_nb_2 (&task_delay_s12, 300))
 				task_fsm_case = 10;
 			if (side == FORWARD)
 				ruc_front_up ();
@@ -49,7 +49,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 10:
-			if (delay_nb_2 (&task_delay, 1000))
+			if (delay_nb_2 (&task_delay_s12, 1000))
 				task_fsm_case = 20;
 			if (side == FORWARD)
 				lift_front_up ();
@@ -87,7 +87,7 @@ task_sprat_12 (int8_t side)
 
 		case 50:
 			cur_task = move_on_dir (210, -1 * side, V_MAX_DEF, NO_SENS);
-			if (delay_nb_2 (&task_delay, 500))
+			if (delay_nb_2 (&task_delay_s12, 500))
 				{
 					if (side == FORWARD)
 						lift_front_down ();
@@ -100,7 +100,7 @@ task_sprat_12 (int8_t side)
 
 		case -1:
 			task_fsm_case = 0;
-			task_delay = 0xFFFF;
+			task_delay_s12 = 0xFFFF;
 			task_state = TASK_SUCCESS;
 			break;
 		}

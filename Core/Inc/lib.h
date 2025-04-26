@@ -32,6 +32,12 @@
 #define ALL_SENS	-2
 #define NO_SENS		0
 
+#define TO_CENTER	1
+#define TO_OUT		-1
+
+#define IN_GRTL		-1
+#define OUT_GRTL	1
+
 #define TRAP_VEL_PROFILE		0
 #define S_CURVE_VEL_PROFILE	1
 #define STOPPING						2
@@ -240,6 +246,8 @@ void
 stop_moving ();
 void
 continue_moving ();
+void
+reset_movement ();
 
 // mechanism.h
 mech_states
@@ -367,7 +375,9 @@ x_side (float x);
 float
 phi_side (float phi);
 int8_t
-bnr_side ();
+bnr_side (int8_t bnr_dir);
+void
+reset_all_delays ();
 tactic_num*
 get_tact_num_ptr ();
 uint8_t
@@ -387,7 +397,7 @@ tact_dev_3 ();
 
 // tasks.h
 int8_t
-task_sprat_1 (int8_t side);
+task_sprat_1 (int8_t side, int8_t in_out);
 int8_t
 task_sprat_12 (int8_t side);
 int8_t
@@ -400,5 +410,7 @@ int8_t
 task_sprat_3_1_full (int8_t side);
 int8_t
 task_sprat_3_2_full (int8_t side);
+int8_t
+task_banner (int8_t bnr_dir);
 
 #endif /* LIB_LIB_H_ */

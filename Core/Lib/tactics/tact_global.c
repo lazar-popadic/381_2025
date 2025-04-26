@@ -10,10 +10,15 @@
 tactic_num tactic;
 int32_t tact_fsm_case;
 int32_t prev_fsm_case = -1;
-uint32_t tact_delay_1 = 0xFFFF;
-uint32_t timeout_var = 0xFFFF;
 uint8_t points = 0;
 int8_t tact_state = TASK_RUNNING;
+
+uint32_t tact_delay_1 = 0xFFFFFFFF;
+uint32_t timeout_var = 0xFFFFFFFF;
+uint32_t task_delay_s31f = 0xFFFFFFFF;
+uint32_t task_delay_s12 = 0xFFFFFFFF;
+uint32_t task_delay_s3h = 0xFFFFFFFF;
+uint32_t task_delay_3 = 0xFFFFFFFF;
 
 uint8_t
 get_points ()
@@ -52,11 +57,11 @@ phi_side (float phi)
 }
 
 int8_t
-bnr_side ()
+bnr_side (int8_t bnr_dir)
+// plava ka unutra: FORWARD
+// zuta ka unutra:	BACKWARD
 {
-	if (get_tact_num_ptr ()->side)	// plava
-		return FORWARD;
-	return BACKWARD;
+	return (get_tact_num_ptr ()->side * 2 - 1) * bnr_dir;
 }
 
 tactic_num*
@@ -70,8 +75,21 @@ timeout (uint32_t time)
 {
 	if (tact_fsm_case != prev_fsm_case)
 		{
-			timeout_var = 0xFFFF;
+			timeout_var = 0xFFFFFFFF;
 			prev_fsm_case = tact_fsm_case;
 		}
-	return delay_nb_2 (&timeout_var, time);
+	uint8_t ret_vel = delay_nb_2 (&timeout_var, time);
+	reset_movement ();
+	return ret_vel;
+}
+
+void
+reset_all_delays ()
+{
+	tact_delay_1 = 0xFFFFFFFF;
+	timeout_var = 0xFFFFFFFF;
+	task_delay_s31f = 0xFFFFFFFF;
+	task_delay_s12 = 0xFFFFFFFF;
+	task_delay_s3h = 0xFFFFFFFF;
+	task_delay_3 = 0xFFFFFFFF;
 }
