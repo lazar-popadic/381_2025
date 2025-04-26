@@ -25,7 +25,7 @@ task_sprat_1 (int8_t side, int8_t in_out)
 			task_state = TASK_RUNNING;
 			if (side == FORWARD)
 				{
-					grtl_front_open_outside ();
+					//grtl_front_open_outside ();
 					lift_front_down ();
 					ruc_front_down ();
 					if (in_out == OUT_GRTL)
@@ -36,7 +36,7 @@ task_sprat_1 (int8_t side, int8_t in_out)
 				}
 			else
 				{
-					grtl_back_open_outside ();
+					//grtl_back_open_outside ();
 					lift_back_down ();
 					ruc_back_down ();
 					if (in_out == OUT_GRTL)

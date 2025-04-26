@@ -84,9 +84,8 @@ tact_0 ()
 			tact_fsm_case = 75;
 
 		/*else if (cur_task == TASK_FAIL)
-			tact_fsm_case = 500;
-		break;*/
-
+			tact_fsm_case = 500;*/
+		break;
 	case 75:
 		cur_task = rot_to_phi (phi_side (0), W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
