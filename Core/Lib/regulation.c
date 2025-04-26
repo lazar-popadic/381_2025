@@ -422,9 +422,11 @@ rot_relative (float angle, float w_max, int8_t check_sensors)
 int8_t
 move_on_path (float x, float y, float phi, int8_t dir, int8_t cont, float v_max, int8_t avoid, int8_t check_sensors)
 {
+
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
-		{
-			move_status = TASK_RUNNING;
+		move_status = TASK_RUNNING;
+	{
+
 			base_ptr->movement_finished = 0;				// i nije zavrsena
 			set_reg_type (2);
 			direction = dir;
