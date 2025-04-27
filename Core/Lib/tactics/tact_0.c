@@ -2026,7 +2026,7 @@ tact_0 ()
 			break;
 
 		case 10000: // krece ka ms14
-			cur_task = move_on_path (x_side (870), -100, phi_side (-90), FORWARD, 1, 0.51, 0,
+			cur_task = move_on_path (x_side (870), -300, phi_side (-90), FORWARD, 1, 0.51, 0,
 			FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 10010;
@@ -2034,7 +2034,7 @@ tact_0 ()
 		case 10010:
 			cur_task = move_to_xy (x_side (-675), -400, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 						if (cur_task == TASK_SUCCESS)
-							tact_fsm_case = 6820;
+							tact_fsm_case = 10020;
 						if (cur_task == TASK_FAIL)
 										tact_fsm_case = 10500;
 			break;

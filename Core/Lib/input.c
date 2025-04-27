@@ -33,7 +33,7 @@ cinc_db ()
 uint8_t
 read_switch_S ()
 {
-	return GPIOD->IDR >> 2 & 1;
+	return GPIOA->IDR >> 4 & 1;
 }
 
 uint8_t
