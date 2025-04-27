@@ -25,7 +25,7 @@ task_sprat_12 (int8_t side)
 		{
 		case 0:
 			task_state = TASK_RUNNING;
-			cur_task = task_sprat_1 (side, IN_GRTL);
+			cur_task = task_sprat_1 (side, OUT_GRTL);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 3;
 			break;

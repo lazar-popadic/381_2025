@@ -78,10 +78,10 @@ timeout (uint32_t time)
 			timeout_var = 0xFFFFFFFF;
 			prev_fsm_case = tact_fsm_case;
 		}
-	uint8_t ret_vel = delay_nb_2 (&timeout_var, time);
-	if (ret_vel)
+	uint8_t ret_val = delay_nb_2 (&timeout_var, time);
+	if (ret_val)
 		reset_movement ();
-	return ret_vel;
+	return ret_val;
 }
 
 void
