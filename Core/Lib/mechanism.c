@@ -77,6 +77,8 @@
 #define BNR_4			850 //gornji desni
 #define BNR_SPEED_FAST	500
 
+int16_t ax_1_offs = 58;
+
 mech_states mechanism_states;
 
 mech_states
@@ -213,7 +215,7 @@ void
 grtl_front_open ()
 {
 	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN + ax_1_offs, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIL_ID, GRTL_IL_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 2;
@@ -239,7 +241,7 @@ void
 grtl_front_close ()
 {
 	ax_move (GRTL_FOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FOL_ID, GRTL_OL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_CLOSE + ax_1_offs, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 0;
@@ -265,7 +267,7 @@ void
 grtl_front_grip_all ()
 {
 	ax_move (GRTL_FOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP - OFFS, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP - OFFS + ax_1_offs, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_GRIP, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FIL_ID, GRTL_IL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fil = 1;
@@ -309,7 +311,7 @@ void
 grtl_front_grip_outside ()
 {
 	ax_move (GRTL_FOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
-	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP - OFFS, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP - OFFS + ax_1_offs, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fol = 1;
 	mechanism_states.grtl_for = 1;
 }
@@ -345,7 +347,7 @@ void
 grtl_front_open_outside ()
 {
 	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN + ax_1_offs, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_for = 2;
 }

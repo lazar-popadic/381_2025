@@ -84,6 +84,12 @@ timeout (uint32_t time)
 	return ret_val;
 }
 
+uint8_t
+detected_timeout (uint32_t time)
+{
+
+}
+
 void
 reset_all_delays ()
 {

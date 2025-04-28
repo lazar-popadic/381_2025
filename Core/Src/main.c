@@ -56,6 +56,7 @@ volatile uint16_t ax_angle_test = 511;
 volatile uint16_t ax_speed_test = 200;
 volatile uint16_t out_0, out_1, out_2, out_3;
 volatile uint8_t in_0, in_1;
+extern int16_t ax_1_offs;
 
 /* USER CODE END PV */
 
@@ -173,6 +174,7 @@ int main(void)
 
 				case 20:
 					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
+					ax_move (1, ax_angle_test + ax_1_offs, ax_speed_test, huart6);
 					vacuum_0 (out_0);
 					vacuum_1 (out_1);
 					vacuum_2 (out_2);
