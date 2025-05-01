@@ -15,6 +15,7 @@ int8_t tact_state = TASK_RUNNING;
 
 uint32_t tact_delay_1 = 0xFFFFFFFF;
 uint32_t timeout_var = 0xFFFFFFFF;
+uint32_t detected_timeout_var = 0xFFFFFFFF;
 uint32_t task_delay_s31f = 0xFFFFFFFF;
 uint32_t task_delay_s12 = 0xFFFFFFFF;
 uint32_t task_delay_s3h = 0xFFFFFFFF;
@@ -87,7 +88,27 @@ timeout (uint32_t time)
 uint8_t
 detected_timeout (uint32_t time)
 {
+	uint32_t prev_time;
+	if (tact_fsm_case != prev_fsm_case)
+		{
+			detected_timeout_var = 0xFFFFFFFF;
+			prev_fsm_case = tact_fsm_case;
+			prev_time = get_time_ms ();
+		}
 
+	// inkrementuje start time ako ne vidi prepreku, ako je vidi ne dira start time
+	if (!get_obstacle_detected ())
+		{
+			detected_timeout_var += get_time_ms () - prev_time;
+		}
+
+	detected_timeout_var = uint_min (detected_timeout_var, get_time_ms ());
+
+	prev_time = get_time_ms ();
+	if (get_time_ms () <= detected_timeout_var + time)
+		return 0;
+	reset_all_delays ();
+	return 1;
 }
 
 void
@@ -99,4 +120,5 @@ reset_all_delays ()
 	task_delay_s12 = 0xFFFFFFFF;
 	task_delay_s3h = 0xFFFFFFFF;
 	task_delay_3 = 0xFFFFFFFF;
+	detected_timeout_var = 0xFFFFFFFF;
 }

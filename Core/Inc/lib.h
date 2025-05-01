@@ -382,6 +382,8 @@ tactic_num*
 get_tact_num_ptr ();
 uint8_t
 timeout (uint32_t time);
+uint8_t
+detected_timeout (uint32_t time);
 int8_t
 tact_0 ();
 int8_t
