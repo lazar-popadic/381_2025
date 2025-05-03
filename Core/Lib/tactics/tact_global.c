@@ -85,29 +85,33 @@ timeout (uint32_t time)
 	return ret_val;
 }
 
+uint32_t detect_test;
+uint32_t prev_time_1 = 0;
+
 uint8_t
 detected_timeout (uint32_t time)
 {
-	uint32_t prev_time;
 	if (tact_fsm_case != prev_fsm_case)
 		{
 			detected_timeout_var = 0xFFFFFFFF;
 			prev_fsm_case = tact_fsm_case;
-			prev_time = get_time_ms ();
+			prev_time_1 = get_time_ms ();
 		}
 
 	// inkrementuje start time ako ne vidi prepreku, ako je vidi ne dira start time
 	if (!get_obstacle_detected ())
 		{
-			detected_timeout_var += get_time_ms () - prev_time;
+			detected_timeout_var += get_time_ms () - prev_time_1;
 		}
 
+	prev_time_1 = get_time_ms ();
 	detected_timeout_var = uint_min (detected_timeout_var, get_time_ms ());
 
-	prev_time = get_time_ms ();
+	detect_test = -get_time_ms () + detected_timeout_var + time;
 	if (get_time_ms () <= detected_timeout_var + time)
 		return 0;
-	reset_all_delays ();
+	else
+		reset_all_delays ();
 	return 1;
 }
 

@@ -46,7 +46,7 @@ uint32_t display_delay = 0xFFFFFFFF;
 char *tactic_side = "blue  #";
 char *tactic_side_short = "b #";
 static char tactic_number[2];
-uint8_t prev_time = 0;
+static uint8_t prev_time = 0;
 static tactic_num *tactic_ptr;
 
 void
@@ -467,7 +467,7 @@ static void
 ExpanderWrite (uint8_t _data)
 {
 	uint8_t data = _data | dpBacklight;
-	HAL_I2C_Master_Transmit (&hi2c3, DEVICE_ADDR, (uint8_t*) &data, 1, 10);
+	HAL_I2C_Master_Transmit (&hi2c3, DEVICE_ADDR, (uint8_t*) &data, 1, 1);
 }
 
 static void

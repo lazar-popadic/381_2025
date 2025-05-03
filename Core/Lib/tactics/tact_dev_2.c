@@ -24,40 +24,20 @@ tact_dev_2 ()
 	switch (tact_fsm_case)
 		{
 		case 0:
-//			prepare_front ();
-			if (delay_nb_2 (&tact_delay_1, 1000))
+			start_match ();
+			tact_fsm_case = 1;
+			break;
+
+		case 1:
+			if (detected_timeout (1000))
 				tact_fsm_case = 10;
-			bnr_close ();
-			break;
-
-		case 10:
-			if (delay_nb_2 (&tact_delay_1, 600))
+			if (timeout (5000))
 				tact_fsm_case = 20;
-			bnr_1 ();
 			break;
 
-		case 20:
-			if (delay_nb_2 (&tact_delay_1, 2000))
-				tact_fsm_case = 30;
-			bnr_2 ();
-			break;
-
-		case 30:
-			if (delay_nb_2 (&tact_delay_1, 600))
-				tact_fsm_case = 40;
-			bnr_3 ();
-			break;
-
-		case 40:
-			if (delay_nb_2 (&tact_delay_1, 2000))
-				tact_fsm_case = 50;
-			bnr_4 ();
-			break;
-
-		case 50:
-			if (delay_nb_2 (&tact_delay_1, 10000))
-				tact_fsm_case = -1;
-			bnr_close ();
+		default:
+			if (timeout (2000))
+				tact_fsm_case = 1;
 			break;
 
 		case -1:

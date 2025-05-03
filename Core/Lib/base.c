@@ -10,6 +10,8 @@
 volatile robot_base *base_ptr;
 static volatile robot_base base;
 
+uint8_t set_sens_test = 0;
+
 void
 base_init ()
 {
@@ -118,6 +120,7 @@ check_sensors ()
 			base_ptr->obstacle_detected = read_sensors_back () || read_sensors_front ();
 			break;
 		}
+//	base_ptr->obstacle_detected = set_sens_test;
 	return base_ptr->obstacle_detected;
 }
 

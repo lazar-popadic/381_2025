@@ -12,7 +12,6 @@ uint32_t sys_time_ms = 0;
 uint16_t sys_time_s = 0;
 uint8_t match_started = 0;
 uint8_t delay_free = 1;
-volatile uint8_t sensors_time_isr_test = 0;
 extern int8_t main_fsm_case;
 
 void
@@ -22,7 +21,7 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 	sys_time_s = get_time_ms () / 1000;
 
 	update_odom ();
-	sensors_time_isr_test = check_sensors ();
+	check_sensors ();
 
 	switch (get_regulation_status ())
 		{
