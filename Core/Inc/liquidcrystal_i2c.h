@@ -63,7 +63,11 @@ display_ready ();
 void
 display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num);
 void
-display_write_numbers (uint8_t points, uint8_t time);
+display_write_time (uint8_t time);
+void
+display_write_pts (uint8_t points);
+void
+display_write_case ();
 
 void
 display_fsm ();

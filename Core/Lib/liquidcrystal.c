@@ -47,7 +47,10 @@ char *tactic_side = "blue  #";
 char *tactic_side_short = "b #";
 static char tactic_number[2];
 static uint8_t prev_time = 0;
+static uint8_t prev_fsm = 0;
+static uint8_t prev_pts = 0;
 static tactic_num *tactic_ptr;
+extern int16_t tact_fsm_case;
 
 void
 display_fsm ()
@@ -104,7 +107,17 @@ display_fsm ()
 			if (prev_time != get_time_s ())
 				{
 					prev_time = get_time_s ();
-					display_write_numbers (get_points (), get_time_s ());
+					display_write_time (get_time_s ());
+				}
+			if (prev_fsm != tact_fsm_case)
+				{
+					prev_fsm = tact_fsm_case;
+					display_write_case ();
+				}
+			if (prev_pts != get_points ())
+				{
+					prev_pts = get_points ();
+					display_write_pts (get_points ());
 				}
 			break;
 
@@ -140,24 +153,15 @@ display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic
 	HD44780_PrintStr ("time:");
 	HD44780_SetCursor (0, 1);
 	HD44780_PrintStr ("");
-	display_write_numbers (points, time);
+	display_write_time (time);
+	display_write_pts (points);
+	display_write_case ();
 }
 
 void
-display_write_numbers (uint8_t points, uint8_t time)
+display_write_time (uint8_t time)
 {
-	itoa (points, snum, 10);
 	itoa (time, snum_time, 10);
-	itoa (tact_fsm_case, snum_fsm, 10);
-
-	if (points < 10)
-		HD44780_SetCursor (15, 0);
-	else if (points < 100)
-		HD44780_SetCursor (14, 0);
-	else
-		HD44780_SetCursor (13, 0);
-
-	HD44780_PrintStr (snum);
 	if (time < 10)
 		HD44780_SetCursor (15, 1);
 	else if (time < 100)
@@ -165,7 +169,25 @@ display_write_numbers (uint8_t points, uint8_t time)
 	else
 		HD44780_SetCursor (13, 1);
 	HD44780_PrintStr (snum_time);
+}
 
+void
+display_write_pts (uint8_t points)
+{
+	itoa (points, snum, 10);
+	if (points < 10)
+		HD44780_SetCursor (15, 0);
+	else if (points < 100)
+		HD44780_SetCursor (14, 0);
+	else
+		HD44780_SetCursor (13, 0);
+	HD44780_PrintStr (snum);
+}
+
+void
+display_write_case ()
+{
+	itoa (tact_fsm_case, snum_fsm, 10);
 	HD44780_SetCursor (0, 1);
 	HD44780_PrintStr (snum_fsm);
 }
