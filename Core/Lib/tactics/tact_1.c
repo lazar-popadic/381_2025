@@ -120,7 +120,7 @@ tact_1 ()
 			if (get_tact_num_ptr ()->side)	// plava
 				cur_task = move_to_xy (x_side (-1192), -607, BACKWARD, 0.75, W_MAX_DEF, BACKWARD);
 			else
-				cur_task = move_to_xy (x_side (-1192), -595, BACKWARD, 0.75, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (-1192), -590, BACKWARD, 0.75, W_MAX_DEF, BACKWARD); //y bio -595
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 95;
 			if (timeout (3500))
@@ -208,7 +208,7 @@ tact_1 ()
 			tact_fsm_case = 160;
 			break;
 		case 160: //krece ka polju za gradnju
-			cur_task = move_to_xy (x_side (-725), -720, BACKWARD, V_MAX_DEF * 0.75, //x je bio na -735 y ma -700
+			cur_task = move_to_xy (x_side (-725), -710, BACKWARD, V_MAX_DEF * 0.75, //x je bio na -735 y ma -700
 															W_MAX_DEF * 0.5,
 															NO_SENS);
 //			cur_task = move_on_path (x_side (-685), -720, -90, BACKWARD, 0, 0.5, 0, BACKWARD);
@@ -224,7 +224,7 @@ tact_1 ()
 				tact_fsm_case = 175;
 			break;
 		case 175:
-				cur_task = move_on_dir (60, BACKWARD, 0.3, NO_SENS);
+				cur_task = move_on_dir (32, BACKWARD, 0.3, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 180;
 			break;
