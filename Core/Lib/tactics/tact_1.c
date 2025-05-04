@@ -119,12 +119,10 @@ int8_t tact_1() {
 		if (get_tact_num_ptr()->side)	// plava
 			cur_task = move_to_xy(x_side(-1192), -607, BACKWARD, 0.75, W_MAX_DEF, BACKWARD);
 		else
-			cur_task = move_to_xy(x_side(-1100), -595, BACKWARD, V_MAX_DEF, W_MAX_DEF,
-					BACKWARD);
+			cur_task = move_to_xy(x_side(-1100), -595, BACKWARD, 0.75, W_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 95;
-
-		if (timeout (2000))
+		if (timeout (3500))
 			tact_fsm_case = 500;
 		break;
 	case 95:
@@ -302,10 +300,11 @@ int8_t tact_1() {
 		break;
 	case 510: //rezervisan bunt
 		if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_to_xy(x_side(-705), 400, FORWARD, V_MAX_DEF*0.5, W_MAX_DEF*0.5, FORWARD);
-		else
-			cur_task = move_to_xy(x_side(-665), 400, BACKWARD, V_MAX_DEF*0.5, W_MAX_DEF*0.5, BACKWARD);
+			//cur_task = move_to_xy(x_side(-705), 400, FORWARD, V_MAX_DEF*0.5, W_MAX_DEF*0.5, FORWARD); //bolji sto
+			cur_task = move_to_xy(x_side(-705), 405, FORWARD, V_MAX_DEF*0.5, W_MAX_DEF*0.5, FORWARD); //losiji sto
 
+		else //zuta strana
+			cur_task = move_to_xy(x_side(-665), 350, BACKWARD, V_MAX_DEF*0.5, W_MAX_DEF*0.5, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 520;
 		break;
@@ -344,11 +343,12 @@ int8_t tact_1() {
 			vacuum_back(1);
 		}
 		tact_fsm_case = 550;
+
 	case 550:
 		if (get_tact_num_ptr()->side)	// plava
 			cur_task = move_on_dir(420, BACKWARD, 0.5, BACKWARD);//140
 		else
-			cur_task = move_on_dir(140, FORWARD, 0.5, FORWARD);
+			cur_task = move_on_dir(150, FORWARD, 0.5, FORWARD);
 
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 560;
