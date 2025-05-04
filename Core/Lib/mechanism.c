@@ -8,7 +8,7 @@
 #include "main.h"
 #include "usart.h"
 
-#define OFFS 15
+#define OFFS 0
 
 #define GRTL_FOL_ID 1	// grtalica front outside left
 #define GRTL_FIL_ID 2
@@ -28,7 +28,7 @@
 #define GURL_R_ID	16	// guralica right
 
 #define GRTL_OL_OPEN		561
-#define GRTL_OL_GRIP		486
+#define GRTL_OL_GRIP		476
 #define GRTL_OL_CLOSE		181
 #define GRTL_IL_OPEN		511
 #define GRTL_IL_GRIP		451
