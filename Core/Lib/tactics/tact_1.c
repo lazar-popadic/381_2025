@@ -113,8 +113,10 @@ tact_1 ()
 //			else
 //				cur_task = task_sprat_3_1_full (FORWARD);
 			//cur_task = task_sprat_3_full (BACKWARD);
-			if (cur_task == TASK_SUCCESS)
+			if (cur_task == TASK_SUCCESS){
 				tact_fsm_case = 90;
+				add_points(32);
+			}
 			break;
 		case 90: //bunt kod protivnickog polja
 			if (get_tact_num_ptr ()->side)	// plava
@@ -233,8 +235,9 @@ tact_1 ()
 				cur_task = task_sprat_12 (BACKWARD);
 			else
 				cur_task = task_sprat_12 (BACKWARD);
-			if (cur_task == TASK_SUCCESS)
+			if (cur_task == TASK_SUCCESS){
 				tact_fsm_case = 190;
+			}
 			break;
 		case 190:
 //			if (get_tact_num_ptr ()->side)	// plava
@@ -242,8 +245,10 @@ tact_1 ()
 //			else
 //				cur_task = task_sprat_3 (BACKWARD);
 
-			if (cur_task == TASK_SUCCESS)
+			if (cur_task == TASK_SUCCESS){
 				tact_fsm_case = 195;
+			add_points(32);
+			}
 			break;
 		case 195:
 			if (get_tact_num_ptr ()->side)	// plava
@@ -413,8 +418,10 @@ tact_1 ()
 			else
 				cur_task = task_sprat_3_1_full (FORWARD);
 			//cur_task = task_sprat_3_full (BACKWARD);
-			if (cur_task == TASK_SUCCESS)
+			if (cur_task == TASK_SUCCESS){
 				tact_fsm_case = 630;
+				add_points(32);
+			}
 			break;
 
 		}

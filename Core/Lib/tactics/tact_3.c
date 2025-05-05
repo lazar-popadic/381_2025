@@ -16,15 +16,15 @@ extern uint8_t points;
 extern int8_t tact_state;
 static int8_t cur_task;
 
-int8_t
+void
 tact_3 ()
 {
-
-		vacuum_back(1);
-		HAL_Delay (10);
-		vacuum_front(1);
-		HAL_Delay (10);
-		prepare_back();
-		HAL_Delay (1000);
-		prepare_front();
+	lift_back_down ();
+	vacuum_back (1);
+	HAL_Delay (10);
+	vacuum_front (1);
+	HAL_Delay (10);
+	prepare_back ();
+	HAL_Delay (1000);
+	prepare_front ();
 }

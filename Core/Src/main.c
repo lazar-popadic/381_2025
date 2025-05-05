@@ -166,13 +166,14 @@ main (void)
 //					break;
 
 				case 12:
-					if (tact_dev () == TASK_SUCCESS)
+					if (tact_2 () == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
 				case 13:
-					if (tact_dev_2 () == TASK_SUCCESS)
-						main_fsm_case = -1;
+//					if (tact_3 () == TASK_SUCCESS)
+//						main_fsm_case = -1;
+					tact_3 ();
 					break;
 
 				case 20:

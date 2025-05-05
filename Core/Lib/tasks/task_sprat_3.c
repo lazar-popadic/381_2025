@@ -94,7 +94,7 @@ task_sprat_3 (int8_t side)
 			if (delay_nb_2 (&task_delay_3, 500))
 				{
 					task_fsm_case = -1;
-					add_points (16);
+					//add_points (16);
 				}
 			break;
 

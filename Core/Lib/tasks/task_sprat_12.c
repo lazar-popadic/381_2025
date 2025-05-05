@@ -97,7 +97,7 @@ task_sprat_12 (int8_t side)
 				}
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = -1;
-			add_points (8);
+			//add_points (8);
 			break;
 
 		case -1:

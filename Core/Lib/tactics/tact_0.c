@@ -101,8 +101,10 @@ tact_0 ()
 			break;
 		case 80:
 			cur_task = task_sprat_3_1_full (FORWARD);
-			if (cur_task == TASK_SUCCESS)
+			if (cur_task == TASK_SUCCESS){
 				tact_fsm_case = 85;
+				add_points(32);
+			}
 			break;
 		case 85:
 			grtl_back_close ();
@@ -204,8 +206,10 @@ tact_0 ()
 
 		case 200:
 			cur_task = task_sprat_3_2_full (FORWARD);
-			if (cur_task == TASK_SUCCESS)
+			if (cur_task == TASK_SUCCESS){
 				tact_fsm_case = 210;
+			add_points(32);
+			}
 			break;
 
 		case 210:
@@ -370,8 +374,10 @@ tact_0 ()
 			break;
 		case 510:
 			cur_task = task_sprat_3_1_full (BACKWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 511;
+			if (cur_task == TASK_SUCCESS){
+					tact_fsm_case = 511;
+					add_points(32);
+			}
 			break;
 		case 511:
 			cur_task = rot_to_phi (phi_side (90), W_MAX_DEF * 0.5, NO_SENS);

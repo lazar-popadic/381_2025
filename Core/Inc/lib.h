@@ -289,6 +289,8 @@ grtl_front_close ();
 void
 grtl_back_close ();
 void
+lift_back_down_bnr ();
+void
 grtl_front_grip_all ();
 void
 grtl_back_grip_all ();
@@ -388,6 +390,10 @@ int8_t
 tact_0 ();
 int8_t
 tact_1 ();
+int8_t
+tact_2 ();
+void
+tact_3 ();
 int8_t
 tact_homologation ();
 int8_t
