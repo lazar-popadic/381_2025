@@ -68,7 +68,8 @@ task_sprat_12 (int8_t side)
 				lift_front_drop ();
 			else
 				lift_back_drop ();
-			task_fsm_case = 40;
+			if (delay_nb_2 (&task_delay_s12, 200))
+				task_fsm_case = 40;
 			break;
 
 		case 40:
@@ -96,6 +97,7 @@ task_sprat_12 (int8_t side)
 				}
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = -1;
+			add_points (8);
 			break;
 
 		case -1:

@@ -92,6 +92,7 @@ task_sprat_1 (int8_t side, int8_t in_out)
 			else
 				ruc_back_full_down ();
 			task_fsm_case = -1;
+			add_points (4);
 			break;
 
 		case -1:

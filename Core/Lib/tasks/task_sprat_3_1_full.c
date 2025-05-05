@@ -57,6 +57,7 @@ task_sprat_3_1_full (int8_t side)
 			grtl_back_open ();
 			grtl_front_open ();
 //			if (cur_task == TASK_SUCCESS)
+			add_points (4);
 			task_fsm_case = 70;
 			break;
 
