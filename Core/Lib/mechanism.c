@@ -51,12 +51,12 @@
 #define LIFT_SPEED_FAST	500
 #define LIFT_SPEED_SLOW	300
 
-#define RUC_L_UP				561
+#define RUC_L_UP				531
 #define RUC_L_MID				320
 #define RUC_L_CARRY			215
 #define RUC_L_DOWN			200
 #define RUC_L_FULL_DOWN	160
-#define RUC_R_UP				461
+#define RUC_R_UP				491
 #define RUC_R_MID				705
 #define RUC_R_CARRY			800
 #define RUC_R_DOWN			815

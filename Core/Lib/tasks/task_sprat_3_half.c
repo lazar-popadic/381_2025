@@ -33,12 +33,14 @@ task_sprat_3_half (int8_t side)
 					lift_front_down ();
 					grtl_front_open ();
 					ruc_front_down ();
+					vacuum_front(0);
 				}
 			else
 				{
 					lift_back_down ();
 					grtl_back_open_outside ();
 					ruc_back_down ();
+					vacuum_back(0);
 				}
 			if (delay_nb_2 (&task_delay_s3h, 500))
 				task_fsm_case = 5;
