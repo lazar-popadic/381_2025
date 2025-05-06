@@ -13,6 +13,7 @@ uint16_t sys_time_s = 0;
 uint8_t match_started = 0;
 uint8_t delay_free = 1;
 extern int8_t main_fsm_case;
+uint8_t flag_95 = 0;
 
 void
 time_ISR ()	// poziva se u stm32f4xx_it.c
@@ -44,8 +45,15 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 		}
 
 	update_base_status ();
-	if (sys_time_s >= HOME_TIME)
+	if (sys_time_s >= 99)
+		main_fsm_case = -1;
+	if (sys_time_s >= HOME_TIME && flag_95 == 0)
+	{
+		reset_movement();
+		flag_95 = 1;
 		main_fsm_case = -10;
+	}
+
 
 	// rpi communication
 	update_transmit_buffer ();

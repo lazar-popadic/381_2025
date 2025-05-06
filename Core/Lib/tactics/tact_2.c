@@ -212,7 +212,7 @@ tact_2 ()
 			tact_fsm_case = 240;
 		break;
 	case 240:
-		cur_task = task_sprat_3_half (FORWARD);
+		cur_task = task_sprat_3_half (FORWARD); //lazar da proveri ovo ne znam sta da mu radim vise
 		if (cur_task == TASK_SUCCESS){
 			add_points (28);
 			tact_fsm_case = -1;

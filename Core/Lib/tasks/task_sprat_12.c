@@ -58,7 +58,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 20:
-			cur_task = move_on_dir (210, side, 0.2, NO_SENS);
+			cur_task = move_on_dir (210, side, 0.3, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;

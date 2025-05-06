@@ -27,13 +27,13 @@
 #define GURL_L_ID	15	// guralica left
 #define GURL_R_ID	16	// guralica right
 
-#define GRTL_OL_OPEN		561
+#define GRTL_OL_OPEN		521
 #define GRTL_OL_GRIP		476
 #define GRTL_OL_CLOSE		181
 #define GRTL_IL_OPEN		511
 #define GRTL_IL_GRIP		451
 #define GRTL_IL_CLOSE		251
-#define GRTL_OR_OPEN		471
+#define GRTL_OR_OPEN		501
 #define GRTL_OR_GRIP		546
 #define GRTL_OR_CLOSE		841
 #define GRTL_IR_OPEN		511

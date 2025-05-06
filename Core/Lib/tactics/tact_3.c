@@ -20,9 +20,12 @@ void
 tact_3 ()
 {
 	lift_back_down ();
+	HAL_Delay (1000);
 	vacuum_back (1);
 	HAL_Delay (10);
 	vacuum_front (1);
+	HAL_Delay (10);
+	lift_front_down();
 	HAL_Delay (10);
 	prepare_back ();
 	HAL_Delay (1000);
