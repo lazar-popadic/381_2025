@@ -49,7 +49,7 @@
 #define OFFS_DESIRED	360
 #define PAD_NUM				20
 
-#define HOME_TIME			95
+#define HOME_TIME			97
 
 #include "structs.h"
 

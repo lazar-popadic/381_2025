@@ -191,9 +191,11 @@ int main(void)
 
 			// Go to HOME
 		case -10:
-			// TODO:
 			if (move_to_xy (x_side (-800), 500, FORWARD, 0.75, W_MAX_DEF * 0.5, FORWARD))
+			{
 				main_fsm_case = -1;
+				add_points(10);
+			}
 			break;
 
 		case -1:
