@@ -40,11 +40,11 @@ int8_t tact_1() {
 		}
 		break;
 	case 10: //srednji bunt blizi njemu
-		if (get_tact_num_ptr ()->side)
+		if (get_tact_num_ptr ()->side)//plavu
 			cur_task = move_on_path(x_side(-360), -380, phi_side(135), FORWARD, 0,
 					0.5, 0, NO_SENS);
 		else
-			cur_task = move_on_path(x_side(0), 0, phi_side(135), FORWARD, 0,
+			cur_task = move_on_path(x_side(-340), -380, phi_side(135), FORWARD, 0,
 					0.5, 0, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 12;
@@ -93,7 +93,7 @@ int8_t tact_1() {
 			tact_fsm_case = 50;
 		break;
 	case 50: //pred uzimanje bunta
-		cur_task = move_on_dir(370, BACKWARD, 0.5, NO_SENS); //270
+		cur_task = move_on_dir(365, BACKWARD, 0.5, NO_SENS); //370
 		if (cur_task == TASK_SUCCESS || timeout(1000))
 			tact_fsm_case = 60;
 		break;

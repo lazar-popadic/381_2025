@@ -153,7 +153,7 @@ tact_2 ()
 			tact_fsm_case = 140;
 		break;
 	case 140:
-		cur_task = task_sprat_3_full (FORWARD);
+		cur_task = task_sprat_3_1 (FORWARD);
 		if (cur_task == TASK_SUCCESS){
 			tact_fsm_case = 145;
 			add_points (28);
