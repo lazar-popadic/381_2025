@@ -170,9 +170,9 @@ main (void)
 					break;
 
 				case 13:
-//					if (tact_dev_3 () == TASK_SUCCESS)
-//						main_fsm_case = -1;
-			tact_3 ();
+					if (tact_dev_3 () == TASK_SUCCESS)
+						main_fsm_case = -1;
+//			tact_3 ();
 					break;
 
 				case 20:

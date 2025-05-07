@@ -19,7 +19,7 @@ tact_dev_3 ()
 	switch (tact_fsm_case)
 		{
 		case 0:
-			cur_task = move_on_dir (1500, FORWARD, V_MAX_DEF, NO_SENS);
+			cur_task = move_on_dir (1500, FORWARD, V_MAX_DEF*0.1, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = -1;
 			else if (cur_task == TASK_FAIL)

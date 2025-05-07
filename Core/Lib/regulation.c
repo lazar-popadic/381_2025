@@ -64,7 +64,7 @@ void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
-	init_pid (&d_loop, 0.002, 0.00, 0.04, V_MAX_DEF, 0.0);
+	init_pid (&d_loop, 0.01, 0.00, 0.264, V_MAX_DEF, 0.0);
 	init_pid (&phi_loop, 4.0, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&v_loop, 6800, 32, 800, CTRL_MAX, 840);

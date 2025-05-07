@@ -20,7 +20,7 @@
 #define J_MAX_DEF				0.2		// [mm/ms * 1/10ms^2]		// za 30ms dodje do 1m/s i sve vreme je jerk-limited
 #define J_ROT_MAX_DEF		36			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX				4200		// [inc]
-#define MAX_PWM_CHANGE	1050			// [inc/ms]					// za 3ms dodje do 4200
+#define MAX_PWM_CHANGE	1050			// [inc/ms]					// za 4ms dodje do 4200
 #define POS_LOOP_PSC		10
 
 #define TASK_RUNNING	0
