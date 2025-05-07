@@ -389,7 +389,7 @@ tact_1 ()
 		if (get_tact_num_ptr ()->side)	// plava
 			cur_task = move_on_dir (250, BACKWARD, V_MAX_DEF, BACKWARD);	//140
 		else//Zuta
-			cur_task = move_on_dir (150, FORWARD, 1, FORWARD);
+			cur_task = move_on_dir (250, BACKWARD, V_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 560;
 		break;
