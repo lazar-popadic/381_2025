@@ -73,7 +73,7 @@ task_sprat_3_half (int8_t side)
 		case 30:
 			cur_task = task_sprat_3 (-1 * side);
 			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 1;
+				task_fsm_case = -1;
 			break;
 
 		case -1:
