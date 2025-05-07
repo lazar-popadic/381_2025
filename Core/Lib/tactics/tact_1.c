@@ -35,9 +35,14 @@ int8_t tact_1() {
 		lift_back_down_bnr();
 		grtl_back_open_outside();
 		if (delay_nb_2(&tact_delay_1, 500)) {
-			tact_fsm_case = 10;
+			tact_fsm_case = 7;
 			add_points(20);
 		}
+		break;
+	case 7:
+		cur_task = move_on_dir(200, FORWARD, 0.5, NO_SENS);
+		if (cur_task == TASK_SUCCESS || timeout(1000))
+			tact_fsm_case = 10;
 		break;
 	case 10: //srednji bunt blizi njemu
 		if (get_tact_num_ptr ()->side)//plavu
@@ -61,7 +66,7 @@ int8_t tact_1() {
 			tact_fsm_case = 20;
 		break;
 	case 20: //pred uzimanje bunta
-		cur_task = move_on_dir(300, FORWARD, 0.4, FORWARD);
+		cur_task = move_on_dir(300, FORWARD, 0.4, FORWARD); //300
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 30;
 		break;
@@ -74,7 +79,7 @@ int8_t tact_1() {
 		break;
 	case 40: //bunt pored startnog polja
 		if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_on_path(x_side(-700), -400, phi_side(45), BACKWARD, //-680
+			cur_task = move_on_path(x_side(-680), -400, phi_side(45), BACKWARD, //-680
 					0, 0.5, 0, NO_SENS);
 		else
 			cur_task = move_on_path(x_side(-685), -400, phi_side(45), BACKWARD,
@@ -93,7 +98,7 @@ int8_t tact_1() {
 			tact_fsm_case = 50;
 		break;
 	case 50: //pred uzimanje bunta
-		cur_task = move_on_dir(380, BACKWARD, 0.5, NO_SENS); //370
+		cur_task = move_on_dir(300, BACKWARD, 0.4, NO_SENS); //370
 		if (cur_task == TASK_SUCCESS || timeout(1200))
 			tact_fsm_case = 60;
 		break;
@@ -110,7 +115,7 @@ int8_t tact_1() {
 			tact_fsm_case = 70;
 		break;
 	case 70:
-		cur_task = move_to_xy(x_side(-500), -680, FORWARD, V_MAX_DEF, W_MAX_DEF,
+		cur_task = move_to_xy(x_side(-400), -680, FORWARD, V_MAX_DEF, W_MAX_DEF,
 				FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 75;
@@ -150,7 +155,7 @@ int8_t tact_1() {
 			tact_fsm_case = 100;
 		break;
 	case 100:
-		cur_task = move_on_dir(115, BACKWARD, 0.5, NO_SENS);
+		cur_task = move_on_dir(115, BACKWARD, 0.4, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(1000))
 			tact_fsm_case = 110;
 		break;
@@ -205,7 +210,7 @@ int8_t tact_1() {
 		break;
 
 	case 140:
-		cur_task = move_on_dir(180, FORWARD, 0.33, NO_SENS);
+		cur_task = move_on_dir(180, FORWARD, 0.4, NO_SENS);
 
 		if (cur_task == TASK_SUCCESS || timeout(1500)) {
 			tact_fsm_case = 150;
