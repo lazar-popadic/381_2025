@@ -7,8 +7,8 @@
 
 // Tolerancije za distancu i ugao kada smatram da je zadovoljen uslov
 #define D_PROJ_TOL	5
-#define D_TOL			20
-#define D_2_TOL			60
+#define D_TOL				20
+#define D_2_TOL			20
 #define D_3_TOL			50
 #define PHI_TOL			1
 #define PHI_PRIM_TOL	2
@@ -64,10 +64,10 @@ void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
-	init_pid (&d_loop, 0.004, 0.0064, 0.06, V_MAX_DEF, V_MAX_DEF * 0.1);	// 0.004
+	init_pid (&d_loop, 0.002, 0.00, 0.04, V_MAX_DEF, 0.0);
 	init_pid (&phi_loop, 4.0, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
-	init_pid (&v_loop, 6800, 32, 0, CTRL_MAX, 2100);
+	init_pid (&v_loop, 6800, 32, 800, CTRL_MAX, 840);
 	init_pid (&w_loop, 72, 0.36, 3, CTRL_MAX, 2100);
 	curve_ptr = (curve*) malloc (sizeof(curve));
 	for (int i = 0; i < BEZIER_RESOLUTION; i++)
