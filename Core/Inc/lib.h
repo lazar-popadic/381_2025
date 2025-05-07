@@ -22,6 +22,8 @@
 #define CTRL_MAX				4200		// [inc]
 #define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
+#define V_MAX_DEF_PATH	0.5		// [m/s]
+
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1

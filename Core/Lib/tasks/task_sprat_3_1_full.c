@@ -51,12 +51,16 @@ task_sprat_3_1_full (int8_t side)
 			break;
 
 		case 60:
-//			cur_task = move_on_dir (75, side, V_MAX_DEF, NO_SENS);
-			vacuum_front (0);
-			vacuum_back (0);
-			grtl_back_open ();
-			grtl_front_open ();
-//			if (cur_task == TASK_SUCCESS)
+			if (side == FORWARD)
+				{
+					vacuum_front (0);
+					grtl_front_open ();
+				}
+			else
+				{
+					vacuum_back (0);
+					grtl_back_open ();
+				}
 			task_fsm_case = 70;
 			break;
 

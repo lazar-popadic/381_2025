@@ -50,6 +50,7 @@ static tactic_num *tactic_ptr;
 int8_t main_fsm_case = 0;
 uint32_t delay_1_start = 0xFFFFFFFF;
 uint8_t flag_end = 0;
+uint8_t flag_95_main = 0;
 
 /* test promenljive */
 volatile uint8_t ax_id_test = 10;
@@ -178,32 +179,30 @@ main (void)
 
 				case 20:
 					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
-					ax_move (1, ax_angle_test + ax_1_offs, ax_speed_test, huart6);
+//					ax_move (1, ax_angle_test + ax_1_offs, ax_speed_test, huart6);
 					vacuum_0 (out_0);
 					vacuum_1 (out_1);
 					vacuum_2 (out_2);
 					vacuum_3 (out_3);
 					break;
 
-				case 21:
-					sg90_1_move (out_0);
-					sg90_2_move (out_1);
-					sg90_3_move (out_2);
-					sg90_4_move (out_3);
-					break;
-
 					// Go to HOME
 				case -10:
-					if (move_to_xy (x_side (-800), 500, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD))
+					if (!flag_95_main)
+						{
+							reset_movement ();
+							flag_95_main = 1;
+						}
+					if (move_to_xy (x_side (-800), 500, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD) == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;
 
 				case -1:
 					if (!flag_end)
 						{
-							flag_end = 1;
-							if (fabs (get_robot_base ()->x) > 750 && fabs (get_robot_base ()->y) > 450)
+							if (fabs (get_robot_base ()->x) > 750 && get_robot_base ()->y > 450)
 								add_points (10);
+							flag_end = 1;
 						}
 					set_regulation_status (0);
 					stop_match ();
