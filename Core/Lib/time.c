@@ -45,7 +45,7 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 		}
 
 	update_base_status ();
-	if (sys_time_s >= 99)
+	if (sys_time_s >= 100)
 		main_fsm_case = -1;
 	if (sys_time_s >= HOME_TIME && flag_95 == 0)
 	{

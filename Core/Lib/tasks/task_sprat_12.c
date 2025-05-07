@@ -4,7 +4,7 @@
  * 		Task odvajanja i sastavljanja 2 sprata:
  * 			- na pocetku drzi ceo MS
  * 			- na kraju ne drzi nista u toj strani i izgradjena su 2 sprata
- *			- udaljen je za 200mm od centra ostavljenog sprata
+ *			- udaljen je za 250mm od centra ostavljenog sprata
  *			- otvorene su mu grtalice na zadatoj strani i lift je dole
  *
  *  Created on: Mar 31, 2025
@@ -58,7 +58,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 20:
-			cur_task = move_on_dir (210, side, 0.3, NO_SENS);
+			cur_task = move_on_dir (260, side, 0.3, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;

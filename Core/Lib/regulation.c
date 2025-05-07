@@ -64,8 +64,8 @@ void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
-	init_pid (&d_loop, 0.01, 0.00, 0.264, V_MAX_DEF, 0.0);
-	init_pid (&phi_loop, 4.0, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
+	init_pid (&d_loop, 0.0075, 0.00, 0.2, V_MAX_DEF, 0.0);
+	init_pid (&phi_loop, 4.4, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&v_loop, 6800, 32, 800, CTRL_MAX, 840);
 	init_pid (&w_loop, 72, 0.36, 3, CTRL_MAX, 2100);
@@ -209,7 +209,11 @@ go_to_xy ()
 			base_ptr->v_ref = 0;
 			base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 			if (fabs (phi_err) < PHI_PRIM_TOL && !(base_ptr->moving))
-				phase = 1;
+				{
+					phase = 1;
+					reset_pid (&w_loop);
+					reset_pid (&phi_loop);
+				}
 			break;
 
 		case 1:    // tran
@@ -219,7 +223,7 @@ go_to_xy ()
 			base_ptr->v_ref = calc_pid (&d_loop, d_proj * direction);
 
 			if (fabs (d) > D_3_TOL)
-				base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
+				base_ptr->w_ref = calc_pid (&phi_loop, 1.5 * phi_err);
 			else
 				base_ptr->w_ref = 0;
 
@@ -381,6 +385,34 @@ rot_to_phi (float phi, float w_max, int8_t check_sensors)
 }
 
 int8_t
+move_on_dir_ortho (float distance, int8_t dir, float v_max, int8_t check_sensors)
+{
+	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
+		{
+			move_status = TASK_RUNNING;
+			base_ptr->movement_finished = 0;				// i nije zavrsena
+			direction = dir;
+			base_ptr->v_max = v_max;
+			base_ptr->x_ref = base_ptr->x + dir * distance * cos (snap_phi (base_ptr->phi) * M_PI / 180);
+			base_ptr->y_ref = base_ptr->y + dir * distance * sin (snap_phi (base_ptr->phi) * M_PI / 180);
+			base_ptr->phi_ref = snap_phi (base_ptr->phi);
+			base_ptr->obstacle_dir = check_sensors;
+			base_ptr->movement_started = 1;				// kretnja zapoceta
+			set_reg_type (1);
+		}
+	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
+		{
+			move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
+			reset_v_max ();
+			reset_w_max ();
+			base_ptr->obstacle_dir = 0;
+			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
+		}
+
+	return move_status;
+}
+
+int8_t
 move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 {
 	if (!base_ptr->movement_started)					// ako nije zapoceta kretnja
@@ -417,7 +449,7 @@ rot_to_xy (float x, float y, int dir, float w_max, int8_t check_sensors)
 int8_t
 rot_relative (float angle, float w_max, int8_t check_sensors)
 {
-	return rot_to_phi (base_ptr->phi + angle, w_max, check_sensors);
+	return rot_to_phi (snap_phi (base_ptr->phi + angle), w_max, check_sensors);
 }
 
 int8_t
@@ -494,6 +526,7 @@ stop_moving ()
 void
 reset_movement ()
 {
+	base_ptr->movement_finished = 0;
 	reset_v_max ();
 	reset_w_max ();
 	set_reg_type (0);

@@ -49,6 +49,7 @@
 static tactic_num *tactic_ptr;
 int8_t main_fsm_case = 0;
 uint32_t delay_1_start = 0xFFFFFFFF;
+uint8_t flag_end = 0;
 
 /* test promenljive */
 volatile uint8_t ax_id_test = 10;
@@ -193,14 +194,17 @@ main (void)
 
 					// Go to HOME
 				case -10:
-					if (move_to_xy (x_side (-800), 500, FORWARD, 0.75, W_MAX_DEF * 0.5, FORWARD))
-						{
-							main_fsm_case = -1;
-							add_points (10);
-						}
+					if (move_to_xy (x_side (-800), 500, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD))
+						main_fsm_case = -1;
 					break;
 
 				case -1:
+					if (!flag_end)
+						{
+							flag_end = 1;
+							if (fabs (get_robot_base ()->x) > 750 && fabs (get_robot_base ()->y) > 450)
+								add_points (10);
+						}
 					set_regulation_status (0);
 					stop_match ();
 					HAL_Delay (10);
