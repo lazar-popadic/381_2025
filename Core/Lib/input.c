@@ -66,3 +66,15 @@ read_sensors_back ()
 {
 	return GPIOC->IDR >> 5 & 1;
 }
+
+uint8_t
+check_front()
+{
+	return GPIOB->IDR >> 1 & 1;
+}
+
+uint8_t
+check_back()
+{
+	return GPIOA->IDR >> 4 & 1;
+}

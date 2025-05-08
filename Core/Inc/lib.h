@@ -24,7 +24,6 @@
 #define POS_LOOP_PSC		10
 #define V_MAX_DEF_PATH	0.5		// [m/s]
 
-
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
 #define TASK_FAIL			1
@@ -166,6 +165,10 @@ uint8_t
 read_sensors_front ();
 uint8_t
 read_sensors_back ();
+uint8_t
+check_front ();
+uint8_t
+check_back ();
 
 // output.h
 void

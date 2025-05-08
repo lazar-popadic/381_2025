@@ -92,7 +92,7 @@ tact_2 ()
 			grtl_back_close ();
 			lift_back_down ();
 			tact_fsm_case = 80;
-			break; //do ovde su sve koordinate iste za sada
+			break;
 		case 80: //bunt kod protivnickih sima
 			cur_task = move_to_xy (x_side (1120), 320, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -110,7 +110,7 @@ tact_2 ()
 				tact_fsm_case = 110;
 			break;
 		case 110:
-			cur_task = move_on_dir (210, BACKWARD, 0.4, BACKWARD);
+			cur_task = move_on_dir (220, BACKWARD, 0.4, BACKWARD);
 			if (cur_task == TASK_SUCCESS || timeout (2000))
 				{
 					tact_fsm_case = 120;
@@ -126,12 +126,12 @@ tact_2 ()
 			tact_fsm_case = 125;
 			break;
 		case 125:
-			cur_task = move_on_dir (60, FORWARD, V_MAX_DEF, FORWARD);
+			cur_task = move_on_dir (200, FORWARD, V_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 130;
 			break;
 		case 130:
-			cur_task = move_to_xy (x_side (1260), -100, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (1260), -140, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -151,8 +151,8 @@ tact_2 ()
 				}
 			break;
 		case 145:
-			cur_task = move_on_dir (150, FORWARD, V_MAX_DEF, FORWARD); //100
-			if (cur_task == TASK_SUCCESS || detected_timeout (1000))
+			cur_task = move_on_dir (240, FORWARD, V_MAX_DEF, FORWARD); //100
+			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 150;
 			break;
 		case 150:
@@ -167,9 +167,9 @@ tact_2 ()
 
 		case 170: //krece ka ms22// plav
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (-380), 270, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+				cur_task = move_to_xy (x_side (-380), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			else
-				cur_task = move_to_xy (x_side (-330), 270, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+				cur_task = move_to_xy (x_side (-330), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 180;
 			else if (detected_timeout (1000))
@@ -186,9 +186,9 @@ tact_2 ()
 //--- MINI ALTERNATIVNA
 		case 171: //krece ka ms22
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (380), 270, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (380), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
 			else
-				cur_task = move_to_xy (x_side (430), 270, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (430), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 172;
 			break;
@@ -204,7 +204,14 @@ tact_2 ()
 		case 174:
 			cur_task = move_on_dir (475, BACKWARD, 0.4, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 210;
+				tact_fsm_case = 175;
+			break;
+		case 175:
+			grtl_back_grip_all ();
+			ruc_back_carry ();
+			lift_back_carry ();
+			vacuum_back (1);
+			tact_fsm_case = 220;
 			break;
 //--- KRAJ MINI ALTERNATIVNE
 
@@ -218,7 +225,7 @@ tact_2 ()
 				tact_fsm_case = 200;
 			break;
 		case 200:
-			cur_task = move_on_dir (330, BACKWARD, 0.4, BACKWARD);
+			cur_task = move_on_dir (400, BACKWARD, 0.4, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 210;
 			break;
@@ -228,10 +235,13 @@ tact_2 ()
 			ruc_back_carry ();
 			lift_back_carry ();
 			vacuum_back (1);
-			tact_fsm_case = 220;
+			if (check_back ())
+				tact_fsm_case = 220;
+			else
+				tact_fsm_case = 1000;
 			break;
 		case 220:
-			cur_task = move_to_xy (x_side (-250), -380, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (-250), -350, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -243,7 +253,7 @@ tact_2 ()
 				tact_fsm_case = 235;
 			break;
 		case 235:
-			cur_task = move_on_dir (325, FORWARD, V_MAX_DEF, FORWARD);
+			cur_task = move_on_dir (325, FORWARD, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 240;
 			break;
@@ -347,6 +357,47 @@ tact_2 ()
 																0, 0.5, 0, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 550;
+			break;
+
+//--- ALTERNATIVNA 1, KAD NEMA SREDNJI BUNT IDE PO REZERVISANI
+		case 1000:
+			cur_task = move_to_xy (x_side (-645), 370, BACKWARD, V_MAX_DEF,
+			W_MAX_DEF,
+															BACKWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 1010;
+			break;
+
+		case 1010:
+			cur_task = rot_to_phi (phi_side (-90), W_MAX_DEF * 0.5, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 1020;
+			break;
+
+		case 1020:
+			prepare_back ();
+			tact_fsm_case = 1030;
+			break;
+
+		case 1030:
+			cur_task = move_on_dir (260, BACKWARD, 0.3, NO_SENS);
+
+			if (cur_task == TASK_SUCCESS || timeout (1500))
+				tact_fsm_case = 1040;
+			break;
+
+		case 1040:
+			grtl_back_grip_all ();
+			ruc_back_carry ();
+			lift_back_carry ();
+			vacuum_back (1);
+			tact_fsm_case = 1050;
+			break;
+
+		case 1050:
+			cur_task = move_on_dir (250, FORWARD, V_MAX_DEF, FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 220;
 			break;
 
 		}

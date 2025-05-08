@@ -15,6 +15,7 @@ extern uint32_t tact_delay_1;
 extern uint8_t points;
 extern int8_t tact_state;
 static int8_t cur_task;
+static uint8_t flag_skip_last = 0;
 
 int8_t
 tact_1 ()
@@ -30,7 +31,7 @@ tact_1 ()
 			tact_fsm_case = 2;
 			break;
 		case 2:
-			cur_task = move_on_dir (165, BACKWARD, V_MAX_DEF * 0.5, NO_SENS);
+			cur_task = move_on_dir (170, BACKWARD, V_MAX_DEF * 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (1000))
 				tact_fsm_case = 5;
 			break;
@@ -118,7 +119,7 @@ tact_1 ()
 				tact_fsm_case = 70;
 			break;
 		case 70:
-			cur_task = move_to_xy (x_side (-400), -680, FORWARD, V_MAX_DEF, W_MAX_DEF,
+			cur_task = move_to_xy (x_side (-400), -730, FORWARD, V_MAX_DEF, W_MAX_DEF,
 			NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 75;
@@ -178,7 +179,10 @@ tact_1 ()
 			lift_front_carry ();
 			vacuum_front (1);
 			grtl_back_close ();
-			tact_fsm_case = 115;
+			if (check_front ())
+				tact_fsm_case = 115;
+			else
+				tact_fsm_case = 500;
 			break;
 		case 115:
 			cur_task = move_on_dir (470, BACKWARD, V_MAX_DEF, NO_SENS);
@@ -205,7 +209,10 @@ tact_1 ()
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 130;
 			else if (detected_timeout (3000))
-				tact_fsm_case = 400;
+				{
+					tact_fsm_case = 1000;
+					flag_skip_last = 1;
+				}
 			break;
 
 		case 130:
@@ -237,7 +244,7 @@ tact_1 ()
 			tact_fsm_case = 160;
 			break;
 		case 160: //krece ka polju za gradnju
-			cur_task = move_to_xy (x_side (-805), -670, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (-805), -700, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -245,11 +252,6 @@ tact_1 ()
 			break;
 		case 170:
 			cur_task = rot_to_phi (phi_side (180), W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 180;
-			break;
-		case 175:
-			cur_task = move_on_dir (150, BACKWARD, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 180;
 			break;
@@ -263,7 +265,10 @@ tact_1 ()
 
 			if (cur_task == TASK_SUCCESS)
 				{
-					tact_fsm_case = 192;
+					if (flag_skip_last)
+						tact_fsm_case = 205;
+					else
+						tact_fsm_case = 192;
 					add_points (24);
 				}
 			break;
@@ -275,7 +280,10 @@ tact_1 ()
 		case 194:
 			cur_task = move_on_dir (50, FORWARD, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 200;
+				{
+
+					tact_fsm_case = 200;
+				}
 			break;
 
 		case 200:
@@ -306,111 +314,158 @@ tact_1 ()
 				tact_fsm_case = 9999;
 			break;
 
-			/*case 207: //zavrsetak
-			 cur_task = rot_to_xy (x_side (-630), -330, FORWARD, W_MAX_DEF, NO_SENS);
-			 if (cur_task == TASK_SUCCESS)
-			 tact_fsm_case = 208;
-			 break;
-
-			 case 208: //zavrsetak
-			 cur_task = move_on_path (x_side (-630), -330, phi_side (90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
-			 //			cur_task = move_to_xy (x_side (-600), -300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
-			 if (cur_task == TASK_SUCCESS)
-			 tact_fsm_case = 9999;
-			 break;*/
-
+//--- ALTERNATIVNA, BUNT KOD COSKA
 		case 500:
+			vacuum_front (0);
+			lift_front_down ();
 			grtl_back_close ();
-			HAL_Delay (10);
 			grtl_front_close ();
-			tact_fsm_case = 510;
+			tact_fsm_case = 502;
+			break;
+		case 502:
+			cur_task = rot_to_xy (x_side (-670), -550, BACKWARD,
+			W_MAX_DEF,
+														NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 505;
+			break;
+		case 505:
+			cur_task = move_to_xy (x_side (-670), -550, BACKWARD, V_MAX_DEF,
+			W_MAX_DEF,
+															BACKWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 510;
 			break;
 		case 510: //rezervisan bunt
-			if (get_tact_num_ptr ()->side) //PLAVA
-				cur_task = move_to_xy (x_side (-690), 370, FORWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																FORWARD);
-			else
-				cur_task = move_to_xy (x_side (-645), 370, FORWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																FORWARD);
+			cur_task = rot_to_xy (x_side (-670), 370, BACKWARD,
+			W_MAX_DEF,
+														NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 520;
 			break;
-
-		case 520:
-			cur_task = rot_to_phi (phi_side (90), W_MAX_DEF, NO_SENS);
+		case 520: //rezervisan bunt
+//			if (get_tact_num_ptr ()->side)
+			cur_task = move_to_xy (x_side (-670), 370, BACKWARD, V_MAX_DEF,
+			W_MAX_DEF,
+															BACKWARD);
+//			else
+//				cur_task = move_to_xy (x_side (-645), 370, FORWARD, V_MAX_DEF,
+//				W_MAX_DEF,
+//																FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 530;
 			break;
 
 		case 530:
-			prepare_front ();
-			tact_fsm_case = 540;
+			cur_task = rot_to_phi (phi_side (-90), W_MAX_DEF, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 540;
 			break;
 
 		case 540:
-			cur_task = move_on_dir (240, FORWARD, 0.3, NO_SENS);
-
-			if (cur_task == TASK_SUCCESS || timeout (1500))
-				{
-					tact_fsm_case = 550;
-					reset_all_delays ();
-				}
+			prepare_back ();
+			tact_fsm_case = 550;
 			break;
 
 		case 550:
-			grtl_front_grip_all ();
-			ruc_front_carry ();
-			lift_front_carry ();
-			vacuum_front (1);
-			tact_fsm_case = 555;
-			break;
+			cur_task = move_on_dir (240, BACKWARD, 0.3, NO_SENS);
 
-		case 555:
-			if (get_tact_num_ptr ()->side)	// plava
-				cur_task = move_on_dir (250, BACKWARD, V_MAX_DEF, BACKWARD);	//140
-			else
-				//Zuta
-				cur_task = move_on_dir (250, BACKWARD, V_MAX_DEF, BACKWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 560;
-			break;
-
-		case 560:
-			prepare_back ();
-			tact_fsm_case = 570;
-			break;
-		case 570:
-			cur_task = rot_to_phi (phi_side (0), W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 580;
-			break;
-		case 580: //pred uzimanje bunta
-			cur_task = move_on_dir (500, BACKWARD, V_MAX_DEF, BACKWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 590;
-			break;
-		case 590:
-			cur_task = move_on_dir (150, BACKWARD, V_MAX_DEF * 0.4, NO_SENS);
-			if (cur_task == TASK_SUCCESS || timeout (1000))
+			if (cur_task == TASK_SUCCESS || timeout (1500))
 				{
-					tact_fsm_case = 600;
+					tact_fsm_case = 560;
 					reset_all_delays ();
 				}
 			break;
-		case 600:
+
+		case 560:
 			grtl_back_grip_all ();
 			ruc_back_carry ();
 			lift_back_carry ();
 			vacuum_back (1);
+			tact_fsm_case = 570;
+			break;
+
+		case 570:
+			cur_task = move_on_dir (250, FORWARD, V_MAX_DEF, FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 572;
+			break;
+
+		case 572:
+			cur_task = rot_to_xy (x_side (-1120), 320, FORWARD, W_MAX_DEF, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 573;
+			break;
+
+		case 573:
+			cur_task = move_to_xy (x_side (-1120), 320, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 580;
+			break;
+		case 580: //pred uzimanje bunta
+			cur_task = rot_to_phi (phi_side (180), W_MAX_DEF, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 588;
+			break;
+		case 588:
+			prepare_front ();
+			tact_fsm_case = 590;
+			break;
+		case 590:
+			cur_task = move_on_dir (210, FORWARD, V_MAX_DEF * 0.4, NO_SENS);
+			if (cur_task == TASK_SUCCESS || timeout (1000))
+				tact_fsm_case = 600;
+			break;
+		case 600:
+			grtl_front_grip_all ();
+			ruc_front_carry ();
+			lift_front_carry ();
+			vacuum_front (1);
+			if (!check_front ())
+				tact_fsm_case = 605;
+			else
+				tact_fsm_case = 610;
+			break;
+		case 605:
+			flag_skip_last = 1;
+			grtl_front_close ();
+			ruc_front_up ();
+			lift_front_down ();
+			vacuum_front (0);
 			tact_fsm_case = 610;
 			break;
 		case 610:
-			cur_task = move_on_dir (550, FORWARD, V_MAX_DEF, FORWARD);
+			cur_task = move_on_dir (550, BACKWARD, V_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 160;
+			break;
 
+//--- ALTERNATIVNA 2, kada ne dodje do rezervisanih
+
+		case 1000: //krece ka polju za gradnju
+			cur_task = move_to_xy (x_side (-805), -700, FORWARD, V_MAX_DEF,
+			W_MAX_DEF,
+															FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 1010;
+			break;
+		case 1010:
+			cur_task = rot_to_phi (phi_side (0), W_MAX_DEF, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 1030;
+			break;
+		case 1030:
+			cur_task = task_sprat_12 (FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 1040;
+			break;
+		case 1040:
+			cur_task = task_sprat_3 (FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				{
+					tact_fsm_case = 205;
+					add_points (24);
+				}
 			break;
 
 		}

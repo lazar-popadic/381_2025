@@ -33,14 +33,14 @@ task_sprat_3_half (int8_t side)
 					lift_front_down ();
 					grtl_front_open ();
 					ruc_front_down ();
-					vacuum_front(0);
+					vacuum_front (0);
 				}
 			else
 				{
 					lift_back_down ();
 					grtl_back_open_outside ();
 					ruc_back_down ();
-					vacuum_back(0);
+					vacuum_back (0);
 				}
 			if (delay_nb_2 (&task_delay_s3h, 500))
 				task_fsm_case = 5;
@@ -49,7 +49,21 @@ task_sprat_3_half (int8_t side)
 		case 5:
 			cur_task = move_on_dir (220, -1 * side, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 10;
+				task_fsm_case = 7;
+			break;
+
+		case 7:
+			if (side == FORWARD)
+				{
+					grtl_front_close ();
+					ruc_front_up ();
+				}
+			else
+				{
+					grtl_back_close ();
+					ruc_back_up ();
+				}
+			task_fsm_case = 10;
 			break;
 
 		case 10:

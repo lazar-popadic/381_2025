@@ -180,10 +180,8 @@ main (void)
 				case 20:
 					ax_move (ax_id_test, ax_angle_test, ax_speed_test, huart6);
 //					ax_move (1, ax_angle_test + ax_1_offs, ax_speed_test, huart6);
-					vacuum_0 (out_0);
-					vacuum_1 (out_1);
-					vacuum_2 (out_2);
-					vacuum_3 (out_3);
+					in_0 = check_back ();
+					in_1 = check_front ();
 					break;
 
 					// Go to HOME
@@ -203,6 +201,8 @@ main (void)
 							if (fabs (get_robot_base ()->x) > 750 && get_robot_base ()->y > 450)
 								add_points (10);
 							flag_end = 1;
+							vacuum_front (0);
+							vacuum_back (0);
 						}
 					set_regulation_status (0);
 					stop_match ();
