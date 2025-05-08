@@ -7,8 +7,8 @@
 
 // Tolerancije za distancu i ugao kada smatram da je zadovoljen uslov
 #define D_PROJ_TOL	5
-#define D_TOL				10
-#define D_2_TOL			20
+#define D_TOL				15
+#define D_2_TOL			15
 #define D_3_TOL			50
 #define PHI_TOL			1
 #define PHI_PRIM_TOL	2
