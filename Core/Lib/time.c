@@ -48,12 +48,10 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 	if (sys_time_s >= 100)
 		main_fsm_case = -1;
 	else if (sys_time_s >= HOME_TIME && flag_95 == 0)
-	{
-		reset_movement();
-		flag_95 = 1;
-		main_fsm_case = -10;
-	}
-
+		{
+			flag_95 = 1;
+			main_fsm_case = -10;
+		}
 
 	// rpi communication
 	update_transmit_buffer ();

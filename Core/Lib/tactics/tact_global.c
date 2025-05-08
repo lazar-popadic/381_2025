@@ -110,8 +110,8 @@ detected_timeout (uint32_t time)
 	detect_test = -get_time_ms () + detected_timeout_var + time;
 	if (get_time_ms () <= detected_timeout_var + time)
 		return 0;
-	else
-		reset_all_delays ();
+	reset_all_delays ();
+	reset_movement ();
 	return 1;
 }
 

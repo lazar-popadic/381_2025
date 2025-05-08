@@ -174,7 +174,7 @@ main (void)
 				case 13:
 //					if (tact_dev_3 () == TASK_SUCCESS)
 //						main_fsm_case = -1;
-			tact_3 ();
+					tact_3 ();
 					break;
 
 				case 20:
@@ -308,8 +308,4 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-
-
-
 

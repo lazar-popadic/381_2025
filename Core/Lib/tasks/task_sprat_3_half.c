@@ -47,13 +47,13 @@ task_sprat_3_half (int8_t side)
 			break;
 
 		case 5:
-			cur_task = move_on_dir (200, -1 * side, 1.0, NO_SENS);
+			cur_task = move_on_dir (250, -1 * side, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 10;
 			break;
 
 		case 10:
-			cur_task = rot_relative (180, W_MAX_DEF * 0.5, NO_SENS);
+			cur_task = rot_relative (180, W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 20;
 			break;
