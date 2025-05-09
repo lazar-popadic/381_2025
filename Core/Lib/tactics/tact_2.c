@@ -172,7 +172,7 @@ tact_2 ()
 				cur_task = move_to_xy (x_side (-330), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 180;
-			else if (detected_timeout (1000))
+			else if (detected_timeout (1000))//koordinate ok ali zeza detekciju spor je kao da ne radi na 1s
 				{
 					if (fabs (get_robot_base ()->x) < 300.0)
 						tact_fsm_case = 171;
@@ -224,7 +224,7 @@ tact_2 ()
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 200;
 			break;
-		case 200:
+		case 200: // ovde bi trebalo razdvojiti na dve taktike jer koordinata ne valja na zutoj ali valja na plavoj
 			cur_task = move_on_dir (400, BACKWARD, 0.4, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 210;
@@ -380,7 +380,7 @@ tact_2 ()
 			break;
 
 		case 1030:
-			cur_task = move_on_dir (260, BACKWARD, 0.3, NO_SENS);
+			cur_task = move_on_dir (290, BACKWARD, 0.3, NO_SENS);
 
 			if (cur_task == TASK_SUCCESS || timeout (1500))
 				tact_fsm_case = 1040;
