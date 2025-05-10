@@ -110,7 +110,7 @@ tact_2 ()
 				tact_fsm_case = 110;
 			break;
 		case 110:
-			cur_task = move_on_dir (220, BACKWARD, 0.4, BACKWARD);
+			cur_task = move_on_dir (220, BACKWARD, 0.4, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (2000))
 				{
 					tact_fsm_case = 120;
@@ -131,7 +131,7 @@ tact_2 ()
 				tact_fsm_case = 130;
 			break;
 		case 130:
-			cur_task = move_to_xy (x_side (1260), -140, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (1240), -140, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -148,6 +148,8 @@ tact_2 ()
 				{
 					tact_fsm_case = 145;
 					add_points (28);
+					ruc_front_carry ();
+					lift_front_carry ();
 				}
 			break;
 		case 145:
@@ -167,12 +169,12 @@ tact_2 ()
 
 		case 170: //krece ka ms22// plav
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (-380), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+				cur_task = move_to_xy (x_side (-390), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			else
-				cur_task = move_to_xy (x_side (-330), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+				cur_task = move_to_xy (x_side (-390), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 180;
-			else if (detected_timeout (1000))//koordinate ok ali zeza detekciju spor je kao da ne radi na 1s
+			else if (detected_timeout (1000)) //koordinate ok ali zeza detekciju spor je kao da ne radi na 1s
 				{
 					if (fabs (get_robot_base ()->x) < 300.0)
 						tact_fsm_case = 171;
@@ -186,9 +188,9 @@ tact_2 ()
 //--- MINI ALTERNATIVNA
 		case 171: //krece ka ms22
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (380), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (3920), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
 			else
-				cur_task = move_to_xy (x_side (430), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (390), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 172;
 			break;
@@ -225,7 +227,7 @@ tact_2 ()
 				tact_fsm_case = 200;
 			break;
 		case 200: // ovde bi trebalo razdvojiti na dve taktike jer koordinata ne valja na zutoj ali valja na plavoj
-			cur_task = move_on_dir (400, BACKWARD, 0.4, BACKWARD);
+			cur_task = move_on_dir (475, BACKWARD, 0.4, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 210;
 			break;
