@@ -60,12 +60,12 @@ tact_2 ()
 			tact_fsm_case = 45;
 			break;
 		case 45:
-			cur_task = move_on_dir (35, BACKWARD, V_MAX_DEF, BACKWARD);
+			cur_task = move_on_dir (40, BACKWARD, V_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 50;
 			break;
 		case 50:
-			cur_task = rot_to_phi (phi_side (90), W_MAX_DEF * 0.5, NO_SENS);
+			cur_task = rot_to_phi (phi_side (90), W_MAX_DEF * 0.25, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 60;
 			break;
@@ -169,7 +169,7 @@ tact_2 ()
 
 		case 170: //krece ka ms22// plav
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (-390), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+				cur_task = move_to_xy (x_side (-400), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			else
 				cur_task = move_to_xy (x_side (-390), 300, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -188,9 +188,9 @@ tact_2 ()
 //--- MINI ALTERNATIVNA
 		case 171: //krece ka ms22
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (3920), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (375), 300, BACKWARD, V_MAX_DEF * 0.8, W_MAX_DEF, BACKWARD);
 			else
-				cur_task = move_to_xy (x_side (390), 300, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+				cur_task = move_to_xy (x_side (380), 300, BACKWARD, V_MAX_DEF * 0.8, W_MAX_DEF, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 172;
 			break;
@@ -213,7 +213,21 @@ tact_2 ()
 			ruc_back_carry ();
 			lift_back_carry ();
 			vacuum_back (1);
-			tact_fsm_case = 220;
+			if (check_back ())
+				tact_fsm_case = 220;
+			else
+				{
+					tact_fsm_case = 176;
+					grtl_back_close ();
+					ruc_back_up ();
+					lift_back_down ();
+					vacuum_back (0);
+				}
+			break;
+		case 176:
+			cur_task = move_on_dir (475, FORWARD, V_MAX_DEF, FORWARD);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 1000;
 			break;
 //--- KRAJ MINI ALTERNATIVNE
 
@@ -226,8 +240,8 @@ tact_2 ()
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 200;
 			break;
-		case 200: // ovde bi trebalo razdvojiti na dve taktike jer koordinata ne valja na zutoj ali valja na plavoj
-			cur_task = move_on_dir (475, BACKWARD, 0.4, BACKWARD);
+		case 200:
+			cur_task = move_on_dir (540, BACKWARD, 0.4, BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 210;
 			break;
@@ -363,6 +377,12 @@ tact_2 ()
 
 //--- ALTERNATIVNA 1, KAD NEMA SREDNJI BUNT IDE PO REZERVISANI
 		case 1000:
+			grtl_back_close ();
+			ruc_back_up ();
+			lift_back_down ();
+			vacuum_back (0);
+			tact_fsm_case = 1005;
+		case 1005:
 			cur_task = move_to_xy (x_side (-645), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															BACKWARD);
