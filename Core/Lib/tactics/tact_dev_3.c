@@ -19,24 +19,31 @@ tact_dev_3 ()
 	switch (tact_fsm_case)
 		{
 		case 0:
-			cur_task = move_on_dir (1500, FORWARD, V_MAX_DEF*0.1, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = -1;
-			else if (cur_task == TASK_FAIL)
-				tact_fsm_case = 10;
+			get_robot_base ()->x = 0;
+			get_robot_base ()->phi = 90;
+			get_robot_base ()->y = -840;
+			tact_fsm_case = 10;
 			break;
 
-//		case 1:
-//			cur_task = move_on_path (0, -400, -135, FORWARD, 1, V_MAX_DEF * 1.0, 0, NO_SENS);
-//			if (cur_task == TASK_SUCCESS)
-//				{
-//					tact_fsm_case = 2;
-//				}
-//			else if (cur_task == TASK_FAIL)
-//				{
-//					tact_fsm_case = -1;
-//				}
-//			break;
+		case 10:
+			cur_task = move_on_dir (2500, FORWARD, V_MAX_DEF, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				tact_fsm_case = 77;
+			else if (cur_task == TASK_FAIL)
+				tact_fsm_case = 99;
+			break;
+
+		case 20:
+			cur_task = move_on_path (1000, 0, 0, FORWARD, 0, V_MAX_DEF_PATH, 0, NO_SENS);
+			if (cur_task == TASK_SUCCESS)
+				{
+					tact_fsm_case = 77;
+				}
+			else if (cur_task == TASK_FAIL)
+				{
+					tact_fsm_case = 99;
+				}
+			break;
 //
 //		case 2:
 //			cur_task = move_on_path (0, -800, 0, FORWARD, 0, V_MAX_DEF * 1.0, 0, NO_SENS);

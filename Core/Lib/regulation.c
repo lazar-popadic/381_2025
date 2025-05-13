@@ -7,9 +7,12 @@
 
 // Tolerancije za distancu i ugao kada smatram da je zadovoljen uslov
 #define D_PROJ_TOL	5
+#define D_PROJ_TOL_C	5
 #define D_TOL				15
 #define D_2_TOL			15
-#define D_3_TOL			50
+#define D_2_TOL_C		25
+#define D_3_TOL			80
+#define D_3_TOL_C		30
 #define PHI_TOL			1
 #define PHI_PRIM_TOL	2
 
@@ -23,6 +26,8 @@ static void
 pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2);
 static void
 pos_hold ();
+static void
+reset_all_pids ();
 
 static uint8_t vel_profile = S_CURVE_VEL_PROFILE;
 
@@ -50,9 +55,15 @@ static float phi_prim_1_err = 0;		// [deg]
 static int8_t cont_move = 0;
 static float d_total = 0;						// [mm]
 
+static float d_budz = 0;							// [mm]
+static float x_err_budz = 0;					// [mm]
+static float y_err_budz = 0;					// [mm]
+static float phi_prim_err_budz = 0;		// [deg]
+
 static volatile robot_base *base_ptr;
 
 static volatile pid d_loop;
+static volatile pid d_curve_loop;
 static volatile pid phi_loop;
 static volatile pid phi_curve_loop;
 static volatile pid v_loop;
@@ -64,10 +75,11 @@ void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
-	init_pid (&d_loop, 0.0075, 0.00, 0.2, V_MAX_DEF, 0.0);
+	init_pid (&d_loop, 0.0096, 0.00, 0.2, V_MAX_DEF, 0.0);
+	init_pid (&d_curve_loop, 0.012, 0.00, 0.28, V_MAX_DEF_PATH, 0.0);
 	init_pid (&phi_loop, 4.4, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
-	init_pid (&v_loop, 6800, 32, 800, CTRL_MAX, 840);
+	init_pid (&v_loop, 6800, 32, 800, CTRL_MAX, 420);
 	init_pid (&w_loop, 72, 0.36, 3, CTRL_MAX, 2100);
 	curve_ptr = (curve*) malloc (sizeof(curve));
 	for (int i = 0; i < BEZIER_RESOLUTION; i++)
@@ -223,7 +235,7 @@ go_to_xy ()
 			base_ptr->v_ref = calc_pid (&d_loop, d_proj * direction);
 
 			if (fabs (d) > D_3_TOL)
-				base_ptr->w_ref = calc_pid (&phi_loop, 1.5 * phi_err);
+				base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 			else
 				base_ptr->w_ref = 0;
 
@@ -276,53 +288,63 @@ pure_pursuit (uint8_t lookahead_pnt_num, uint8_t lookahead_pnt_num_2)
 	d = sqrt (x_err * x_err + y_err * y_err);
 	d_proj = d * cos (phi_prim_1_err * M_PI / 180);
 	// projektovana do sledece tacke + sve preostale tacke * POINT_DISTANCE
-	d_total = d_proj + curve_ptr->dis - (curve_ptr->num_equ_pts - curve_cnt - 1) * POINT_DISTANCE;
+//	d_total = d_proj + curve_ptr->dis - (curve_ptr->num_equ_pts - curve_cnt) * POINT_DISTANCE;
+	x_err_budz = curve_ptr->equ_pts_x[curve_ptr->num_equ_pts] - base_ptr->x;
+	y_err_budz = curve_ptr->equ_pts_y[curve_ptr->num_equ_pts] - base_ptr->y;
+	phi_prim_err_budz = atan2 (y_err_budz, x_err_budz) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
 
-//	if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num)	// ako ima vise od lookahead_pnt_num
-//		{
+	d_budz = sqrt (x_err_budz * x_err_budz + y_err_budz * y_err_budz) * cos (phi_prim_err_budz * M_PI / 180);
+
 	x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num] - base_ptr->x;
 	y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num] - base_ptr->y;
 	phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
-//		}
-//	else if (curve_cnt < curve_ptr->num_equ_pts - lookahead_pnt_num_2)	// ako ima manje od lookahead_pnt_num, a vise od lookahead_pnt_num_2
-//		{
-//			x_err_next = curve_ptr->equ_pts_x[curve_cnt + lookahead_pnt_num_2] - base_ptr->x;
-//			y_err_next = curve_ptr->equ_pts_y[curve_cnt + lookahead_pnt_num_2] - base_ptr->y;
-//			phi_prim_err = atan2 (y_err_next, x_err_next) * 180 / M_PI + (direction - 1) * 90 - base_ptr->phi;
-//		}
-//	else	// ako ima manje od lookahead_pnt_num_2
-//		{
-//			phi_prim_err = curve_ptr->goal_phi - base_ptr->phi;
-//		}
 
 	wrap180_ptr (&phi_prim_err);
-	base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
-	if (cont_move)
-		base_ptr->v_ref = direction * base_ptr->v_max;
-	else
-		base_ptr->v_ref = direction * calc_pid (&d_loop, d_total);
 
-	if (d_proj < D_PROJ_TOL)
+	if (fabs (d_budz) > D_3_TOL_C)
+		base_ptr->w_ref = calc_pid (&phi_curve_loop, phi_prim_err);
+	else
+		base_ptr->w_ref = 0;
+
+//	if (cont_move)
+//		base_ptr->v_ref = direction * base_ptr->v_max;
+//	else
+	base_ptr->v_ref = direction * calc_pid (&d_curve_loop, d_budz);
+
+	if (d_proj < D_PROJ_TOL_C)
 		{
 			curve_cnt++;
 			if (curve_cnt > curve_ptr->num_equ_pts)
 				{
-					if (fabs (d) < D_2_TOL)
-						base_ptr->on_target = 1;
-					else
-						base_ptr->on_target = 0;
 					base_ptr->movement_finished = 1;
 					curve_cnt = 0;
 					base_ptr->v_ref = 0;
 					base_ptr->w_ref = 0;
+					reset_all_pids ();
 					set_reg_type (0);
+					set_curve_ready (0);
+					if (fabs (d) < D_2_TOL_C)
+						base_ptr->on_target = 1;
+					else
+						base_ptr->on_target = 0;
 
 // TODO: zaobilazenje
 //		  if (get_avoid_obst_glb ())
 //			reset_push_pts_loop ();
-					set_curve_ready (0);
 				}
 		}
+}
+
+static void
+reset_all_pids ()
+{
+
+	reset_pid (&w_loop);
+	reset_pid (&v_loop);
+	reset_pid (&d_curve_loop);
+	reset_pid (&d_loop);
+	reset_pid (&phi_curve_loop);
+	reset_pid (&phi_loop);
 }
 
 void

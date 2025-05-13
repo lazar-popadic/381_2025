@@ -4,7 +4,7 @@
  * 		Task odvajanja 1 sprata:
  * 			- na pocetku drzi ceo MS
  * 			- na kraju drzi pola MS (unutrasnje konzerve i 1 dasku)
- *			- udaljen je za 250mm od centra ostavljenog sprata
+ *			- udaljen je za 260mm od centra ostavljenog sprata
  *
  *  Created on: Mar 31, 2025
  *      Author: lazar
@@ -62,7 +62,7 @@ task_sprat_1 (int8_t side, int8_t in_out)
 			break;
 
 		case 20:
-			cur_task = move_on_dir (75, -1 * side, 0.25, NO_SENS);
+			cur_task = move_on_dir_ortho (85, -1 * side, 0.4, NO_SENS);
 			if (side == FORWARD)
 				gurl_front ();
 			else
@@ -72,7 +72,7 @@ task_sprat_1 (int8_t side, int8_t in_out)
 			break;
 
 		case 30:
-			cur_task = move_on_dir (175, -1 * side, 1.0, NO_SENS);
+			cur_task = move_on_dir_ortho (100, -1 * side, V_MAX_DEF, NO_SENS);
 			gurl_mid ();
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 35;

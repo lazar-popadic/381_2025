@@ -68,6 +68,10 @@ void
 display_write_pts (uint8_t points);
 void
 display_write_case ();
+void
+display_write_all_dbg ();
+void
+display_write_pos ();
 
 void
 display_fsm ();

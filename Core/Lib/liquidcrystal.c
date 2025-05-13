@@ -39,6 +39,9 @@ static uint8_t
 DelayUS_nb (uint32_t);
 
 static char snum[4];
+static char x[5];
+static char y[5];
+static char phi[4];
 static char snum_time[4];
 static char snum_fsm[7];
 uint16_t display_fsm_case = 0;
@@ -51,6 +54,8 @@ static uint8_t prev_fsm = 0;
 static uint8_t prev_pts = 0;
 static tactic_num *tactic_ptr;
 extern int16_t tact_fsm_case;
+
+int8_t dbg = 1;
 
 void
 display_fsm ()
@@ -93,13 +98,23 @@ display_fsm ()
 			itoa (tactic_ptr->num, tactic_number, 10);
 			HD44780_PrintStr (tactic_number);
 			if (ready)
-				display_fsm_case = 3;
+				{
+					if (dbg)
+						display_fsm_case = 13;
+					else
+						display_fsm_case = 3;
+				}
 			break;
 
 			/* Ispis celog displeja */
 		case 3:
 			display_write_all (get_points (), get_time_s (), tactic_side_short, tactic_number);
 			display_fsm_case = 4;
+			break;
+
+		case 13:
+			display_write_all_dbg ();
+			display_fsm_case = 14;
 			break;
 
 			/* Ispisivanje samo brojeva svake sekunde */
@@ -118,6 +133,20 @@ display_fsm ()
 				{
 					prev_pts = get_points ();
 					display_write_pts (get_points ());
+				}
+			break;
+
+		case 14:
+			if (prev_time != get_time_s ())
+				{
+					prev_time = get_time_s ();
+					display_write_time (get_time_s ());
+					display_write_pos ();
+				}
+			if (prev_fsm != tact_fsm_case)
+				{
+					prev_fsm = tact_fsm_case;
+					display_write_case ();
 				}
 			break;
 
@@ -159,6 +188,14 @@ display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic
 }
 
 void
+display_write_all_dbg ()
+{
+	HD44780_Clear ();
+	HD44780_SetCursor (8, 1);
+	HD44780_PrintStr ("time:");
+}
+
+void
 display_write_time (uint8_t time)
 {
 	itoa (time, snum_time, 10);
@@ -190,6 +227,27 @@ display_write_case ()
 	itoa (tact_fsm_case, snum_fsm, 10);
 	HD44780_SetCursor (0, 1);
 	HD44780_PrintStr (snum_fsm);
+}
+
+void
+display_write_pos ()
+{
+	itoa ((int16_t) get_robot_base ()->x % 10000, x, 10);
+	itoa ((int16_t) get_robot_base ()->y % 10000, y, 10);
+	itoa ((int16_t) get_robot_base ()->phi % 1000, phi, 10);
+	HD44780_SetCursor (0, 0);
+	HD44780_PrintStr ("     ");
+	HD44780_SetCursor (0, 0);
+	HD44780_PrintStr (x);
+	HD44780_SetCursor (6, 0);
+	HD44780_PrintStr ("     ");
+	HD44780_SetCursor (6, 0);
+	HD44780_PrintStr (y);
+	HD44780_SetCursor (12, 0);
+	HD44780_PrintStr ("     ");
+	HD44780_SetCursor (12, 0);
+	HD44780_PrintStr (phi);
+
 }
 
 uint8_t

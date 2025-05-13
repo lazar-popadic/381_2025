@@ -70,7 +70,7 @@
 #define GURL_MID					511
 #define GURL_FULL_RIGHT		50
 #define GURL_FAST					500
-#define GURL_SLOW					250
+#define GURL_SLOW					330
 
 #define BNR_ID		18
 #define BNR_0			426 //start
@@ -251,10 +251,10 @@ grtl_back_open ()
 void
 grtl_front_close ()
 {
-	ax_move (GRTL_FOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_FOL_ID, GRTL_OL_CLOSE + ax_1_offs, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOL_ID, GRTL_OL_CLOSE + ax_1_offs, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fil = 0;
 	mechanism_states.grtl_fol = 0;
 	mechanism_states.grtl_fir = 0;
@@ -264,10 +264,10 @@ grtl_front_close ()
 void
 grtl_back_close ()
 {
-	ax_move (GRTL_BOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
-	ax_move (GRTL_BOL_ID, GRTL_OL_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BIR_ID, GRTL_IR_CLOSE, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_BIL_ID, GRTL_IL_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BOR_ID, GRTL_OR_CLOSE, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_BOL_ID, GRTL_OL_CLOSE, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_bil = 0;
 	mechanism_states.grtl_bol = 0;
 	mechanism_states.grtl_bir = 0;

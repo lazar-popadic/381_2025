@@ -31,7 +31,7 @@ tact_1 ()
 			tact_fsm_case = 2;
 			break;
 		case 2:
-			cur_task = move_on_dir (170, BACKWARD, V_MAX_DEF * 0.5, NO_SENS);
+			cur_task = move_on_dir_ortho (170, BACKWARD, V_MAX_DEF * 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (1000))
 				tact_fsm_case = 5;
 			break;
@@ -45,7 +45,7 @@ tact_1 ()
 				}
 			break;
 		case 7:
-			cur_task = move_on_dir (100, FORWARD, 0.5, NO_SENS);
+			cur_task = move_on_dir_ortho (100, FORWARD, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (1000))
 				tact_fsm_case = 11;
 			break;
@@ -55,10 +55,10 @@ tact_1 ()
 			tact_fsm_case = 12;
 			break;
 		case 12: //srednji bunt blizi njemu
-			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_on_path (x_side (-355), -430, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, NO_SENS);
-			else
-				cur_task = move_on_path (x_side (-340), -430, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, NO_SENS);
+//			if (get_tact_num_ptr ()->side) //plavu
+			cur_task = move_on_path (x_side (-400), -360, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+//			else
+//				cur_task = move_on_path (x_side (-340), -430, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 13;
 			break;
@@ -72,7 +72,7 @@ tact_1 ()
 				tact_fsm_case = 20;
 			break;
 		case 20: //pred uzimanje bunta
-			cur_task = move_on_dir (350, FORWARD, 0.4, FORWARD); //300
+			cur_task = move_on_dir_ortho (350, FORWARD, 0.4, FORWARD); //300
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
 			break;
@@ -84,10 +84,10 @@ tact_1 ()
 			tact_fsm_case = 40;
 			break;
 		case 40: //bunt pored startnog polja
-			if (get_tact_num_ptr ()->side)	// plava
-				cur_task = move_on_path (x_side (-680), -400, phi_side (45), BACKWARD, 0, 0.5, 0, NO_SENS);
-			else
-				cur_task = move_on_path (x_side (-675), -400, phi_side (45), BACKWARD, 0, 0.5, 0, NO_SENS);
+//			if (get_tact_num_ptr ()->side)	// plava
+			cur_task = move_on_path (x_side (-715), -430, phi_side (45), BACKWARD, 0, V_MAX_DEF_PATH, 0, BACKWARD);
+//			else
+//				cur_task = move_on_path (x_side (-675), -400, phi_side (45), BACKWARD, 0, V_MAX_DEF_PATH, 0, NO_SENS);
 
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 42;
@@ -102,7 +102,7 @@ tact_1 ()
 				tact_fsm_case = 50;
 			break;
 		case 50: // uzimanje bunta
-			cur_task = move_on_dir (375, BACKWARD, 0.2, NO_SENS); //370
+			cur_task = move_on_dir (400, BACKWARD, 0.2, NO_SENS); //370
 			if (cur_task == TASK_SUCCESS || timeout (2000))
 				tact_fsm_case = 60;
 			break;

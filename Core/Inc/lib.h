@@ -22,7 +22,7 @@
 #define CTRL_MAX				4200		// [inc]
 #define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
-#define V_MAX_DEF_PATH	0.5		// [m/s]
+#define V_MAX_DEF_PATH	0.95		// [m/s]
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
@@ -46,8 +46,8 @@
 #define POINT_DISTANCE 		25
 #define BEZIER_RESOLUTION 500
 #define MAX_EQU_PTS				220
-#define OFFS_ROBOT 		320
-#define OFFS_DESIRED	360
+#define OFFS_ROBOT 		360
+#define OFFS_DESIRED	420
 #define PAD_NUM				20
 
 #define HOME_TIME			96

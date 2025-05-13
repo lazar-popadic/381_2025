@@ -58,7 +58,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 20:
-			cur_task = move_on_dir (260, side, 0.3, NO_SENS);
+			cur_task = move_on_dir_ortho (185, side, 0.3, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
@@ -87,7 +87,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 50:
-			cur_task = move_on_dir (210, -1 * side, V_MAX_DEF, NO_SENS);
+			cur_task = move_on_dir_ortho (110, -1 * side, V_MAX_DEF, NO_SENS);
 			if (delay_nb_2 (&task_delay_s12, 500))
 				{
 					if (side == FORWARD)
