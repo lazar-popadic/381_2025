@@ -39,9 +39,9 @@ static uint8_t
 DelayUS_nb (uint32_t);
 
 static char snum[4];
-static char x[5];
-static char y[5];
-static char phi[4];
+static char x[6];
+static char y[6];
+static char phi[5];
 static char snum_time[4];
 static char snum_fsm[7];
 uint16_t display_fsm_case = 0;
@@ -166,9 +166,6 @@ display_ready ()
 void
 display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num)
 {
-	itoa (points, snum, 10);
-	itoa (time, snum_time, 10);
-
 	HD44780_Clear ();
 	HD44780_SetCursor (0, 0);
 	HD44780_PrintStr ("+381");
@@ -180,11 +177,6 @@ display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic
 	HD44780_PrintStr (tactic_num);
 	HD44780_SetCursor (8, 1);
 	HD44780_PrintStr ("time:");
-	HD44780_SetCursor (0, 1);
-	HD44780_PrintStr ("");
-	display_write_time (time);
-	display_write_pts (points);
-	display_write_case ();
 }
 
 void
@@ -198,33 +190,23 @@ display_write_all_dbg ()
 void
 display_write_time (uint8_t time)
 {
-	itoa (time, snum_time, 10);
-	if (time < 10)
-		HD44780_SetCursor (15, 1);
-	else if (time < 100)
-		HD44780_SetCursor (14, 1);
-	else
-		HD44780_SetCursor (13, 1);
+	pad_num_string (snum_time, 3, time);
+	HD44780_SetCursor (13, 1);
 	HD44780_PrintStr (snum_time);
 }
 
 void
 display_write_pts (uint8_t points)
 {
-	itoa (points, snum, 10);
-	if (points < 10)
-		HD44780_SetCursor (15, 0);
-	else if (points < 100)
-		HD44780_SetCursor (14, 0);
-	else
-		HD44780_SetCursor (13, 0);
+	pad_num_string (snum, 3, points);
+	HD44780_SetCursor (13, 0);
 	HD44780_PrintStr (snum);
 }
 
 void
 display_write_case ()
 {
-	itoa (tact_fsm_case, snum_fsm, 10);
+	pad_num_string_neg (snum_fsm, 6, tact_fsm_case);
 	HD44780_SetCursor (0, 1);
 	HD44780_PrintStr (snum_fsm);
 }
@@ -232,22 +214,41 @@ display_write_case ()
 void
 display_write_pos ()
 {
-	itoa ((int16_t) get_robot_base ()->x % 10000, x, 10);
-	itoa ((int16_t) get_robot_base ()->y % 10000, y, 10);
-	itoa ((int16_t) get_robot_base ()->phi % 1000, phi, 10);
-	HD44780_SetCursor (0, 0);
-	HD44780_PrintStr ("     ");
+	pad_num_string_neg (x, 5, (int16_t) get_robot_base ()->x);
+	pad_num_string_neg (y, 5, (int16_t) get_robot_base ()->y);
+	pad_num_string_neg (phi, 4, (int16_t) get_robot_base ()->phi);
+
 	HD44780_SetCursor (0, 0);
 	HD44780_PrintStr (x);
 	HD44780_SetCursor (6, 0);
-	HD44780_PrintStr ("     ");
-	HD44780_SetCursor (6, 0);
 	HD44780_PrintStr (y);
 	HD44780_SetCursor (12, 0);
-	HD44780_PrintStr ("     ");
-	HD44780_SetCursor (12, 0);
 	HD44780_PrintStr (phi);
+}
 
+void
+pad_num_string (char *str, uint8_t len, uint16_t num)
+{
+	for (int i = len - 1; i >= 0; i--)
+		{
+			str[i] = (char) ((num % 10) + '0');
+			num /= 10;
+		}
+	str[len] = '\0';
+}
+
+void
+pad_num_string_neg (char *str, uint8_t len, int16_t num)
+{
+	str[0] = (num < 0) ? '-' : '+';
+	num = (uint16_t) (abs (num));
+
+	for (int i = len - 1; i >= 1; i--)
+		{
+			str[i] = (char) ((num % 10) + '0');
+			num /= 10;
+		}
+	str[len] = '\0';
 }
 
 uint8_t

@@ -72,6 +72,10 @@ void
 display_write_all_dbg ();
 void
 display_write_pos ();
+void
+pad_num_string (char *str, uint8_t len, uint16_t num);
+void
+pad_num_string_neg (char *str, uint8_t len, int16_t num);
 
 void
 display_fsm ();
