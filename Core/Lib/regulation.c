@@ -53,7 +53,7 @@ static float x_err_next = 0;				// [mm]
 static float phi_prim_err = 0;			// [deg]
 static float phi_prim_1_err = 0;		// [deg]
 static int8_t cont_move = 0;
-static float d_total = 0;						// [mm]
+//static float d_total = 0;						// [mm]
 
 static float d_budz = 0;							// [mm]
 static float x_err_budz = 0;					// [mm]
@@ -70,6 +70,12 @@ static volatile pid v_loop;
 static volatile pid w_loop;
 
 int8_t move_status = TASK_RUNNING;
+
+int8_t
+get_reg_phase()
+{
+	return phase;
+}
 
 void
 regulation_init ()
@@ -567,6 +573,7 @@ reset_movement ()
 	base_ptr->motor_r_ctrl_uint = 0;
 	base_ptr->motor_l_ctrl_uint = 0;
 	reset_pid (&d_loop);
+	reset_pid (&d_curve_loop);
 	reset_pid (&phi_loop);
 	reset_pid (&phi_curve_loop);
 	reset_pid (&v_loop);

@@ -257,6 +257,8 @@ void
 continue_moving ();
 void
 reset_movement ();
+int8_t
+get_reg_phase ();
 
 // mechanism.h
 mech_states

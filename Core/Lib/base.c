@@ -120,8 +120,7 @@ check_sensors ()
 			base_ptr->obstacle_detected = read_sensors_back () || read_sensors_front ();
 			break;
 		}
-//	base_ptr->obstacle_detected = set_sens_test;
-	return base_ptr->obstacle_detected;
+	return base_ptr->obstacle_detected && get_reg_phase ();
 }
 
 uint8_t

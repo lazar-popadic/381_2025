@@ -67,12 +67,6 @@ read_sensors_back ()
 	return GPIOC->IDR >> 5 & 1;
 }
 
-void
-sensors_switch ()
-{
-
-}
-
 uint8_t
 check_front ()
 {
