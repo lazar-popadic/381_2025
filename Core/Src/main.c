@@ -191,10 +191,6 @@ main (void)
 							reset_movement ();
 							flag_95_main = 1;
 						}
-					if (rot_to_xy (x_side (-800), 500, FORWARD, W_MAX_DEF, NO_SENS) == TASK_SUCCESS)
-						main_fsm_case = -20;
-					break;
-				case -20:
 					if (move_to_xy (x_side (-800), 500, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD) == TASK_SUCCESS)
 						main_fsm_case = -1;
 					break;

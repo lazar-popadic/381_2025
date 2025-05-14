@@ -278,19 +278,11 @@ tact_2 ()
 			if (cur_task == TASK_SUCCESS)
 				{
 					add_points (28);
-					tact_fsm_case = 242;
+					tact_fsm_case = 245;
 					grtl_front_close ();
 					grtl_back_close ();
 				}
 			break;
-		case 242:
-			cur_task = rot_to_xy (x_side (-710), -400, BACKWARD,
-			W_MAX_DEF,
-														NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 245;
-			break;
-
 		case 245:
 			cur_task = move_to_xy (x_side (-710), -400, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
@@ -322,13 +314,6 @@ tact_2 ()
 				tact_fsm_case = 250;
 			break;
 		case 250:
-			cur_task = rot_to_xy (x_side (-600), 100, FORWARD,
-			W_MAX_DEF,
-														NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 251;
-			break;
-		case 251:
 			cur_task = move_to_xy (x_side (-600), 100, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);

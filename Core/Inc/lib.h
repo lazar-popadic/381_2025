@@ -11,9 +11,9 @@
 #define YELLOW	0
 #define BLUE		1
 
-#define V_MOVING_MIN		0.05		// [m/s]
+#define V_MOVING_MIN		0.04		// [m/s]
 #define W_MOVING_MIN		18			// [deg/s]
-#define V_MAX_DEF				0.95		// [m/s]
+#define V_MAX_DEF				0.75		// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
 #define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 40ms dodje do 1m/s
 #define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 40ms dodje do 360deg/s
@@ -22,7 +22,7 @@
 #define CTRL_MAX				4200		// [inc]
 #define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
-#define V_MAX_DEF_PATH	0.95		// [m/s]
+#define V_MAX_DEF_PATH	0.75		// [m/s]
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
@@ -257,8 +257,8 @@ void
 continue_moving ();
 void
 reset_movement ();
-int8_t
-get_reg_phase ();
+uint8_t
+ignore_sensors ();
 
 // mechanism.h
 mech_states

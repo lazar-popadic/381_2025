@@ -55,7 +55,7 @@ static uint8_t prev_pts = 0;
 static tactic_num *tactic_ptr;
 extern int16_t tact_fsm_case;
 
-int8_t dbg = 0;
+int8_t dbg = 1;
 
 void
 display_fsm ()

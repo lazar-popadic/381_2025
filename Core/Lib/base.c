@@ -105,22 +105,27 @@ update_base_status ()
 uint8_t
 check_sensors ()
 {
-	switch (base_ptr->obstacle_dir)
+	if (ignore_sensors ())
+		base_ptr->obstacle_detected = 0;
+	else
 		{
-		default:
-			base_ptr->obstacle_detected = 0;
-			break;
-		case FORWARD:
-			base_ptr->obstacle_detected = read_sensors_front ();
-			break;
-		case BACKWARD:
-			base_ptr->obstacle_detected = read_sensors_back ();
-			break;
-		case ALL_SENS:
-			base_ptr->obstacle_detected = read_sensors_back () || read_sensors_front ();
-			break;
+			switch (base_ptr->obstacle_dir)
+				{
+				default:
+					base_ptr->obstacle_detected = 0;
+					break;
+				case FORWARD:
+					base_ptr->obstacle_detected = read_sensors_front ();
+					break;
+				case BACKWARD:
+					base_ptr->obstacle_detected = read_sensors_back ();
+					break;
+				case ALL_SENS:
+					base_ptr->obstacle_detected = read_sensors_back () || read_sensors_front ();
+					break;
+				}
 		}
-	return base_ptr->obstacle_detected && get_reg_phase ();
+	return base_ptr->obstacle_detected;
 }
 
 uint8_t

@@ -36,6 +36,7 @@ static int8_t prev_reg_type = 0;
 static int8_t phase = 0;
 static int8_t direction;
 static uint8_t position_cnt = 1;
+static uint8_t ignore_sens = 0;
 
 //static curve curve_var;
 static curve *curve_ptr;
@@ -71,21 +72,21 @@ static volatile pid w_loop;
 
 int8_t move_status = TASK_RUNNING;
 
-int8_t
-get_reg_phase()
+uint8_t
+ignore_sensors ()
 {
-	return phase;
+	return ignore_sens;
 }
 
 void
 regulation_init ()
 {
 	base_ptr = get_robot_base ();
-	init_pid (&d_loop, 0.0096, 0.00, 0.2, V_MAX_DEF, 0.0);
-	init_pid (&d_curve_loop, 0.012, 0.00, 0.28, V_MAX_DEF_PATH, 0.0);
+	init_pid (&d_loop, 0.005, 0.00, 0.05, V_MAX_DEF, 0.0);
+	init_pid (&d_curve_loop, 0.005, 0.00, 0.08, V_MAX_DEF_PATH, 0.0);
 	init_pid (&phi_loop, 4.4, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
-	init_pid (&v_loop, 6800, 32, 800, CTRL_MAX, 420);
+	init_pid (&v_loop, 6800, 36, 800, CTRL_MAX, 420);
 	init_pid (&w_loop, 72, 0.36, 3, CTRL_MAX, 2100);
 	curve_ptr = (curve*) malloc (sizeof(curve));
 	for (int i = 0; i < BEZIER_RESOLUTION; i++)
@@ -199,12 +200,14 @@ position_loop ()
 static void
 rotate ()
 {
+	ignore_sens = 1;
 	phi_err = base_ptr->phi_ref - base_ptr->phi;
 	wrap180_ptr (&phi_err);
 	base_ptr->v_ref = 0;
 	base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 	if (fabs (phi_err) < PHI_TOL)
 		{
+			ignore_sens = 0;
 			base_ptr->on_target = 1;
 			base_ptr->movement_finished = 1;
 			base_ptr->v_ref = 0;
@@ -224,10 +227,12 @@ go_to_xy ()
 	switch (phase)
 		{
 		case 0:    // rot2pos
+			ignore_sens = 1;
 			base_ptr->v_ref = 0;
 			base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
 			if (fabs (phi_err) < PHI_PRIM_TOL && !(base_ptr->moving))
 				{
+					ignore_sens = 0;
 					phase = 1;
 					reset_pid (&w_loop);
 					reset_pid (&phi_loop);
@@ -378,8 +383,7 @@ move_to_xy (float x, float y, int8_t dir, float v_max, float w_max, int8_t check
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
-			reset_v_max ();
-			reset_w_max ();
+			reset_movement ();
 			base_ptr->obstacle_dir = 0;
 			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
@@ -403,8 +407,7 @@ rot_to_phi (float phi, float w_max, int8_t check_sensors)
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
-			reset_v_max ();
-			reset_w_max ();
+			reset_movement ();
 			base_ptr->obstacle_dir = 0;
 			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
@@ -431,8 +434,7 @@ move_on_dir_ortho (float distance, int8_t dir, float v_max, int8_t check_sensors
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
 			move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
-			reset_v_max ();
-			reset_w_max ();
+			reset_movement ();
 			base_ptr->obstacle_dir = 0;
 			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
@@ -459,8 +461,7 @@ move_on_dir (float distance, int8_t dir, float v_max, int8_t check_sensors)
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
 			move_status = base_ptr->on_target * (-2) + 1;	// mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
-			reset_v_max ();
-			reset_w_max ();
+			reset_movement ();
 			base_ptr->obstacle_dir = 0;
 			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
@@ -503,8 +504,7 @@ move_on_path (float x, float y, float phi, int8_t dir, int8_t cont, float v_max,
 	if (base_ptr->movement_finished)					// ako je zavrsio task kretnje
 		{
 			move_status = base_ptr->on_target * (-2) + 1; // mapiraj on_target u task_status:  1 (na meti) -> -1 (success); 0 (nije na meti -> 1 (fail)
-			reset_v_max ();
-			reset_w_max ();
+			reset_movement ();
 			base_ptr->obstacle_dir = 0;
 			base_ptr->movement_started = 0;				// resetuj da je zapoceta kretnja
 		}
@@ -581,5 +581,6 @@ reset_movement ()
 	pwm_right_dc (0);
 	pwm_left_dc (0);
 	set_curve_ready (0);
+	ignore_sens = 0;
 	base_ptr->movement_started = 0;
 }
