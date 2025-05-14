@@ -61,7 +61,7 @@
 void
 display_ready ();
 void
-display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num);
+display_write_all (char *tactic_side, char *tactic_num);
 void
 display_write_time (uint8_t time);
 void
@@ -73,9 +73,7 @@ display_write_all_dbg ();
 void
 display_write_pos ();
 void
-pad_num_string (char *str, uint8_t len, uint16_t num);
-void
-pad_num_string_neg (char *str, uint8_t len, int16_t num);
+pad_num_string (char *str, uint8_t len, int16_t num);
 
 void
 display_fsm ();

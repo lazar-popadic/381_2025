@@ -108,7 +108,7 @@ display_fsm ()
 
 			/* Ispis celog displeja */
 		case 3:
-			display_write_all (get_points (), get_time_s (), tactic_side_short, tactic_number);
+			display_write_all (tactic_side_short, tactic_number);
 			display_fsm_case = 4;
 			break;
 
@@ -160,11 +160,10 @@ void
 display_ready ()
 {
 	ready = 1;
-	;
 }
 
 void
-display_write_all (uint8_t points, uint8_t time, char *tactic_side, char *tactic_num)
+display_write_all (char *tactic_side, char *tactic_num)
 {
 	HD44780_Clear ();
 	HD44780_SetCursor (0, 0);
@@ -206,7 +205,7 @@ display_write_pts (uint8_t points)
 void
 display_write_case ()
 {
-	pad_num_string_neg (snum_fsm, 6, tact_fsm_case);
+	pad_num_string (snum_fsm, 6, tact_fsm_case);
 	HD44780_SetCursor (0, 1);
 	HD44780_PrintStr (snum_fsm);
 }
@@ -214,9 +213,9 @@ display_write_case ()
 void
 display_write_pos ()
 {
-	pad_num_string_neg (x, 5, (int16_t) get_robot_base ()->x);
-	pad_num_string_neg (y, 5, (int16_t) get_robot_base ()->y);
-	pad_num_string_neg (phi, 4, (int16_t) get_robot_base ()->phi);
+	pad_num_string (x, 5, (int16_t) get_robot_base ()->x);
+	pad_num_string (y, 5, (int16_t) get_robot_base ()->y);
+	pad_num_string (phi, 4, (int16_t) get_robot_base ()->phi);
 
 	HD44780_SetCursor (0, 0);
 	HD44780_PrintStr (x);
@@ -227,27 +226,31 @@ display_write_pos ()
 }
 
 void
-pad_num_string (char *str, uint8_t len, uint16_t num)
+pad_num_string (char *str, uint8_t len, int16_t num)
 {
-	for (int i = len - 1; i >= 0; i--)
-		{
-			str[i] = (char) ((num % 10) + '0');
-			num /= 10;
-		}
-	str[len] = '\0';
-}
+	uint16_t abs_num = (uint16_t) (abs (num));
+	uint8_t num_digits = 0;
+	uint16_t temp = abs_num;
 
-void
-pad_num_string_neg (char *str, uint8_t len, int16_t num)
-{
-	str[0] = (num < 0) ? '-' : '+';
-	num = (uint16_t) (abs (num));
-
-	for (int i = len - 1; i >= 1; i--)
+	do
 		{
-			str[i] = (char) ((num % 10) + '0');
-			num /= 10;
+			temp /= 10;
+			num_digits++;
 		}
+	while (temp > 0);
+
+	for (int i = 0; i < len - 1; i++)
+		str[i] = ' ';
+
+	uint8_t sign_pos = len - num_digits - 1;
+	str[sign_pos] = (num < 0) ? '-' : '+';
+
+	for (int i = len - 1; i > sign_pos; i--)
+		{
+			str[i] = (abs_num % 10) + '0';
+			abs_num /= 10;
+		}
+
 	str[len] = '\0';
 }
 
