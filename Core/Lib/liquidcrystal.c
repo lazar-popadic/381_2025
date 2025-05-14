@@ -55,7 +55,7 @@ static uint8_t prev_pts = 0;
 static tactic_num *tactic_ptr;
 extern int16_t tact_fsm_case;
 
-int8_t dbg = 1;
+int8_t dbg = 0;
 
 void
 display_fsm ()
@@ -176,6 +176,8 @@ display_write_all (char *tactic_side, char *tactic_num)
 	HD44780_PrintStr (tactic_num);
 	HD44780_SetCursor (8, 1);
 	HD44780_PrintStr ("time:");
+	display_write_pts (get_points ());
+	display_write_time (get_time_s ());
 }
 
 void
@@ -189,7 +191,7 @@ display_write_all_dbg ()
 void
 display_write_time (uint8_t time)
 {
-	pad_num_string (snum_time, 3, time);
+	pad_num_string_uint8 (snum_time, 3, time);
 	HD44780_SetCursor (13, 1);
 	HD44780_PrintStr (snum_time);
 }
@@ -197,7 +199,7 @@ display_write_time (uint8_t time)
 void
 display_write_pts (uint8_t points)
 {
-	pad_num_string (snum, 3, points);
+	pad_num_string_uint8 (snum, 3, points);
 	HD44780_SetCursor (13, 0);
 	HD44780_PrintStr (snum);
 }
@@ -249,6 +251,31 @@ pad_num_string (char *str, uint8_t len, int16_t num)
 		{
 			str[i] = (abs_num % 10) + '0';
 			abs_num /= 10;
+		}
+
+	str[len] = '\0';
+}
+
+void
+pad_num_string_uint8 (char *str, uint8_t len, uint8_t num)
+{
+	uint8_t num_digits = 0;
+	uint16_t temp = num;
+
+	do
+		{
+			temp /= 10;
+			num_digits++;
+		}
+	while (temp > 0);
+
+	for (int i = 0; i < len - 1; i++)
+		str[i] = ' ';
+
+	for (int i = len - 1; i > len - num_digits - 1; i--)
+		{
+			str[i] = (num % 10) + '0';
+			num /= 10;
 		}
 
 	str[len] = '\0';

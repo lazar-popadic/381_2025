@@ -74,6 +74,8 @@ void
 display_write_pos ();
 void
 pad_num_string (char *str, uint8_t len, int16_t num);
+void
+pad_num_string_uint8 (char *str, uint8_t len, uint8_t num);
 
 void
 display_fsm ();
