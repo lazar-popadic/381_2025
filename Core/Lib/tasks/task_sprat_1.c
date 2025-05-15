@@ -72,7 +72,7 @@ task_sprat_1 (int8_t side, int8_t in_out)
 			break;
 
 		case 30:
-			cur_task = move_on_dir_ortho (100, -1 * side, V_MAX_DEF, NO_SENS);
+			cur_task = move_on_dir_ortho (115, -1 * side, V_MAX_DEF, NO_SENS);
 			gurl_mid ();
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 35;

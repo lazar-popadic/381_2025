@@ -22,11 +22,11 @@ tact_dev_3 ()
 			get_robot_base ()->x = 0;
 			get_robot_base ()->phi = 90;
 			get_robot_base ()->y = -840;
-			tact_fsm_case = 10;
+			tact_fsm_case = 20;
 			break;
 
 		case 10:
-			cur_task = move_on_dir (50, FORWARD, V_MAX_DEF, NO_SENS);
+			cur_task = move_on_dir (100, FORWARD, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 77;
 			else if (cur_task == TASK_FAIL)

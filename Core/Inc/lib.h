@@ -11,8 +11,8 @@
 #define YELLOW	0
 #define BLUE		1
 
-#define V_MOVING_MIN		0.04		// [m/s]
-#define W_MOVING_MIN		18			// [deg/s]
+#define V_MOVING_MIN		0.075		// [m/s]
+#define W_MOVING_MIN		36			// [deg/s]
 #define V_MAX_DEF				0.75		// [m/s]
 #define W_MAX_DEF				360.0		// [deg/s]
 #define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 40ms dodje do 1m/s
@@ -46,7 +46,7 @@
 #define POINT_DISTANCE 		25
 #define BEZIER_RESOLUTION 500
 #define MAX_EQU_PTS				220
-#define OFFS_ROBOT 		360
+#define OFFS_ROBOT 		400
 #define OFFS_DESIRED	420
 #define PAD_NUM				20
 

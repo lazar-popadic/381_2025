@@ -44,7 +44,12 @@ task_sprat_3_full (int8_t side)
 		case 20:
 			cur_task = task_sprat_12 (-1 * side);
 			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = 30;
+				task_fsm_case = 25;
+			break;
+
+		case 25:
+			HAL_Delay(200);
+			task_fsm_case = 30;
 			break;
 
 			/*
