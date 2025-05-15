@@ -55,7 +55,7 @@ int8_t tact_0() {
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			//zuta
-			cur_task = move_on_path(x_side(-390), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-370), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 13;
@@ -83,10 +83,14 @@ int8_t tact_0() {
 		break;
 		// prilazi buntu pored startnog polja
 	case 40:
-		cur_task = move_to_xy(x_side(-725), -350, BACKWARD,
-		V_MAX_DEF, W_MAX_DEF, BACKWARD);
+		if (get_tact_num_ptr ()->side)	// plava
+			cur_task = move_to_xy(x_side(-725), -350, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+		else
+			//zuta
+			cur_task = move_to_xy(x_side(-715), -350, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
+
 		break;
 	case 50:
 		cur_task = rot_to_phi(phi_side(90), W_MAX_DEF, NO_SENS);
@@ -99,7 +103,7 @@ int8_t tact_0() {
 		break;
 		// gura bunt u manje polje
 	case 60:
-		cur_task = move_on_dir_ortho(450, BACKWARD, 0.4, NO_SENS);
+		cur_task = move_on_dir_ortho(440, BACKWARD, 0.4, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(2000))
 			tact_fsm_case = 61;
 		break;
@@ -124,7 +128,7 @@ int8_t tact_0() {
 		break;
 	case 66:
 		cur_task = task_sprat_3(FORWARD);
-		if (cur_task == TASK_SUCCESS) {
+		if (cur_task == TASK_SUCCESS || timeout(10000)) {
 			tact_fsm_case = 80;
 			add_points(28);
 		}
@@ -203,8 +207,10 @@ int8_t tact_0() {
 		break;
 		// odlazak u polje
 	case 120:
-		cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD, 0,
-		V_MAX_DEF_PATH, 0, FORWARD);
+		if (get_tact_num_ptr ()->side)	// plava
+			cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+		else
+			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 130;
 		break;
