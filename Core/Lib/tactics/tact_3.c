@@ -83,7 +83,7 @@ int8_t tact_3() {
 		break;
 	case 40: //srednji bunt dalji njemu
 		cur_task = move_on_path(x_side(390), 280, phi_side(0), FORWARD, 0,
-				V_MAX_DEF, 0, FORWARD);
+		V_MAX_DEF, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
 		break;
@@ -110,7 +110,7 @@ int8_t tact_3() {
 		break;
 	case 90:
 		cur_task = move_to_xy(x_side(1200), -125, FORWARD, V_MAX_DEF,
-				W_MAX_DEF, FORWARD);
+		W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 95;
 		break;
@@ -129,7 +129,7 @@ int8_t tact_3() {
 		break;
 	case 110:
 		cur_task = move_to_xy(x_side(745), -450, BACKWARD, V_MAX_DEF, W_MAX_DEF,
-				BACKWARD);
+		BACKWARD);
 		//cur_task = move_on_path(x_side(700), -500, phi_side(90), BACKWARD, 0, V_MAX_DEF_PATH, 0, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 115;
@@ -157,13 +157,13 @@ int8_t tact_3() {
 		break;
 	case 150:
 		cur_task = move_to_xy(x_side(1100), -600, FORWARD,
-				V_MAX_DEF, W_MAX_DEF, FORWARD);
+		V_MAX_DEF, W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 155;
 		break;
 	case 155:
 		cur_task = rot_to_phi(phi_side(0), W_MAX_DEF, NO_SENS);
-		if(cur_task==TASK_SUCCESS)
+		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 160;
 		break;
 	case 160:
@@ -171,7 +171,7 @@ int8_t tact_3() {
 		tact_fsm_case = 170;
 		break;
 	case 170:
-		cur_task = move_on_dir(400, FORWARD, 0.2, FORWARD);
+		cur_task = move_on_dir(500, FORWARD, 0.2, FORWARD);
 		if (cur_task == TASK_SUCCESS || timeout(1500))
 			tact_fsm_case = 180;
 		break;
@@ -183,14 +183,13 @@ int8_t tact_3() {
 		tact_fsm_case = 190;
 		break;
 	case 190:
-		cur_task = move_to_xy(x_side(800), -125, BACKWARD, V_MAX_DEF, W_MAX_DEF,
-				BACKWARD);
+		cur_task = move_on_dir(400, FORWARD, V_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 195;
 		break;
-
 	case 195:
-		cur_task = move_on_dir(400, FORWARD, V_MAX_DEF, FORWARD);
+		cur_task = move_to_xy(x_side(800), -125, BACKWARD, V_MAX_DEF, W_MAX_DEF,
+		BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 200;
 		break;
@@ -218,7 +217,7 @@ int8_t tact_3() {
 		break;
 	case 240:
 		cur_task = move_to_xy(x_side(-655), 370, BACKWARD, V_MAX_DEF, W_MAX_DEF,
-				BACKWARD);
+		BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 250;
 		break;
@@ -249,7 +248,7 @@ int8_t tact_3() {
 		break;
 	case 290:
 		cur_task = move_to_xy(x_side(-150), -710, BACKWARD, V_MAX_DEF,
-				W_MAX_DEF, BACKWARD);
+		W_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 300;
 		break;
