@@ -83,11 +83,13 @@ int8_t tact_0() {
 		break;
 		// prilazi buntu pored startnog polja
 	case 40:
-		if (get_tact_num_ptr ()->side)	// plava
-			cur_task = move_to_xy(x_side(-725), -350, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+		if (get_tact_num_ptr()->side)	// plava
+			cur_task = move_to_xy(x_side(-725), -350, BACKWARD, V_MAX_DEF,
+					W_MAX_DEF, BACKWARD);
 		else
 			//zuta
-			cur_task = move_to_xy(x_side(-715), -350, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
+			cur_task = move_to_xy(x_side(-715), -350, BACKWARD, V_MAX_DEF,
+					W_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
 
@@ -207,10 +209,12 @@ int8_t tact_0() {
 		break;
 		// odlazak u polje
 	case 120:
-		if (get_tact_num_ptr ()->side)	// plava
-			cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+		if (get_tact_num_ptr()->side)	// plava
+			cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD,
+					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
-			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
+					0, V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 130;
 		break;
@@ -226,11 +230,11 @@ int8_t tact_0() {
 			add_points(32);
 		}
 		break;
-//	case 160:
-//		cur_task = move_on_dir(150, BACKWARD, V_MAX_DEF, BACKWARD);
-//		if (cur_task == TASK_SUCCESS)
-//			tact_fsm_case = 165;
-//		break;
+		//	case 160:
+		//		cur_task = move_on_dir(150, BACKWARD, V_MAX_DEF, BACKWARD);
+		//		if (cur_task == TASK_SUCCESS)
+		//			tact_fsm_case = 165;
+		//		break;
 	case 165:
 		grtl_back_close();
 		grtl_front_close();
@@ -305,14 +309,15 @@ int8_t tact_0() {
 		if (cur_task == TASK_SUCCESS) {
 			tact_fsm_case = 320;
 			add_points(24);
+			grtl_back_close();
+
 		}
 		break;
 	case 320:
-		cur_task = move_on_dir(100, FORWARD, V_MAX_DEF, FORWARD);
+		cur_task = rot_to_xy(x_side(-800), 500, FORWARD, W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 9999;
 		break;
-
 	}
 	return tact_state;
 }
