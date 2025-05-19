@@ -183,7 +183,7 @@ int8_t tact_3() {
 		tact_fsm_case = 190;
 		break;
 	case 190:
-		cur_task = move_on_dir(400, FORWARD, V_MAX_DEF, FORWARD);
+		cur_task = move_on_dir(400, BACKWARD, V_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 195;
 		break;
