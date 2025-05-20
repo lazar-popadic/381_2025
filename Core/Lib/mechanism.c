@@ -36,7 +36,7 @@
 #define GRTL_IL_CLOSE		251
 #define GRTL_OR_OPEN		441
 #define GRTL_OR_OPEN_S1		471
-#define GRTL_OR_GRIP		556
+#define GRTL_OR_GRIP		546
 #define GRTL_OR_CLOSE		841
 #define GRTL_IR_OPEN		511
 #define GRTL_IR_GRIP		571
