@@ -22,7 +22,7 @@ tact_dev_3 ()
 			get_robot_base ()->x = 0;
 			get_robot_base ()->phi = 90;
 			get_robot_base ()->y = -840;
-			tact_fsm_case = 20;
+			tact_fsm_case = 40;
 			break;
 
 		case 10:
@@ -58,7 +58,7 @@ tact_dev_3 ()
 			break;
 
 		case 40:
-			cur_task = rot_to_phi (-90, W_MAX_DEF * 0.2, FORWARD);
+			cur_task = rot_to_phi(85, W_MAX_DEF*0.1, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 77;
@@ -67,6 +67,9 @@ tact_dev_3 ()
 				{
 					tact_fsm_case = 99;
 				}
+			break;
+		case 50:
+			get_robot_base()->w_ref = -320;
 			break;
 
 		case -1:

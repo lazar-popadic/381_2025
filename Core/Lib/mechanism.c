@@ -357,8 +357,8 @@ grtl_back_open_inside ()
 void
 grtl_front_open_outside ()
 {
-	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
 	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN + ax_1_offs, GRTL_SPEED_FAST, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN, GRTL_SPEED_FAST, huart6);
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_for = 2;
 }
@@ -375,8 +375,8 @@ grtl_back_open_outside ()
 void
 grtl_front_open_outside_s1 ()
 {
-	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN_S1, GRTL_SPEED_SLOW, huart6);
 	ax_move (GRTL_FOL_ID, GRTL_OL_OPEN_S1 + ax_1_offs, GRTL_SPEED_SLOW, huart6);
+	ax_move (GRTL_FOR_ID, GRTL_OR_OPEN_S1, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fol = 2;
 	mechanism_states.grtl_for = 2;
 }

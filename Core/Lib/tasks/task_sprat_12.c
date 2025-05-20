@@ -35,12 +35,12 @@ task_sprat_12 (int8_t side)
 				vacuum_front (0);
 			else
 				vacuum_back (0);
-			if (delay_nb_2 (&task_delay_s12, 50))
+			if (delay_nb_2 (&task_delay_s12, 20))
 				task_fsm_case = 5;
 			break;
 
 		case 5:
-			if (delay_nb_2 (&task_delay_s12, 300))
+			if (delay_nb_2 (&task_delay_s12, 200))
 				task_fsm_case = 10;
 			if (side == FORWARD)
 				ruc_front_up ();
@@ -49,7 +49,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 10:
-			if (delay_nb_2 (&task_delay_s12, 1000))
+			if (delay_nb_2 (&task_delay_s12, 800))
 				task_fsm_case = 20;
 			if (side == FORWARD)
 				lift_front_up ();
@@ -88,16 +88,16 @@ task_sprat_12 (int8_t side)
 
 		case 50:
 			cur_task = move_on_dir_ortho (110, -1 * side, V_MAX_DEF, NO_SENS);
-			if (delay_nb_2 (&task_delay_s12, 500))
-				{
-					if (side == FORWARD)
-						lift_front_down ();
-					else
-						lift_back_down ();
-				}
 			if (cur_task == TASK_SUCCESS)
-				task_fsm_case = -1;
+				task_fsm_case = 60;
 			//add_points (8);
+			break;
+		case 60:
+			if (side == FORWARD)
+				lift_front_down ();
+			else
+				lift_back_down ();
+			task_fsm_case = -1;
 			break;
 
 		case -1:

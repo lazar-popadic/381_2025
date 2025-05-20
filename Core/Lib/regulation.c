@@ -83,11 +83,11 @@ regulation_init ()
 {
 	base_ptr = get_robot_base ();
 	init_pid (&d_loop, 0.0055, 0.00, 0.068, V_MAX_DEF, 0.0);
-	init_pid (&d_curve_loop, 0.006, 0.00, 0.06, V_MAX_DEF_PATH, 0.0);
-	init_pid (&phi_loop, 4.4, 0.02, 0.2, W_MAX_DEF, W_MAX_DEF * 0.25);
-	init_pid (&phi_curve_loop, 6.0, 0.02, 0.1, W_MAX_DEF, W_MAX_DEF * 0.25);
+	init_pid (&d_curve_loop, 0.0055, 0.00, 0.068, V_MAX_DEF_PATH, 0.0);
+	init_pid (&phi_loop, 6.0, 0, 0.0, W_MAX_DEF, 0.0);
+	init_pid (&phi_curve_loop, 6.0, 0.02, 0.0, W_MAX_DEF, W_MAX_DEF * 0.25);
 	init_pid (&v_loop, 6800, 36, 800, CTRL_MAX, 420);
-	init_pid (&w_loop, 72, 0.36, 3, CTRL_MAX, 2100);
+	init_pid (&w_loop, 68, 0.36, 0.0, CTRL_MAX, 2100);
 	curve_ptr = (curve*) malloc (sizeof(curve));
 	for (int i = 0; i < BEZIER_RESOLUTION; i++)
 		{
@@ -205,7 +205,7 @@ rotate ()
 	wrap180_ptr (&phi_err);
 	base_ptr->v_ref = 0;
 	base_ptr->w_ref = calc_pid (&phi_loop, phi_err);
-	if (fabs (phi_err) < PHI_TOL)
+	if (fabs (phi_err) < PHI_TOL && !(base_ptr->moving))
 		{
 			ignore_sens = 0;
 			base_ptr->on_target = 1;

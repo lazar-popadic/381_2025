@@ -167,8 +167,8 @@ int main(void) {
 			break;
 
 		case 13:
-//					if (tact_dev_3 () == TASK_SUCCESS)
-//						main_fsm_case = -1;
+//			if (tact_dev_3() == TASK_SUCCESS)
+//				main_fsm_case = -1;
 			test_tact();
 			break;
 
@@ -186,7 +186,7 @@ int main(void) {
 				flag_95_main = 1;
 			}
 			if (move_to_xy(x_side(-800), 500, FORWARD, V_MAX_DEF, W_MAX_DEF,
-					FORWARD) == TASK_SUCCESS)
+			FORWARD) == TASK_SUCCESS)
 				main_fsm_case = -1;
 			break;
 

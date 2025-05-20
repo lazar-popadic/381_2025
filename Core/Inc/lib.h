@@ -12,15 +12,15 @@
 #define BLUE		1
 
 #define V_MOVING_MIN		0.075		// [m/s]
-#define W_MOVING_MIN		36			// [deg/s]
+#define W_MOVING_MIN		32			// [deg/s]
 #define V_MAX_DEF				0.75		// [m/s]
-#define W_MAX_DEF				360.0		// [deg/s]
+#define W_MAX_DEF				320.0		// [deg/s]
 #define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 40ms dodje do 1m/s
 #define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 40ms dodje do 360deg/s
 #define J_MAX_DEF				0.1			// [mm/ms * 1/10ms^2]		// za 40ms dodje do 1m/s i sve vreme je jerk-limited
-#define J_ROT_MAX_DEF		36			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
+#define J_ROT_MAX_DEF		42			// [deg/s * 1/10ms^2]		// za 40ms dodje do 360deg/s i sve vreme je jerk-limited
 #define CTRL_MAX				4200		// [inc]
-#define MAX_PWM_CHANGE	840			// [inc/ms]					// za 5ms dodje do 4200
+#define MAX_PWM_CHANGE	1050		// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
 #define V_MAX_DEF_PATH	0.75		// [m/s]
 
