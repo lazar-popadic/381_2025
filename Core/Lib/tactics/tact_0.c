@@ -55,7 +55,7 @@ int8_t tact_0() {
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			//zuta
-			cur_task = move_on_path(x_side(-380), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-390), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 13;
@@ -87,11 +87,11 @@ int8_t tact_0() {
 	case 40:
 		if (get_tact_num_ptr()->side)	// plava
 			cur_task = move_to_xy(x_side(-750), -350, BACKWARD, V_MAX_DEF,
-					W_MAX_DEF, BACKWARD);
+			W_MAX_DEF, BACKWARD);
 		else
 			//zuta
-			cur_task = move_to_xy(x_side(-750), -350, BACKWARD, V_MAX_DEF,
-					W_MAX_DEF, BACKWARD);
+			cur_task = move_to_xy(x_side(-740), -350, BACKWARD, V_MAX_DEF,
+			W_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
 
@@ -153,8 +153,8 @@ int8_t tact_0() {
 		tact_fsm_case = 92;
 		break;
 	case 92:
-		cur_task = move_on_dir(160, FORWARD, 0.2, NO_SENS);
-		if (cur_task == TASK_SUCCESS || timeout(1000))
+		cur_task = move_on_dir_ortho(180, FORWARD, 0.2, NO_SENS);
+		if (cur_task == TASK_SUCCESS || timeout(1250))
 			tact_fsm_case = 94;
 		break;
 
@@ -166,14 +166,14 @@ int8_t tact_0() {
 		tact_fsm_case = 96;
 		break;
 	case 96:
-		cur_task = move_on_dir(450, BACKWARD, V_MAX_DEF, BACKWARD);
+		cur_task = move_on_dir_ortho(450, BACKWARD, V_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 100;
 		break;
 		// bunt ms11
 	case 100:
-		cur_task = move_to_xy(x_side(-700), 305, BACKWARD, V_MAX_DEF,
-		W_MAX_DEF, BACKWARD);
+		cur_task = move_to_xy(x_side(-700), 305, FORWARD, V_MAX_DEF,
+		W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 102;
 		break;
@@ -193,7 +193,7 @@ int8_t tact_0() {
 			tact_fsm_case = 106;
 		break;
 	case 106:
-		cur_task = move_on_dir(240, BACKWARD, 0.2, NO_SENS);
+		cur_task = move_on_dir_ortho(240, BACKWARD, 0.2, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(1200))
 			tact_fsm_case = 108;
 		break;
@@ -202,10 +202,13 @@ int8_t tact_0() {
 		ruc_back_carry();
 		lift_back_carry();
 		vacuum_back(1);
-		tact_fsm_case = 110;
+		if (!check_back())
+			tact_fsm_case = 500;
+		else
+			tact_fsm_case = 110;
 		break;
 	case 110:
-		cur_task = move_on_dir(200, FORWARD, V_MAX_DEF, FORWARD);
+		cur_task = move_on_dir_ortho(200, FORWARD, V_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 120;
 		break;
@@ -268,7 +271,7 @@ int8_t tact_0() {
 		break;
 
 	case 200:
-		cur_task = move_on_dir(240, BACKWARD, 0.2, NO_SENS);
+		cur_task = move_on_dir_ortho(240, BACKWARD, 0.2, NO_SENS);
 
 		if (cur_task == TASK_SUCCESS || timeout(2000))
 			tact_fsm_case = 210;
@@ -325,6 +328,85 @@ int8_t tact_0() {
 		cur_task = rot_to_xy(x_side(-800), 500, FORWARD, W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 9999;
+		break;
+
+		// ALT 1
+	case 500:
+		vacuum_back(0);
+		ruc_back_up();
+		tact_fsm_case = 505;
+		break;
+	case 505:
+		if (get_tact_num_ptr()->side) //plavu
+			cur_task = move_to_xy(x_side(-710), 370, FORWARD, V_MAX_DEF,
+			W_MAX_DEF,
+			FORWARD);
+		else
+			cur_task = move_to_xy(x_side(-670), 370, FORWARD, V_MAX_DEF,
+			W_MAX_DEF,
+			FORWARD);
+		if (cur_task == TASK_SUCCESS) {
+			grtl_back_close();
+			lift_back_down();
+			tact_fsm_case = 510;
+		}
+		break;
+
+	case 510:
+		cur_task = rot_to_phi(phi_side(-90), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 520;
+		break;
+
+	case 520:
+		prepare_back();
+		tact_fsm_case = 530;
+		break;
+
+	case 530:
+		cur_task = move_on_dir_ortho(240, BACKWARD, 0.2, NO_SENS);
+
+		if (cur_task == TASK_SUCCESS || timeout(2000))
+			tact_fsm_case = 540;
+		break;
+	case 540:
+		grtl_back_grip_all();
+		ruc_back_carry();
+		lift_back_carry();
+		vacuum_back(1);
+		tact_fsm_case = 550;
+		break;
+	case 550:
+		if (get_tact_num_ptr()->side)	// plava
+			cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD,
+					0, V_MAX_DEF_PATH, 0, FORWARD);
+		else
+			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
+					0, V_MAX_DEF_PATH, 0, FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 560;
+		break;
+	case 560:
+		cur_task = rot_to_phi(phi_side(-90), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 570;
+		break;
+	case 570:
+		cur_task = task_sprat_3_1_full(FORWARD);
+		if (cur_task == TASK_SUCCESS) {
+			tact_fsm_case = 580;
+			add_points(32);
+		}
+		break;
+		//	case 160:
+		//		cur_task = move_on_dir(150, BACKWARD, V_MAX_DEF, BACKWARD);
+		//		if (cur_task == TASK_SUCCESS)
+		//			tact_fsm_case = 165;
+		//		break;
+	case 580:
+		grtl_back_close();
+		grtl_front_close();
+		tact_fsm_case = 320;
 		break;
 	}
 	return tact_state;
