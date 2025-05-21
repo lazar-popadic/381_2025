@@ -21,7 +21,7 @@ int8_t tact_3() {
 	case -1:
 		break;
 	case 0: //krece ka ms24
-		get_robot_base()->x = x_side(-302);
+		get_robot_base()->x = x_side(-322);
 		get_robot_base()->phi = phi_side(90);
 		get_robot_base()->y = -710;
 		tact_fsm_case = 2;
@@ -51,13 +51,13 @@ int8_t tact_3() {
 		break;
 	case 12: //srednji bunt blizi njemu
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_on_path(x_side(-390), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-420), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			//zuta
-			cur_task = move_on_path(x_side(-370), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-400), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
-		if (cur_task == TASK_SUCCESS)
+		if (cur_task == TASK_SUCCESS) // TODO: ako nema idi u alt
 			tact_fsm_case = 13;
 		break;
 	case 13:
@@ -67,10 +67,13 @@ int8_t tact_3() {
 		break;
 	case 15:
 		prepare_front();
+		tact_delay_1 = 0xFFFF;
 		tact_fsm_case = 20;
 		break;
 	case 20: //pred uzimanje bunta
-		cur_task = move_on_dir_ortho(275, FORWARD, 0.2, FORWARD); //300
+		cur_task = move_on_dir_ortho(400, FORWARD, 0.2, FORWARD); //300
+		if (delay_nb_2(&tact_delay_1, 1500))
+			grtl_front_grip_all();
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 30;
 		break;
@@ -83,10 +86,10 @@ int8_t tact_3() {
 		break;
 	case 40: //srednji bunt dalji njemu
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_on_path(x_side(420 ), 260, phi_side(0), FORWARD, 0,
+			cur_task = move_on_path(x_side(380), 240, phi_side(0), FORWARD, 0,
 			V_MAX_DEF_PATH, 0, FORWARD);
 		else
-			cur_task = move_on_path(x_side(390), 270, phi_side(0), FORWARD, 0,
+			cur_task = move_on_path(x_side(420), 240, phi_side(0), FORWARD, 0,
 			V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 50;
@@ -98,10 +101,13 @@ int8_t tact_3() {
 		break;
 	case 60:
 		prepare_back();
+		tact_delay_1 = 0xFFFF;
 		tact_fsm_case = 70;
 		break;
 	case 70: //pred uzimanje bunta
-		cur_task = move_on_dir_ortho(275, BACKWARD, 0.2, BACKWARD); //300
+		cur_task = move_on_dir_ortho(400, BACKWARD, 0.2, BACKWARD); //300
+		if (delay_nb_2(&tact_delay_1, 1500))
+			grtl_back_grip_all();
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 80;
 		break;
@@ -147,6 +153,7 @@ int8_t tact_3() {
 		prepare_back();
 		tact_fsm_case = 130;
 		break;
+		// TODO: provera da li ima bunt, ako ima gurne i uzme, ako ne alt
 	case 130:
 		cur_task = move_on_dir(500, BACKWARD, 0.2, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(2500))
@@ -165,7 +172,7 @@ int8_t tact_3() {
 			tact_fsm_case = 150;
 		break;
 	case 150:
-		cur_task = move_to_xy(x_side(1100), -605, FORWARD,
+		cur_task = move_to_xy(x_side(1100), -630, FORWARD,
 		V_MAX_DEF, W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 155;
@@ -255,7 +262,7 @@ int8_t tact_3() {
 			tact_fsm_case = 261;	// TODO: provera da li ima bunt
 		break;
 	case 261:
-		cur_task = move_on_dir_ortho(290, BACKWARD, V_MAX_DEF, BACKWARD);
+		cur_task = move_on_dir_ortho(260, BACKWARD, V_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 262;
 		break;
