@@ -29,14 +29,14 @@
 
 #define GRTL_OL_OPEN		581
 #define GRTL_OL_OPEN_S1		551
-#define GRTL_OL_GRIP		476
+#define GRTL_OL_GRIP		486
 #define GRTL_OL_CLOSE		181
 #define GRTL_IL_OPEN		511
 #define GRTL_IL_GRIP		451
 #define GRTL_IL_CLOSE		251
 #define GRTL_OR_OPEN		441
 #define GRTL_OR_OPEN_S1		471
-#define GRTL_OR_GRIP		546
+#define GRTL_OR_GRIP		536
 #define GRTL_OR_CLOSE		841
 #define GRTL_IR_OPEN		511
 #define GRTL_IR_GRIP		571
@@ -45,7 +45,7 @@
 #define GRTL_SPEED_SLOW		100
 
 #define LIFT_DOWN		0
-#define LIFT_CARRY	100
+#define LIFT_CARRY	80
 #define LIFT_UP			1023
 #define LIFT_DROP		850
 #define LIFT_LEAVE	750

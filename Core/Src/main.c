@@ -195,7 +195,7 @@ int main(void) {
 				reset_movement();
 				flag_95_main = 1;
 			}
-			if (move_to_xy(x_side(-800), 500, FORWARD, V_MAX_DEF, W_MAX_DEF,
+			if (move_to_xy(x_side(-1000), 500, FORWARD, V_MAX_DEF, W_MAX_DEF,
 			FORWARD) == TASK_SUCCESS)
 				main_fsm_case = -1;
 			break;

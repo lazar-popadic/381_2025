@@ -319,13 +319,13 @@ int8_t tact_0() {
 		}
 		break;
 	case 320:
-		cur_task = move_to_xy(x_side(-600), 100, FORWARD, V_MAX_DEF, W_MAX_DEF,
+		cur_task = move_to_xy(x_side(-800), 100, FORWARD, V_MAX_DEF, W_MAX_DEF,
 		FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 330;
 		break;
 	case 330:
-		cur_task = rot_to_xy(x_side(-800), 500, FORWARD, W_MAX_DEF, NO_SENS);
+		cur_task = rot_to_xy(x_side(-1000), 500, FORWARD, W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 9999;
 		break;
