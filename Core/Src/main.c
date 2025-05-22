@@ -179,6 +179,16 @@ int main(void) {
 			in_1 = check_front();
 			break;
 
+		case 30:
+			lift_back_down();
+			HAL_Delay(2000);
+			main_fsm_case = 31;
+			break;
+		case 31:
+			ruc_back_down();
+			in_0 = check_back();
+			break;
+
 			// Go to HOME
 		case -10:
 			if (!flag_95_main) {

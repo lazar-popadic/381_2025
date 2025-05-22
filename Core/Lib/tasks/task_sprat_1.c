@@ -64,11 +64,14 @@ task_sprat_1 (int8_t side, int8_t in_out)
 			break;
 
 		case 20:
-			cur_task = move_on_dir_ortho (85, -1 * side, 0.4, NO_SENS);
 			if (side == FORWARD)
 				gurl_front ();
 			else
 				gurl_back ();
+			task_fsm_case = 25;
+			break;
+		case 25:
+			cur_task = move_on_dir_ortho (85, -1 * side, 0.4, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 30;
 			break;
