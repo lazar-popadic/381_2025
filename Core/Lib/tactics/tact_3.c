@@ -153,7 +153,6 @@ int8_t tact_3() {
 		prepare_back();
 		tact_fsm_case = 130;
 		break;
-		// TODO: provera da li ima bunt, ako ima gurne i uzme, ako ne alt
 	case 130:
 		cur_task = move_on_dir_ortho(150, BACKWARD, V_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
