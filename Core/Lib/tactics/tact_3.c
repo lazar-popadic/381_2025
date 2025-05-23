@@ -27,7 +27,7 @@ int8_t tact_3() {
 		tact_fsm_case = 2;
 		break;
 	case 2:
-		cur_task = move_on_dir(170, BACKWARD, 0.5, NO_SENS);
+		cur_task = move_on_dir(155, BACKWARD, 0.5, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(1000))
 			tact_fsm_case = 5;
 		break;
@@ -443,19 +443,20 @@ int8_t tact_3() {
 		break;
 		// gura bunt u manje polje
 	case 592:
+		cur_task = move_on_dir_ortho(200, FORWARD, 0.4, NO_SENS);
+		if (cur_task == TASK_SUCCESS || timeout(2000))
+			tact_fsm_case = 593;
+		break;
+	case 593:
 		grtl_front_grip_all();
 		ruc_front_carry();
 		lift_front_carry();
 		vacuum_front(1);
-		tact_fsm_case = 593;
-	case 593:
-		cur_task = move_on_dir_ortho(235, FORWARD, 0.4, NO_SENS);
-		if (cur_task == TASK_SUCCESS || timeout(2000))
-			tact_fsm_case = 594;
+		tact_fsm_case = 594;
 		break;
 	case 594:
 		cur_task = task_sprat_12(FORWARD);
-		if (cur_task == TASK_SUCCESS){
+		if (cur_task == TASK_SUCCESS) {
 			tact_fsm_case = 595;
 			add_points(12);
 		}
@@ -468,13 +469,19 @@ int8_t tact_3() {
 
 		// ALTERNATIVNA nema bunta kod ivice stola samo
 	case 600:
+		vacuum_front(0);
+		ruc_front_up();
+		lift_front_down();
+		tact_fsm_case = 602;
+		break;
+	case 602:
 		cur_task = move_on_dir(400, BACKWARD, V_MAX_DEF, BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 605;
 		break;
 	case 605:
 		cur_task = move_to_xy(x_side(830), -125, BACKWARD, V_MAX_DEF, W_MAX_DEF,
-		FORWARD);
+		BACKWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 610;
 		break;
@@ -501,7 +508,7 @@ int8_t tact_3() {
 		break;
 		// ALTERNATIVNA nema bunta kod ivice stola ni bunta kod protivnickog polja
 	case 650:
-
+		tact_fsm_case = 270;
 		break;
 		// ALTERNATIVNA nema poslednjeg bunta
 
@@ -511,7 +518,7 @@ int8_t tact_3() {
 			tact_fsm_case = 710;
 		break;
 	case 710:
-		cur_task = move_on_dir_ortho(250, BACKWARD, 0.4, NO_SENS);
+		cur_task = move_on_dir_ortho(200, BACKWARD, 0.4, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(2000))
 			tact_fsm_case = 720;
 		break;

@@ -27,7 +27,7 @@ int8_t tact_0() {
 		tact_fsm_case = 2;
 		break;
 	case 2:
-		cur_task = move_on_dir(170, BACKWARD, 0.5, NO_SENS);
+		cur_task = move_on_dir(155, BACKWARD, 0.5, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(1000))
 			tact_fsm_case = 5;
 		break;
