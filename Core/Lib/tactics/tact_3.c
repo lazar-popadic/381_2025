@@ -436,7 +436,7 @@ int8_t tact_3() {
 		if (check_front())
 			tact_fsm_case = 591;
 		if (timeout(1000))
-			tact_fsm_case = 591;
+			tact_fsm_case = 650;
 	case 591:
 		ruc_front_mid();
 		tact_fsm_case = 592;
@@ -455,9 +455,11 @@ int8_t tact_3() {
 		break;
 	case 594:
 		cur_task = task_sprat_12(FORWARD);
-				if (cur_task == TASK_SUCCESS)
-					tact_fsm_case = 595;
-				break;
+		if (cur_task == TASK_SUCCESS){
+			tact_fsm_case = 595;
+			add_points(12);
+		}
+		break;
 	case 595:
 		cur_task = move_on_dir_ortho(235, BACKWARD, 0.4, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(2000))
@@ -466,37 +468,37 @@ int8_t tact_3() {
 
 		// ALTERNATIVNA nema bunta kod ivice stola samo
 	case 600:
-			cur_task = move_on_dir(400, BACKWARD, V_MAX_DEF, BACKWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 605;
-			break;
-		case 605:
-			cur_task = move_to_xy(x_side(830), -125, BACKWARD, V_MAX_DEF, W_MAX_DEF,
-			FORWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 610;
-			break;
-		case 610:
-			cur_task = rot_to_phi(phi_side(180), W_MAX_DEF, NO_SENS);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 615;
-			break;
-		case 615:
-			cur_task = task_sprat_12(BACKWARD);
-			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 620;
-			break;
-		case 620:
-			HAL_Delay(200);
-			tact_fsm_case = 625;
-			break;
-		case 625:
-			cur_task = task_sprat_3(BACKWARD);
-			if (cur_task == TASK_SUCCESS) {
-				tact_fsm_case = 560;
-				add_points(24);
-			}
-			break;
+		cur_task = move_on_dir(400, BACKWARD, V_MAX_DEF, BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 605;
+		break;
+	case 605:
+		cur_task = move_to_xy(x_side(830), -125, BACKWARD, V_MAX_DEF, W_MAX_DEF,
+		FORWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 610;
+		break;
+	case 610:
+		cur_task = rot_to_phi(phi_side(180), W_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 615;
+		break;
+	case 615:
+		cur_task = task_sprat_12(BACKWARD);
+		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 620;
+		break;
+	case 620:
+		HAL_Delay(200);
+		tact_fsm_case = 625;
+		break;
+	case 625:
+		cur_task = task_sprat_3(BACKWARD);
+		if (cur_task == TASK_SUCCESS) {
+			tact_fsm_case = 560;
+			add_points(24);
+		}
+		break;
 		// ALTERNATIVNA nema bunta kod ivice stola ni bunta kod protivnickog polja
 	case 650:
 
@@ -515,8 +517,10 @@ int8_t tact_3() {
 		break;
 	case 720:
 		cur_task = task_sprat_12(BACKWARD);
-		if (cur_task == TASK_SUCCESS)
+		if (cur_task == TASK_SUCCESS) {
 			tact_fsm_case = 270;
+			add_points(12);
+		}
 		break;
 
 	}

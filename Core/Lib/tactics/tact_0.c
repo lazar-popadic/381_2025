@@ -51,7 +51,7 @@ int8_t tact_0() {
 		break;
 	case 12: //srednji bunt blizi njemu
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_on_path(x_side(-420), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-390), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			//zuta
@@ -86,7 +86,7 @@ int8_t tact_0() {
 		// prilazi buntu pored startnog polja
 	case 40:
 		if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_to_xy(x_side(-750), -350, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-740), -350, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF, BACKWARD);
 		else
 			//zuta
@@ -194,7 +194,7 @@ int8_t tact_0() {
 		break;
 	case 106:
 		cur_task = move_on_dir_ortho(240, BACKWARD, 0.2, NO_SENS);
-		if (cur_task == TASK_SUCCESS || timeout(1200))
+		if (cur_task == TASK_SUCCESS || timeout(1800))
 			tact_fsm_case = 108;
 		break;
 	case 108:
@@ -215,7 +215,7 @@ int8_t tact_0() {
 		// odlazak u polje
 	case 120:
 		if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD,
+			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
@@ -248,7 +248,7 @@ int8_t tact_0() {
 
 	case 170: //rezervisan bunt
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_to_xy(x_side(-710), 370, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-730), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			BACKWARD);
 		else
@@ -285,7 +285,7 @@ int8_t tact_0() {
 		break;
 
 	case 280:
-		cur_task = move_on_path(x_side(-250), -280, phi_side(-30), FORWARD, 0,
+		cur_task = move_on_path(x_side(-250), -250, phi_side(-30), FORWARD, 0,
 		V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 290;
@@ -338,11 +338,11 @@ int8_t tact_0() {
 		break;
 	case 505:
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_to_xy(x_side(-710), 370, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-700), 370, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			FORWARD);
 		else
-			cur_task = move_to_xy(x_side(-670), 370, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-700), 370, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			FORWARD);
 		if (cur_task == TASK_SUCCESS) {
@@ -378,7 +378,7 @@ int8_t tact_0() {
 		break;
 	case 550:
 		if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_on_path(x_side(-270), -650, phi_side(-90), FORWARD,
+			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
