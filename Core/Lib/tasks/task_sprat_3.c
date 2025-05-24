@@ -89,7 +89,7 @@ int8_t task_sprat_3(int8_t side) {
 		break;
 
 	case 80:
-		cur_task = move_on_dir_ortho(200, -1 * side, 1.0, NO_SENS);
+		cur_task = move_on_dir_ortho(200, -1 * side, V_MAX_DEF, -1 * side);
 		if (cur_task == TASK_SUCCESS)
 			task_fsm_case = 90;
 		break;

@@ -87,7 +87,7 @@ task_sprat_12 (int8_t side)
 			break;
 
 		case 50:
-			cur_task = move_on_dir_ortho (110, -1 * side, V_MAX_DEF, NO_SENS);
+			cur_task = move_on_dir_ortho (110, -1 * side, V_MAX_DEF, -1 * side);
 			if (cur_task == TASK_SUCCESS)
 				task_fsm_case = 60;
 			//add_points (8);

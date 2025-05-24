@@ -107,7 +107,7 @@ int8_t tact_0() {
 		break;
 		// gura bunt u manje polje
 	case 60:
-		cur_task = move_on_dir_ortho(440, BACKWARD, 0.4, NO_SENS);
+		cur_task = move_on_dir_ortho(440, BACKWARD, 0.2, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(2000))
 			tact_fsm_case = 61;
 		break;
@@ -319,7 +319,7 @@ int8_t tact_0() {
 		}
 		break;
 	case 320:
-		cur_task = move_to_xy(x_side(-800), 100, FORWARD, V_MAX_DEF, W_MAX_DEF,
+		cur_task = move_to_xy(x_side(-800), -100, FORWARD, V_MAX_DEF, W_MAX_DEF,
 		FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 330;
@@ -398,11 +398,6 @@ int8_t tact_0() {
 			add_points(32);
 		}
 		break;
-		//	case 160:
-		//		cur_task = move_on_dir(150, BACKWARD, V_MAX_DEF, BACKWARD);
-		//		if (cur_task == TASK_SUCCESS)
-		//			tact_fsm_case = 165;
-		//		break;
 	case 580:
 		grtl_back_close();
 		grtl_front_close();

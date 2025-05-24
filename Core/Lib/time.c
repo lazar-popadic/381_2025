@@ -54,8 +54,8 @@ time_ISR ()	// poziva se u stm32f4xx_it.c
 		}
 
 	// rpi communication
-	update_transmit_buffer ();
-	update_recieve_buffer ();
+//	update_transmit_buffer ();
+//	update_recieve_buffer ();
 }
 
 uint8_t
