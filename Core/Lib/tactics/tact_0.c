@@ -27,7 +27,7 @@ int8_t tact_0() {
 		tact_fsm_case = 2;
 		break;
 	case 2:
-		cur_task = move_on_dir(155, BACKWARD, 0.5, NO_SENS);
+		cur_task = move_on_dir(165, BACKWARD, 0.5, NO_SENS);
 		if (cur_task == TASK_SUCCESS || timeout(1000))
 			tact_fsm_case = 5;
 		break;
@@ -51,11 +51,11 @@ int8_t tact_0() {
 		break;
 	case 12: //srednji bunt blizi njemu
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_on_path(x_side(-390), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-400), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			//zuta
-			cur_task = move_on_path(x_side(-390), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-400), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 13;
@@ -108,7 +108,7 @@ int8_t tact_0() {
 		// gura bunt u manje polje
 	case 60:
 		cur_task = move_on_dir_ortho(440, BACKWARD, 0.2, NO_SENS);
-		if (cur_task == TASK_SUCCESS || timeout(2000))
+		if (cur_task == TASK_SUCCESS || timeout(2500))
 			tact_fsm_case = 61;
 		break;
 	case 61:
@@ -138,7 +138,7 @@ int8_t tact_0() {
 		}
 		break;
 	case 80:
-		cur_task = move_to_xy(x_side(-1170), -600, FORWARD, V_MAX_DEF,
+		cur_task = move_to_xy(x_side(-1170), -595, FORWARD, V_MAX_DEF,
 		W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 85;
@@ -172,7 +172,7 @@ int8_t tact_0() {
 		break;
 		// bunt ms11
 	case 100:
-		cur_task = move_to_xy(x_side(-700), 305, FORWARD, V_MAX_DEF,
+		cur_task = move_to_xy(x_side(-700), 310, FORWARD, V_MAX_DEF,
 		W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 102;
@@ -193,8 +193,8 @@ int8_t tact_0() {
 			tact_fsm_case = 106;
 		break;
 	case 106:
-		cur_task = move_on_dir_ortho(240, BACKWARD, 0.2, NO_SENS);
-		if (cur_task == TASK_SUCCESS || timeout(1800))
+		cur_task = move_on_dir_ortho(260, BACKWARD, 0.2, NO_SENS);
+		if (cur_task == TASK_SUCCESS || timeout(2000))
 			tact_fsm_case = 108;
 		break;
 	case 108:
@@ -252,7 +252,7 @@ int8_t tact_0() {
 			W_MAX_DEF,
 			BACKWARD);
 		else
-			cur_task = move_to_xy(x_side(-690), 370, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-675), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			BACKWARD);
 		if (cur_task == TASK_SUCCESS)

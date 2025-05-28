@@ -533,6 +533,7 @@ stop_moving ()
 			phase = 0;
 			vel_profile = STOPPING;
 			reset_pid (&d_loop);
+			reset_pid (&d_curve_loop);
 			reset_pid (&phi_loop);
 			reset_pid (&phi_curve_loop);
 			reset_pid (&v_loop);
