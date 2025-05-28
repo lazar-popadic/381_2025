@@ -112,7 +112,7 @@ int8_t tact_0() {
 			tact_fsm_case = 61;
 		break;
 	case 61:
-		cur_task = move_on_dir_ortho(260, FORWARD, V_MAX_DEF, FORWARD);
+		cur_task = move_on_dir_ortho(255, FORWARD, V_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 62;
 		break;
@@ -252,7 +252,7 @@ int8_t tact_0() {
 			W_MAX_DEF,
 			BACKWARD);
 		else
-			cur_task = move_to_xy(x_side(-675), 370, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-760), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			BACKWARD);
 		if (cur_task == TASK_SUCCESS)
@@ -285,7 +285,7 @@ int8_t tact_0() {
 		break;
 
 	case 280:
-		cur_task = move_on_path(x_side(-250), -250, phi_side(-30), FORWARD, 0,
+		cur_task = move_on_path(x_side(-250), -240, phi_side(-30), FORWARD, 0,
 		V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 290;
