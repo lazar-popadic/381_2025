@@ -51,7 +51,7 @@ int8_t tact_0() {
 		break;
 	case 12: //srednji bunt blizi njemu
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_on_path(x_side(-400), -400, phi_side(120), FORWARD,
+			cur_task = move_on_path(x_side(-410), -400, phi_side(120), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
 			//zuta
@@ -138,7 +138,7 @@ int8_t tact_0() {
 		}
 		break;
 	case 80:
-		cur_task = move_to_xy(x_side(-1170), -595, FORWARD, V_MAX_DEF,
+		cur_task = move_to_xy(x_side(-1170), -597, FORWARD, V_MAX_DEF,
 		W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 85;
@@ -172,7 +172,7 @@ int8_t tact_0() {
 		break;
 		// bunt ms11
 	case 100:
-		cur_task = move_to_xy(x_side(-700), 310, FORWARD, V_MAX_DEF,
+		cur_task = move_to_xy(x_side(-700), 305, FORWARD, V_MAX_DEF,
 		W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 102;
@@ -248,7 +248,7 @@ int8_t tact_0() {
 
 	case 170: //rezervisan bunt
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_to_xy(x_side(-730), 370, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-770), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			BACKWARD);
 		else
