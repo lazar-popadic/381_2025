@@ -27,7 +27,7 @@ int8_t task_sprat_3(int8_t side) {
 		task_fsm_case = 10;
 		break;
 	case 10:
-		cur_task = move_on_dir_ortho(250, side, 0.2, NO_SENS);
+		cur_task = move_on_dir_ortho(260, side, 0.2, NO_SENS);
 		if (wait) {
 			wait = 0;
 			HAL_Delay(800);

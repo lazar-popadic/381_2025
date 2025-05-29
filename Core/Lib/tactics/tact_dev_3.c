@@ -22,7 +22,7 @@ tact_dev_3 ()
 			get_robot_base ()->x = 0;
 			get_robot_base ()->phi = 90;
 			get_robot_base ()->y = -800;
-			tact_fsm_case = 30;
+			tact_fsm_case = 20;
 			break;
 
 		case 10:
@@ -34,7 +34,7 @@ tact_dev_3 ()
 			break;
 
 		case 20:
-			cur_task = move_on_path (1000, 0, 0, FORWARD, 0, V_MAX_DEF_PATH, 0, NO_SENS);
+			cur_task = move_on_path (-1000, 0, 180, FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				{
 					tact_fsm_case = 77;

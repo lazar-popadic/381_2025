@@ -146,8 +146,8 @@ main (void)
 						{
 							start_match ();
 							display_ready ();
-//							main_fsm_case = tactic_ptr->num + 10;
-							main_fsm_case = 105;
+							main_fsm_case = tactic_ptr->num + 10;
+//							main_fsm_case = 105;
 							set_regulation_status (1);
 						}
 					break;
@@ -204,6 +204,17 @@ main (void)
 						{
 							reset_movement ();
 							flag_95_main = 1;
+						}
+					break;
+
+				case -1:
+					if (!flag_end)
+						{
+							if (fabs (get_robot_base ()->x) > 750 && get_robot_base ()->y > 450)
+								add_points (10);
+							flag_end = 1;
+							vacuum_front (0);
+							vacuum_back (0);
 							HD44780_Init_blocking (2);
 							HD44780_Clear ();
 							HD44780_Backlight ();
@@ -218,17 +229,6 @@ main (void)
 							display_write_time (get_time_s ());
 							display_write_case ();
 						}
-					break;
-
-				case -1:
-					if (!flag_end)
-						{
-							if (fabs (get_robot_base ()->x) > 750 && get_robot_base ()->y > 450)
-								add_points (10);
-							flag_end = 1;
-							vacuum_front (0);
-							vacuum_back (0);
-						}
 					set_regulation_status (0);
 					stop_match ();
 					HAL_Delay (10);
@@ -241,7 +241,7 @@ main (void)
 					break;
 				}
 
-			display_fsm ();
+//			display_fsm ();
 		}
 	/* USER CODE END 3 */
 }

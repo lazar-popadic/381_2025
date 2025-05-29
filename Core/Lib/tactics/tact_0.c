@@ -30,7 +30,7 @@ tact_0 ()
 			tact_fsm_case = 2;
 			break;
 		case 2:
-			cur_task = move_on_dir (165, BACKWARD, 0.5, NO_SENS);
+			cur_task = move_on_dir (160, BACKWARD, 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (1000))
 				tact_fsm_case = 5;
 			break;
@@ -55,7 +55,7 @@ tact_0 ()
 			break;
 		case 12: //srednji bunt blizi njemu
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_on_path (x_side (-410), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+				cur_task = move_on_path (x_side (-400), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 			else
 				//zuta
 				cur_task = move_on_path (x_side (-400), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
@@ -116,7 +116,7 @@ tact_0 ()
 				tact_fsm_case = 61;
 			break;
 		case 61:
-			cur_task = move_on_dir_ortho (265, FORWARD, V_MAX_DEF, FORWARD);
+			cur_task = move_on_dir_ortho (250, FORWARD, V_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 62;
 			break;
@@ -144,11 +144,11 @@ tact_0 ()
 			break;
 		case 80:
 			if (get_tact_num_ptr ()->side)
-				cur_task = move_to_xy (x_side (-1170), -630, FORWARD, V_MAX_DEF,
+				cur_task = move_to_xy (x_side (-1150), -630, FORWARD, V_MAX_DEF,
 				W_MAX_DEF,
 																FORWARD);
 			else
-				cur_task = move_to_xy (x_side (-1170), -610, FORWARD, V_MAX_DEF,
+				cur_task = move_to_xy (x_side (-1150), -610, FORWARD, V_MAX_DEF,
 				W_MAX_DEF,
 																FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -164,7 +164,7 @@ tact_0 ()
 			tact_fsm_case = 92;
 			break;
 		case 92:
-			cur_task = move_on_dir_ortho (180, FORWARD, 0.2, NO_SENS);
+			cur_task = move_on_dir_ortho (200, FORWARD, 0.2, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (1250))
 				tact_fsm_case = 94;
 			break;
@@ -174,6 +174,7 @@ tact_0 ()
 			ruc_front_carry ();
 			lift_front_carry ();
 			vacuum_front (1);
+			grtl_back_close ();
 			tact_fsm_case = 96;
 			break;
 		case 96:
@@ -183,7 +184,7 @@ tact_0 ()
 			break;
 			// bunt ms11
 		case 100:
-			cur_task = move_to_xy (x_side (-700), 305, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (-700), 310, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);
 			if (cur_task == TASK_SUCCESS)
