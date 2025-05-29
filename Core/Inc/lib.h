@@ -13,8 +13,8 @@
 
 #define V_MOVING_MIN		0.075		// [m/s]
 #define W_MOVING_MIN		32			// [deg/s]
-#define V_MAX_DEF				0.75		// [m/s]
-#define W_MAX_DEF				320.0		// [deg/s]
+#define V_MAX_DEF				1.0		// [m/s]
+#define W_MAX_DEF				480.0		// [deg/s]
 #define A_MAX_DEF				0.25		// [m/s * 1/10ms]				// za 40ms dodje do 1m/s
 #define ALPHA_MAX_DEF		90			// [deg/s * 1/10ms]			// za 40ms dodje do 360deg/s
 #define J_MAX_DEF				0.1			// [mm/ms * 1/10ms^2]		// za 40ms dodje do 1m/s i sve vreme je jerk-limited
@@ -22,7 +22,7 @@
 #define CTRL_MAX				4200		// [inc]
 #define MAX_PWM_CHANGE	1050		// [inc/ms]					// za 5ms dodje do 4200
 #define POS_LOOP_PSC		10
-#define V_MAX_DEF_PATH	0.75		// [m/s]
+#define V_MAX_DEF_PATH	1.0		// [m/s]
 
 #define TASK_RUNNING	0
 #define TASK_SUCCESS	-1
@@ -50,7 +50,7 @@
 #define OFFS_DESIRED	420
 #define PAD_NUM				20
 
-#define HOME_TIME			96
+#define HOME_TIME			97
 
 #include "structs.h"
 

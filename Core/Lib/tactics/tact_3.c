@@ -330,7 +330,7 @@ tact_3 ()
 				}
 			break;
 		case 270:
-			cur_task = move_to_xy (x_side (-800), -100, FORWARD, V_MAX_DEF, W_MAX_DEF,
+			cur_task = move_to_xy (x_side (-640), -100, FORWARD, V_MAX_DEF, W_MAX_DEF,
 			FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 280;

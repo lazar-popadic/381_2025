@@ -8,8 +8,8 @@
 // Tolerancije za distancu i ugao kada smatram da je zadovoljen uslov
 #define D_PROJ_TOL	5
 #define D_PROJ_TOL_C	5
-#define D_TOL				15
-#define D_2_TOL			15
+#define D_TOL				10
+#define D_2_TOL			10
 #define D_2_TOL_C		25
 #define D_3_TOL			80
 #define D_3_TOL_C		30
@@ -86,7 +86,7 @@ regulation_init ()
 	init_pid (&d_curve_loop, 0.0055, 0.00, 0.068, V_MAX_DEF_PATH, 0.0);
 	init_pid (&phi_loop, 6.0, 0, 0.0, W_MAX_DEF, 0.0);
 	init_pid (&phi_curve_loop, 6.0, 0.02, 0.0, W_MAX_DEF, W_MAX_DEF * 0.25);
-	init_pid (&v_loop, 6800, 36, 800, CTRL_MAX, 420);
+	init_pid (&v_loop, 12000, 30, 0, CTRL_MAX, 420);
 	init_pid (&w_loop, 68, 0.36, 0.0, CTRL_MAX, 2100);
 	curve_ptr = (curve*) malloc (sizeof(curve));
 	for (int i = 0; i < BEZIER_RESOLUTION; i++)

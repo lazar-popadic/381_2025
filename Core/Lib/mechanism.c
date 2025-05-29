@@ -30,14 +30,14 @@
 #define GRTL_OL_OPEN		581
 #define GRTL_OL_OPEN_S1		551
 #define GRTL_OL_GRIP		486
-#define GRTL_OL_CLOSE		181
+#define GRTL_OL_CLOSE		221
 #define GRTL_IL_OPEN		511
 #define GRTL_IL_GRIP		451
 #define GRTL_IL_CLOSE		251
 #define GRTL_OR_OPEN		441
 #define GRTL_OR_OPEN_S1		471
 #define GRTL_OR_GRIP		536
-#define GRTL_OR_CLOSE		841
+#define GRTL_OR_CLOSE		801
 #define GRTL_IR_OPEN		511
 #define GRTL_IR_GRIP		571
 #define GRTL_IR_CLOSE		781
@@ -115,19 +115,28 @@ ax_init ()
 void
 mechanism_init ()
 {
-	bnr_close ();
 	gurl_mid ();
-	HAL_Delay (200);
+	HAL_Delay (400);
 	ruc_front_up ();
-	HAL_Delay (50);
+	HAL_Delay (100);
 	ruc_back_up ();
-	HAL_Delay (200);
+	HAL_Delay (100);
+	grtl_front_open ();
+	HAL_Delay (500);
 	grtl_front_close ();
-	HAL_Delay (250);
+	HAL_Delay (100);
+//	grtl_back_open ();
+//	HAL_Delay (500);
 	grtl_back_close ();
-	HAL_Delay (250);
+	HAL_Delay (100);
+	lift_front_up ();
+	HAL_Delay (1000);
 	lift_front_down ();
-	HAL_Delay (30);
+	HAL_Delay (1000);
+	lift_back_up ();
+	HAL_Delay (1000);
+//	lift_back_down ();
+//	HAL_Delay (2000);
 	lift_back_drop ();
 }
 
@@ -322,6 +331,7 @@ void
 grtl_front_grip_outside ()
 {
 	ax_move (GRTL_FOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
+	HAL_Delay(5);
 	ax_move (GRTL_FOL_ID, GRTL_OL_GRIP - OFFS + ax_1_offs, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_fol = 1;
 	mechanism_states.grtl_for = 1;
@@ -331,6 +341,7 @@ void
 grtl_back_grip_outside ()
 {
 	ax_move (GRTL_BOR_ID, GRTL_OR_GRIP, GRTL_SPEED_SLOW, huart6);
+	HAL_Delay(5);
 	ax_move (GRTL_BOL_ID, GRTL_OL_GRIP, GRTL_SPEED_SLOW, huart6);
 	mechanism_states.grtl_bol = 1;
 	mechanism_states.grtl_bor = 1;

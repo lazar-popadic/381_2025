@@ -77,8 +77,11 @@ pad_num_string (char *str, uint8_t len, int16_t num);
 void
 pad_num_string_uint8 (char *str, uint8_t len, uint8_t num);
 
+
 void
 display_fsm ();
+void
+HD44780_Init_blocking (uint8_t rows);
 uint8_t
 HD44780_Init (uint8_t rows);
 void

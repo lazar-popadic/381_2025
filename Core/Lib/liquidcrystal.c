@@ -46,8 +46,8 @@ static char snum_time[4];
 static char snum_fsm[7];
 uint16_t display_fsm_case = 0;
 uint32_t display_delay = 0xFFFFFFFF;
-char *tactic_side = "blue  #";
-char *tactic_side_short = "b #";
+static char *tactic_side = "blue  #";
+static char *tactic_side_short = "b #";
 static char tactic_number[2];
 static uint8_t prev_time = 0;
 static uint8_t prev_fsm = 0;
@@ -55,7 +55,7 @@ static uint8_t prev_pts = 0;
 static tactic_num *tactic_ptr;
 extern int16_t tact_fsm_case;
 
-int8_t dbg = 0;
+int8_t dbg = 1;
 
 void
 display_fsm ()
@@ -383,6 +383,59 @@ HD44780_Init (uint8_t rows)
 
 		}
 	return 0;
+}
+
+void
+HD44780_Init_blocking (uint8_t rows)
+{
+	dpRows = rows;
+
+	dpBacklight = LCD_BACKLIGHT;
+
+	dpFunction = LCD_4BITMODE | LCD_1LINE | LCD_5x8DOTS;
+
+	if (dpRows > 1)
+		{
+			dpFunction |= LCD_2LINE;
+		}
+	else
+		{
+			dpFunction |= LCD_5x10DOTS;
+		}
+
+	/* Wait for initialization */
+	DelayInit ();
+	HAL_Delay (50);
+
+	ExpanderWrite (dpBacklight);
+	HAL_Delay (1000);
+
+	/* 4bit Mode */
+	Write4Bits (0x03 << 4);
+	DelayUS (4500);
+
+	Write4Bits (0x03 << 4);
+	DelayUS (4500);
+
+	Write4Bits (0x03 << 4);
+	DelayUS (4500);
+
+	Write4Bits (0x02 << 4);
+	DelayUS (100);
+
+	/* Display Control */
+	SendCommand (LCD_FUNCTIONSET | dpFunction);
+
+	dpControl = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
+	HD44780_Display ();
+	HD44780_Clear ();
+
+	/* Display Mode */
+	dpMode = LCD_ENTRYLEFT | LCD_ENTRYSHIFTDECREMENT;
+	SendCommand (LCD_ENTRYMODESET | dpMode);
+	DelayUS (4500);
+
+	HD44780_Home ();
 }
 
 void
