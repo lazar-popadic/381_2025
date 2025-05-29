@@ -123,7 +123,7 @@ tact_3 ()
 			tact_fsm_case = 90;
 			break;
 		case 90:
-			cur_task = move_to_xy (x_side (1200), -125, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (1200), -150, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 															FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -193,9 +193,7 @@ tact_3 ()
 				tact_fsm_case = 150;
 			break;
 		case 150: //ms23
-			cur_task = move_to_xy (x_side (1100), -620, FORWARD,
-			V_MAX_DEF,
-															W_MAX_DEF, FORWARD);
+			cur_task = move_to_xy (x_side (1100), -620, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 155;
 			break;
@@ -229,7 +227,7 @@ tact_3 ()
 				tact_fsm_case = 195;
 			break;
 		case 195:
-			cur_task = move_to_xy (x_side (830), -125, BACKWARD, V_MAX_DEF, W_MAX_DEF,
+			cur_task = move_to_xy (x_side (830), -150, BACKWARD, V_MAX_DEF, W_MAX_DEF,
 			BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 200;
@@ -262,9 +260,7 @@ tact_3 ()
 			break;
 		case 240:
 			//if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_to_xy (x_side (-715), -400, BACKWARD, V_MAX_DEF,
-			W_MAX_DEF,
-															BACKWARD);
+			cur_task = move_to_xy (x_side (-715), -400, BACKWARD, V_MAX_DEF, W_MAX_DEF, BACKWARD);
 			//else
 			//zuta
 			//cur_task = move_to_xy(x_side(-715), -400, BACKWARD, V_MAX_DEF,
@@ -282,7 +278,10 @@ tact_3 ()
 			tact_fsm_case = 256;
 			break;
 		case 256:
-			cur_task = move_on_dir_ortho (210, FORWARD, V_MAX_DEF, NO_SENS);
+			if (get_tact_num_ptr ()->side)
+			cur_task = move_on_dir_ortho (310, FORWARD, V_MAX_DEF, NO_SENS);
+			else
+				cur_task = move_on_dir_ortho (360, FORWARD, V_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 257;
 			break;
@@ -290,7 +289,7 @@ tact_3 ()
 			ruc_front_full_down ();
 			if (check_front ())
 				tact_fsm_case = 258;
-			if (timeout (1000))
+			if (timeout (1500))
 				tact_fsm_case = 700;
 			break;
 		case 258:

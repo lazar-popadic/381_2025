@@ -138,8 +138,12 @@ int8_t tact_0() {
 		}
 		break;
 	case 80:
-		cur_task = move_to_xy(x_side(-1170), -597, FORWARD, V_MAX_DEF,
+		if (get_tact_num_ptr()->side)
+		cur_task = move_to_xy(x_side(-1170), -640, FORWARD, V_MAX_DEF,
 		W_MAX_DEF, FORWARD);
+		else
+			cur_task = move_to_xy(x_side(-1170), -630, FORWARD, V_MAX_DEF,
+					W_MAX_DEF, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 85;
 		break;
@@ -248,11 +252,11 @@ int8_t tact_0() {
 
 	case 170: //rezervisan bunt
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_to_xy(x_side(-770), 370, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-720), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			BACKWARD);
 		else
-			cur_task = move_to_xy(x_side(-760), 370, BACKWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-720), 370, BACKWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			BACKWARD);
 		if (cur_task == TASK_SUCCESS)
@@ -285,7 +289,7 @@ int8_t tact_0() {
 		break;
 
 	case 280:
-		cur_task = move_on_path(x_side(-250), -240, phi_side(-30), FORWARD, 0,
+		cur_task = move_on_path(x_side(-250), -200, phi_side(-30), FORWARD, 0,
 		V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 290;
@@ -293,13 +297,13 @@ int8_t tact_0() {
 	case 290:
 		cur_task = rot_to_phi(phi_side(90), W_MAX_DEF, NO_SENS);
 		if (cur_task == TASK_SUCCESS)
+			tact_fsm_case = 295;
+		break;
+	case 295:
+		cur_task = move_on_dir(70, BACKWARD, V_MAX_DEF, NO_SENS);
+		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 300;
 		break;
-//	case 295:
-//		cur_task = move_on_dir(50, BACKWARD, V_MAX_DEF, NO_SENS);
-//		if (cur_task == TASK_SUCCESS)
-//			tact_fsm_case = 300;
-//		break;
 	case 300:
 		cur_task = task_sprat_12(BACKWARD);
 		if (cur_task == TASK_SUCCESS)
@@ -319,7 +323,7 @@ int8_t tact_0() {
 		}
 		break;
 	case 320:
-		cur_task = move_to_xy(x_side(-800), -100, FORWARD, V_MAX_DEF, W_MAX_DEF,
+		cur_task = move_to_xy(x_side(-720), -100, FORWARD, V_MAX_DEF, W_MAX_DEF,
 		FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 330;
@@ -338,11 +342,11 @@ int8_t tact_0() {
 		break;
 	case 505:
 		if (get_tact_num_ptr()->side) //plavu
-			cur_task = move_to_xy(x_side(-700), 370, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-690), 370, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			FORWARD);
 		else
-			cur_task = move_to_xy(x_side(-700), 370, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy(x_side(-690), 370, FORWARD, V_MAX_DEF,
 			W_MAX_DEF,
 			FORWARD);
 		if (cur_task == TASK_SUCCESS) {
@@ -378,10 +382,10 @@ int8_t tact_0() {
 		break;
 	case 550:
 		if (get_tact_num_ptr()->side)	// plava
-			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
+			cur_task = move_on_path(x_side(-250), -650, phi_side(-90), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		else
-			cur_task = move_on_path(x_side(-300), -650, phi_side(-90), FORWARD,
+			cur_task = move_on_path(x_side(-250), -650, phi_side(-90), FORWARD,
 					0, V_MAX_DEF_PATH, 0, FORWARD);
 		if (cur_task == TASK_SUCCESS)
 			tact_fsm_case = 560;
