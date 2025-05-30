@@ -110,7 +110,7 @@ tact_0 ()
 			break;
 			// gura bunt u manje polje
 		case 60:
-			cur_task = move_on_dir_ortho (420, BACKWARD, 0.4, NO_SENS);
+			cur_task = move_on_dir_ortho (420, BACKWARD, 0.4, NO_SENS); //proveriti ovo
 			if (cur_task == TASK_SUCCESS || timeout (2000))
 				tact_fsm_case = 61;
 			break;
@@ -142,7 +142,7 @@ tact_0 ()
 				}
 			break;
 		case 80:
-			if (get_tact_num_ptr ()->side)
+			if (get_tact_num_ptr ()->side)//plava
 				cur_task = move_to_xy (x_side (-1150), -630, FORWARD, V_MAX_DEF,
 															 W_MAX_DEF,
 															 FORWARD);
@@ -183,7 +183,7 @@ tact_0 ()
 			break;
 			// bunt ms11
 		case 100:
-			cur_task = move_to_xy (x_side (-700), 310, FORWARD, V_MAX_DEF,
+			cur_task = move_to_xy (x_side (-700), 300, FORWARD, V_MAX_DEF,
 														 W_MAX_DEF,
 														 FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -264,11 +264,10 @@ tact_0 ()
 
 		case 170: //rezervisan bunt
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_to_xy (x_side (-700), 370, BACKWARD, V_MAX_DEF,//pomerena na 700 jer ih malo promasi
-															 W_MAX_DEF,
+				cur_task = move_to_xy (x_side (-770), 370, BACKWARD, V_MAX_DEF,	 W_MAX_DEF,
 															 BACKWARD);
 			else
-				cur_task = move_to_xy (x_side (-750), 370, BACKWARD, V_MAX_DEF,
+				cur_task = move_to_xy (x_side (-770), 370, BACKWARD, V_MAX_DEF,
 															 W_MAX_DEF,
 															 BACKWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -356,12 +355,12 @@ tact_0 ()
 			break;
 		case 505:
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_to_xy (x_side (-670), 370, FORWARD, V_MAX_DEF,
+				cur_task = move_to_xy (x_side (-740), 370, FORWARD, V_MAX_DEF,
 															 W_MAX_DEF,
 															 FORWARD);
 			//TODO ne ode lepo u reyervisane ne znam da li treba da ga menjama ili je samo sto retardiran pa gubi poziciju
 			else
-				cur_task = move_to_xy (x_side (-710), 370, FORWARD, V_MAX_DEF,
+				cur_task = move_to_xy (x_side (-740), 370, FORWARD, V_MAX_DEF,
 															 W_MAX_DEF,
 															 FORWARD); //bilo je 690 i masi ga...
 			if (cur_task == TASK_SUCCESS)
