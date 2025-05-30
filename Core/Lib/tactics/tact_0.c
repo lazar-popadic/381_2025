@@ -20,7 +20,7 @@ int8_t
 tact_0 ()
 {
 	switch (tact_fsm_case)
-		{
+	{
 		case -1:
 			break;
 		case 0: //krece ka ms24
@@ -30,7 +30,7 @@ tact_0 ()
 			tact_fsm_case = 2;
 			break;
 		case 2:
-			cur_task = move_on_dir (160, BACKWARD, 0.5, NO_SENS);
+			cur_task = move_on_dir (157, BACKWARD, 0.5, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (1000))
 				tact_fsm_case = 5;
 			break;
@@ -55,10 +55,10 @@ tact_0 ()
 			break;
 		case 12: //srednji bunt blizi njemu
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_on_path (x_side (-400), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+				cur_task = move_on_path (x_side (-410), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 			else
 				//zuta
-				cur_task = move_on_path (x_side (-400), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+				cur_task = move_on_path (x_side (-410), -400, phi_side (120), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 13;
 			break;
@@ -72,8 +72,8 @@ tact_0 ()
 			tact_fsm_case = 20;
 			break;
 		case 20: //pred uzimanje bunta
-			cur_task = move_on_dir_ortho (350, FORWARD, 0.2, FORWARD); //300
-			if (delay_nb_2 (&tact_delay_1, 1500))
+			cur_task = move_on_dir_ortho (380, FORWARD, 0.2, FORWARD); //300
+			if (delay_nb_2 (&tact_delay_1, 2000))
 				grtl_front_grip_all ();
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 30;
@@ -89,16 +89,15 @@ tact_0 ()
 		case 40:
 			if (get_tact_num_ptr ()->side)	// plava
 				cur_task = move_to_xy (x_side (-740), -350, BACKWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																BACKWARD);
+															 W_MAX_DEF,
+															 BACKWARD);
 			else
 				//zuta
 				cur_task = move_to_xy (x_side (-740), -350, BACKWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																BACKWARD);
+															 W_MAX_DEF,
+															 BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 50;
-
 			break;
 		case 50:
 			cur_task = rot_to_phi (phi_side (90), W_MAX_DEF, NO_SENS);
@@ -111,7 +110,7 @@ tact_0 ()
 			break;
 			// gura bunt u manje polje
 		case 60:
-			cur_task = move_on_dir_ortho (400, BACKWARD, 0.4, NO_SENS);
+			cur_task = move_on_dir_ortho (420, BACKWARD, 0.4, NO_SENS);
 			if (cur_task == TASK_SUCCESS || timeout (2000))
 				tact_fsm_case = 61;
 			break;
@@ -145,12 +144,12 @@ tact_0 ()
 		case 80:
 			if (get_tact_num_ptr ()->side)
 				cur_task = move_to_xy (x_side (-1150), -630, FORWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																FORWARD);
+															 W_MAX_DEF,
+															 FORWARD);
 			else
 				cur_task = move_to_xy (x_side (-1150), -610, FORWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																FORWARD);
+															 W_MAX_DEF,
+															 FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 85;
 			break;
@@ -185,8 +184,8 @@ tact_0 ()
 			// bunt ms11
 		case 100:
 			cur_task = move_to_xy (x_side (-700), 310, FORWARD, V_MAX_DEF,
-			W_MAX_DEF,
-															FORWARD);
+														 W_MAX_DEF,
+														 FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 102;
 			break;
@@ -228,22 +227,22 @@ tact_0 ()
 			// odlazak u polje
 		case 120:
 			if (get_tact_num_ptr ()->side)	// plava
-				cur_task = move_on_path (x_side (-300), -550, phi_side (-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+				cur_task = move_on_path (x_side (-300), -650, phi_side (-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 			else
-				cur_task = move_on_path (x_side (-300), -550, phi_side (-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
+				cur_task = move_on_path (x_side (-300), -650, phi_side (-90), FORWARD, 0, V_MAX_DEF_PATH, 0, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 130;
 			break;
 		case 130:
 			cur_task = rot_to_phi (phi_side (-90), W_MAX_DEF, NO_SENS);
 			if (cur_task == TASK_SUCCESS)
-				tact_fsm_case = 140;
-			break;
-		case 140:
-			cur_task = move_to_xy (x_side (-300), -650, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
-			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 150;
 			break;
+//		case 140:
+//			cur_task = move_to_xy (x_side (-300), -650, FORWARD, V_MAX_DEF, W_MAX_DEF, FORWARD);
+//			if (cur_task == TASK_SUCCESS)
+//				tact_fsm_case = 150;
+//			break;
 		case 150:
 			cur_task = task_sprat_3_1_full (FORWARD);
 			if (cur_task == TASK_SUCCESS)
@@ -265,13 +264,13 @@ tact_0 ()
 
 		case 170: //rezervisan bunt
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_to_xy (x_side (-690), 370, BACKWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																BACKWARD);
+				cur_task = move_to_xy (x_side (-700), 370, BACKWARD, V_MAX_DEF,//pomerena na 700 jer ih malo promasi
+															 W_MAX_DEF,
+															 BACKWARD);
 			else
 				cur_task = move_to_xy (x_side (-750), 370, BACKWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																BACKWARD);
+															 W_MAX_DEF,
+															 BACKWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 180;
 			break;
@@ -303,8 +302,8 @@ tact_0 ()
 
 		case 280:
 			cur_task = move_on_path (x_side (-280), -170, phi_side (-30), FORWARD, 0,
-			V_MAX_DEF_PATH,
-																0, FORWARD);
+															 V_MAX_DEF_PATH,
+															 0, FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 290;
 			break;
@@ -339,7 +338,7 @@ tact_0 ()
 			break;
 		case 320:
 			cur_task = move_to_xy (x_side (-640), -100, FORWARD, V_MAX_DEF, W_MAX_DEF,
-			FORWARD);
+														 FORWARD);
 			if (cur_task == TASK_SUCCESS)
 				tact_fsm_case = 330;
 			break;
@@ -357,13 +356,14 @@ tact_0 ()
 			break;
 		case 505:
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_to_xy (x_side (-690), 370, FORWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																FORWARD);
+				cur_task = move_to_xy (x_side (-670), 370, FORWARD, V_MAX_DEF,
+															 W_MAX_DEF,
+															 FORWARD);
+			//TODO ne ode lepo u reyervisane ne znam da li treba da ga menjama ili je samo sto retardiran pa gubi poziciju
 			else
-				cur_task = move_to_xy (x_side (-690), 370, FORWARD, V_MAX_DEF,
-				W_MAX_DEF,
-																FORWARD);
+				cur_task = move_to_xy (x_side (-710), 370, FORWARD, V_MAX_DEF,
+															 W_MAX_DEF,
+															 FORWARD); //bilo je 690 i masi ga...
 			if (cur_task == TASK_SUCCESS)
 				{
 					grtl_back_close ();
@@ -422,6 +422,6 @@ tact_0 ()
 			grtl_front_close ();
 			tact_fsm_case = 320;
 			break;
-		}
+	}
 	return tact_state;
 }
