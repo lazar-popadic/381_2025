@@ -59,7 +59,7 @@ int8_t task_sprat_3(int8_t side) {
 			lift_front_up();
 		else
 			lift_back_up();
-		HAL_Delay(1640);
+		HAL_Delay(1800);
 		break;
 
 	case 50:

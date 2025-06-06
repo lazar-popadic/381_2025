@@ -72,7 +72,7 @@ tact_0 ()
 			tact_fsm_case = 20;
 			break;
 		case 20: //pred uzimanje bunta
-			cur_task = move_on_dir_ortho (380, FORWARD, 0.2, FORWARD); //300
+			cur_task = move_on_dir_ortho (420, FORWARD, 0.2, FORWARD); //300
 			if (delay_nb_2 (&tact_delay_1, 2000))
 				grtl_front_grip_all ();
 			if (cur_task == TASK_SUCCESS)
@@ -264,10 +264,10 @@ tact_0 ()
 
 		case 170: //rezervisan bunt
 			if (get_tact_num_ptr ()->side) //plavu
-				cur_task = move_to_xy (x_side (-770), 370, BACKWARD, V_MAX_DEF,	 W_MAX_DEF,
+				cur_task = move_to_xy (x_side (-740), 370, BACKWARD, V_MAX_DEF,	 W_MAX_DEF,
 															 BACKWARD);
 			else
-				cur_task = move_to_xy (x_side (-770), 370, BACKWARD, V_MAX_DEF,
+				cur_task = move_to_xy (x_side (-740), 370, BACKWARD, V_MAX_DEF,
 															 W_MAX_DEF,
 															 BACKWARD);
 			if (cur_task == TASK_SUCCESS)

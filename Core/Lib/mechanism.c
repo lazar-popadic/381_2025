@@ -48,6 +48,7 @@
 #define LIFT_CARRY	80
 #define LIFT_UP			1023
 #define LIFT_DROP		850
+#define LIFT_BACK_UP 880
 #define LIFT_LEAVE	750
 #define LIFT_BNR		400
 #define LIFT_SPEED_FAST	500
@@ -134,7 +135,7 @@ mechanism_init ()
 	lift_front_down ();
 	HAL_Delay (1000);
 	lift_back_up ();
-	HAL_Delay (1000);
+	HAL_Delay (1800);
 //	lift_back_down ();
 //	HAL_Delay (2000);
 	lift_back_drop ();
@@ -192,7 +193,7 @@ lift_front_leave ()
 void
 lift_back_up ()
 {
-	ax_move (LIFT_B_ID, LIFT_UP, LIFT_SPEED_FAST, huart6);
+	ax_move (LIFT_B_ID, LIFT_BACK_UP, LIFT_SPEED_FAST, huart6);
 	mechanism_states.lift_back = 3;
 }
 
